@@ -58,8 +58,13 @@ export const onMessageListener = async () =>
   new Promise((resolve) =>
     (async () => {
       const messagingResolve = await messaging;
-      onMessage(messagingResolve, (payload) => {
-        resolve(payload);
-      });
+      if (messagingResolve) {
+        onMessage(messagingResolve, (payload) => {
+          resolve(payload);
+        });
+      } else {
+        // Handle the case where messagingResolve is null or undefined
+        console.error("Messaging resolve is null or undefined");
+      }
     })()
   );
