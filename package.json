@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3002",
+    "start": "next start -p 3000",
+    "prestart": "next build",
     "lint": "next lint"
   },
   "dependencies": {
@@ -19,7 +20,7 @@
     "@mui/styles": "^5.11.0",
     "@mui/system": "^5.10.17",
     "@mui/x-date-pickers": "^6.5.0",
-    "@react-google-maps/api": "^2.17.1",
+    "@react-google-maps/api": "^2.19.2",
     "@reduxjs/toolkit": "^1.9.1",
     "axios": "^1.2.1",
     "base-64": "^1.0.0",
