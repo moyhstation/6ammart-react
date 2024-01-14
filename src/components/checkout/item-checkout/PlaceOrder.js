@@ -29,7 +29,7 @@ const PlaceOrder = (props) => {
   const theme = useTheme();
   const router = useRouter();
   const dispatch = useDispatch();
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const handleChange = (e) => {
     setChecked(e.target.checked);
   };
@@ -55,7 +55,7 @@ const PlaceOrder = (props) => {
   const primaryColor = theme.palette.primary.main;
   return (
     <CustomStackFullWidth alignItems="center" spacing={2} mt=".5rem">
-      <FormGroup>
+      {/* <FormGroup>
         <FormControlLabel
           control={<Checkbox checked={checked} onChange={handleChange} />}
           label={
@@ -75,7 +75,7 @@ const PlaceOrder = (props) => {
             </CustomTypography>
           }
         />
-      </FormGroup>
+      </FormGroup> */}
       {offlineInfoStep === 0 ? (
         <LoadingButton
           type="submit"
