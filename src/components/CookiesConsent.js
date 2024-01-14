@@ -20,7 +20,7 @@ const Wrapper = styled("div")(({ theme }) => ({
 }));
 
 const CookiesConsent = ({ text }) => {
-  const [showConsent, setShowConsent] = useState(true);
+  const [showConsent, setShowConsent] = useState(false);
   const { t } = useTranslation();
 
   const handleAccept = () => {
