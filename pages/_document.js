@@ -22,6 +22,7 @@ class CustomDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:300,400,500,700&display=optional"
           />
+          <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
           <script
             type="application/javascript"
             src="https://accounts.google.com/gsi/client"

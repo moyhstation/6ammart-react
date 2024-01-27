@@ -55,6 +55,7 @@ class CustomDocument extends Document {
             async
             src="https://www.gstatic.com/firebasejs/7.7.0/firebase-messaging.js"
           />
+          <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
           <meta name="theme-color" content="#111827" />
         </Head>
         <body>
