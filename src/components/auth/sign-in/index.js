@@ -23,25 +23,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import {
-  onErrorResponse,
-  onSingleErrorResponse,
-} from "../../../api-manage/api-error-response/ErrorResponses";
+import { onErrorResponse } from "../../../api-manage/api-error-response/ErrorResponses";
 import { useSignIn } from "../../../api-manage/hooks/react-query/auth/useSignIn";
 import { useVerifyPhone } from "../../../api-manage/hooks/react-query/forgot-password/useVerifyPhone";
 import useGetProfile from "../../../api-manage/hooks/react-query/profile/useGetProfile";
 import { useWishListGet } from "../../../api-manage/hooks/react-query/wish-list/useWishListGet";
-import {
-  SettingsConsumer,
-  SettingsProvider,
-} from "../../../contexts/settings-context";
 import { setUser } from "../../../redux/slices/profileInfo";
 import { setWishList } from "../../../redux/slices/wishList";
-import { setDefaultLanguage } from "../../../utils/setDefaultLanguage";
 import {
-  SigninSuccessFull,
   loginSuccessFull,
   moduleSelected,
+  SigninSuccessFull,
 } from "../../../utils/toasterMessages";
 import { ModuleSelection } from "../../landing-page/hero-section/module-selection";
 import CustomModal from "../../modal";
@@ -51,15 +43,14 @@ import SignUpValidation from "./SignInValidation";
 import SocialLogins from "./social-login/SocialLogins";
 import useGetAllCartList from "../../../api-manage/hooks/react-query/add-cart/useGetAllCartList";
 import { setCartList } from "../../../redux/slices/cart";
-import {getGuestId} from "../../../helper-functions/getToken";
-import {handleProductValueWithOutDiscount} from "../../../utils/CustomFunctions";
-import {getModule} from "../../../helper-functions/getLanguage";
-import {getSelectedVariations} from "../../header/second-navbar/SecondNavbar";
+import { getGuestId } from "../../../helper-functions/getToken";
+import { handleProductValueWithOutDiscount } from "../../../utils/CustomFunctions";
+import { getSelectedVariations } from "../../header/second-navbar/SecondNavbar";
 
 const SignIn = ({ configData }) => {
   const router = useRouter();
   const previousRouteName = router.query.from;
-  const guestId=getGuestId()
+  const guestId = getGuestId();
   const dispatch = useDispatch();
   const [openModuleSelection, setOpenModuleSelection] = useState(false);
   const [openOtpModal, setOpenOtpModal] = useState(false);
@@ -81,13 +72,16 @@ const SignIn = ({ configData }) => {
       const tempCartLists = res?.map((item) => ({
         ...item?.item,
         cartItemId: item?.id,
-        totalPrice: handleProductValueWithOutDiscount(item?.item)*item?.quantity,
+        totalPrice:
+          handleProductValueWithOutDiscount(item?.item) * item?.quantity,
         selectedAddons: item?.item?.addons,
         quantity: item?.quantity,
         food_variations: item?.item?.food_variations,
         itemBasePrice: item?.item?.price,
         selectedOption:
-            getModule()?.module_type !== "food" ? item?.variation :getSelectedVariations(item?.item?.food_variations),
+          getModule()?.module_type !== "food"
+            ? item?.variation
+            : getSelectedVariations(item?.item?.food_variations),
       }));
       dispatch(setCartList(tempCartLists));
     }
@@ -179,10 +173,9 @@ const SignIn = ({ configData }) => {
       } else {
         if (previousRouteName) {
           router.push("/home");
-        }else if (previousRouteName==="/order"){
+        } else if (previousRouteName === "/order") {
           router.push("/home");
-        }
-        else {
+        } else {
           await router.back();
         }
       }
@@ -208,7 +201,7 @@ const SignIn = ({ configData }) => {
   const { mutate } = useSignIn(handleError);
   const formSubmitHandler = (values) => {
     setIsApiCalling(true);
-    const newValues={...values,guest_id:guestId}
+    const newValues = { ...values, guest_id: guestId };
     mutate(newValues, {
       onSuccess: async (response) => {
         //setDefaultLanguage();
@@ -237,7 +230,7 @@ const SignIn = ({ configData }) => {
     };
     otpVerifyMutate(values, {
       onSuccess: onSuccessHandler,
-      onError: onSingleErrorResponse,
+      onError: onErrorResponse,
     });
   };
 

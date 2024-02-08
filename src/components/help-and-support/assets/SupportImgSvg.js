@@ -5,7 +5,7 @@ import { useTheme } from "@mui/material";
 const SupportImgSvg = () => {
   const theme = useTheme();
   return (
-    <Box maxWidth="720px" marginX="auto">
+    <Box maxWidth="520px" marginX="auto">
       <svg
         style={{ width: "100%" }}
         viewBox="0 0 2484 1358"

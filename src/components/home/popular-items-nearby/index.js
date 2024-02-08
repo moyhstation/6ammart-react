@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useGetPopularItemsNearby from "../../../api-manage/hooks/react-query/useGetPopularItemsNearby";
 
@@ -25,7 +25,7 @@ import {
 } from "../../../styled-components/CustomStyles.style";
 import { NextFood, PrevFood } from "../best-reviewed-items/SliderSettings";
 import { useGetFlashSales } from "../../../api-manage/hooks/react-query/useGetFlashSales";
-import {getLanguage} from "../../../helper-functions/getLanguage";
+import { getLanguage } from "../../../helper-functions/getLanguage";
 
 const PopularItemsNearby = ({ title, subTitle }) => {
   const { popularItemsNearby } = useSelector((state) => state.storedData);
@@ -39,7 +39,7 @@ const PopularItemsNearby = ({ title, subTitle }) => {
   const {
     data: flashSales,
     refetch: flashSalesRefetch,
-    isLoading: flashSalesIsLoading
+    isLoading: flashSalesIsLoading,
   } = useGetFlashSales({ limit, offset });
   // const direction = JSON.parse(localStorage.getItem("settings"));
 
@@ -63,11 +63,15 @@ const PopularItemsNearby = ({ title, subTitle }) => {
     refetch();
   }, []);
 
-  const flashSaleslength = () =>{
-    if(((flashSales && typeof flashSales === 'object' && Object.keys(flashSales).length === 0) ||
-    flashSales?.active_products?.length < 1)){
+  const flashSaleslength = () => {
+    if (
+      (flashSales &&
+        typeof flashSales === "object" &&
+        Object.keys(flashSales).length === 0) ||
+      flashSales?.active_products?.length < 1
+    ) {
       return false;
-    }else{
+    } else {
       return true;
     }
   }
@@ -84,25 +88,34 @@ const PopularItemsNearby = ({ title, subTitle }) => {
     rtl: getLanguage() === "rtl",
     responsive: [
       {
-        breakpoint: 400,
+        breakpoint: 320,
         settings: {
-          slidesToShow: .5,
+          slidesToShow: 1,
           slidesPerRow: 1,
           rows: 2,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 500,
+        breakpoint: 375,
         settings: {
-          slidesToShow: 1.15,
+          slidesToShow: 1.1,
           slidesPerRow: 1,
           rows: 2,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 700,
+        breakpoint: 450,
+        settings: {
+          slidesToShow: 1.2,
+          slidesPerRow: 1,
+          rows: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 750,
         settings: {
           slidesToShow: 1.5,
           slidesPerRow: 2,
@@ -111,7 +124,7 @@ const PopularItemsNearby = ({ title, subTitle }) => {
         },
       },
       {
-        breakpoint: 900,
+        breakpoint: 830,
         settings: {
           slidesToShow: 1.55,
           slidesPerRow: 1,
@@ -120,9 +133,18 @@ const PopularItemsNearby = ({ title, subTitle }) => {
         },
       },
       {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 1.75,
+          slidesPerRow: 1,
+          rows: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
         breakpoint: 1150,
         settings: {
-          slidesToShow: 1.55,
+          slidesToShow: 1.8,
           slidesPerRow: 1,
           rows: 3,
           slidesToScroll: 1,
@@ -131,7 +153,7 @@ const PopularItemsNearby = ({ title, subTitle }) => {
       {
         breakpoint: 1300,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: flashSaleslength() ? 2 : 2.5,
           slidesPerRow: 1,
           rows: 3,
           slidesToScroll: 1,
@@ -151,19 +173,18 @@ const PopularItemsNearby = ({ title, subTitle }) => {
             mt="30px"
             spacing={1}
           >
-            {
-              isLoading ? <Skeleton varient="text" width="110px" />
-                :
-                <H2 text={title} />
-            }
-            {
-              isLoading ?
-                <Skeleton varient="text" width="310px" />
-                :
-                <Subtitle1 text={t(subTitle)} />
-            }
+            {isLoading ? (
+              <Skeleton varient="text" width="110px" />
+            ) : (
+              <H2 text={title} />
+            )}
+            {isLoading ? (
+              <Skeleton varient="text" width="310px" />
+            ) : (
+              <Subtitle1 text={t(subTitle)} />
+            )}
             <CustomBoxFullWidth>
-              <Grid container spacing={2}>
+              <Grid container spacing={2} sx={{ marginTop: "1px" }}>
                 {isLoading ? (
                   <Grid item xs={12} sm={12} md={9}>
                     <SliderCustom
@@ -176,8 +197,7 @@ const PopularItemsNearby = ({ title, subTitle }) => {
                     >
                       <Slider {...settings}>
                         {[...Array(15)].map((item, index) => {
-                          return (
-                            <ProductCardSimmerHorizontal key={index} />)
+                          return <ProductCardSimmerHorizontal key={index} />;
                         })}
                       </Slider>
                     </SliderCustom>
@@ -215,7 +235,9 @@ const PopularItemsNearby = ({ title, subTitle }) => {
                   </Grid>
                 ) : (
                   <Grid item xs={12} sm={5} md={3}>
-                    {flashSaleslength() && <ItemsCampaign flashSales={flashSales} />}
+                    {flashSaleslength() && (
+                      <ItemsCampaign flashSales={flashSales} />
+                    )}
                   </Grid>
                 )}
               </Grid>

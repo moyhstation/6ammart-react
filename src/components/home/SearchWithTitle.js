@@ -1,16 +1,15 @@
 import React from "react";
 import { CustomStackFullWidth } from "../../styled-components/CustomStyles.style";
-import { alpha, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import ManageSearch from "../header/second-navbar/ManageSearch";
 import { getCurrentModuleType } from "../../helper-functions/getCurrentModuleType";
 import { useTranslation } from "react-i18next";
 import { ModuleTypes } from "../../helper-functions/moduleTypes";
-import { Box } from "@mui/system";
 import TrackParcelFromHomePage from "../parcel/TrackParcelFromHomePage";
 
 const SearchWithTitle = (props) => {
   const moduleType = getCurrentModuleType();
-  const { zoneid, token,query } = props;
+  const { zoneid, token, query, name } = props;
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const { t } = useTranslation();
@@ -48,6 +47,7 @@ const SearchWithTitle = (props) => {
         };
     }
   };
+
   return (
     <CustomStackFullWidth
       alignItems="center"
@@ -85,6 +85,7 @@ const SearchWithTitle = (props) => {
           maxwidth="false"
           fullWidth
           query={query}
+          name={name}
         />
       ) : (
         <TrackParcelFromHomePage />

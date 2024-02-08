@@ -5,23 +5,27 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 
 import { useRouter } from "next/router";
-import Link from "next/link";
 //import { getDataLimit } from "../../utils/customFunctions";
-import { t } from "i18next";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { getModuleId } from "../../../../helper-functions/getModuleId";
 import { useTranslation } from "react-i18next";
 import { CustomStackFullWidth } from "../../../../styled-components/CustomStyles.style";
-import { Scrollbar } from "../../../srollbar";
+import { VIEW_ALL_TEXT } from "../../../../utils/staticTexts";
 
-const CollapsableMenu = ({ value, toggleDrawers, setOpenDrawer, pathName,forcategory }) => {
+const CollapsableMenu = ({
+  value,
+  toggleDrawers,
+  setOpenDrawer,
+  pathName,
+  forcategory,
+}) => {
   const router = useRouter();
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
-  const handleClick = () => setOpen(!open);
+  const handleClick = () => setOpen((prevState) => !prevState);
   const handleRoute = (id) => {
-    if(forcategory==='true'){
+    if (forcategory === "true") {
       router.push({
         pathname: "/home",
         query: {
@@ -31,7 +35,7 @@ const CollapsableMenu = ({ value, toggleDrawers, setOpenDrawer, pathName,forcate
           name: btoa(name),
         },
       });
-    }else{
+    } else {
       router.push(
         {
           pathname: `/${value?.path}/[id]`,
@@ -41,13 +45,28 @@ const CollapsableMenu = ({ value, toggleDrawers, setOpenDrawer, pathName,forcate
         { shallow: true }
       );
     }
-   
+
     setOpen(false);
     setOpenDrawer(false);
   };
 
   const handleView = () => {
-    router.push(pathName, undefined, { shallow: true });
+    if (pathName === "/categories") {
+      router.push(
+        {
+          pathname: "/home",
+          query: {
+            search: VIEW_ALL_TEXT.allCategories,
+            from: "allCategories",
+          },
+        },
+        undefined,
+        { shallow: true }
+      );
+    } else {
+      router.push(pathName, undefined, { shallow: true });
+    }
+
     setOpen(false);
     setOpenDrawer(false);
   };
@@ -56,6 +75,7 @@ const CollapsableMenu = ({ value, toggleDrawers, setOpenDrawer, pathName,forcate
       <ListItemButton
         onClick={handleClick}
         sx={{
+          color: (theme) => theme.palette.primary.main,
           "&:hover": {
             backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.3),
           },
@@ -88,7 +108,7 @@ const CollapsableMenu = ({ value, toggleDrawers, setOpenDrawer, pathName,forcate
           ))}
           <CustomStackFullWidth alignItems="center" justifyContent="center">
             <Typography
-              variant="h6"
+              fontSize=".8rem"
               fontWeight="bold"
               sx={{ textDecoration: "underline", cursor: "pointer" }}
               onClick={handleView}

@@ -31,15 +31,16 @@ const Home = ({ configData, landingPageData }) => {
   return (
     <>
       <CssBaseline />
-    
-      
+      {configData && (
+        <SEO
+          title="Home"
+          image={`${configData?.base_urls?.business_logo_url}/${configData?.fav_icon}`}
+          businessName={configData?.business_name}
+          configData={configData}
+        />
+      )}
+
       <MainLayout configData={configData} landingPageData={landingPageData}>
-      {configData && <SEO
-        title="Home"
-        image={`${configData?.base_urls?.business_logo_url}/${configData?.fav_icon}`}
-        businessName={configData?.business_name}
-        configData={configData}
-      />}
         <ModuleWiseLayout configData={configData} />
       </MainLayout>
     </>
@@ -47,7 +48,6 @@ const Home = ({ configData, landingPageData }) => {
 };
 
 export default Home;
-
 
 Home.getLayout = (page) => <ZoneGuard>{page}</ZoneGuard>;
 

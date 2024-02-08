@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
 import { Stack, styled } from "@mui/system";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { IconButton, Typography } from "@mui/material";
+import { IconButton, Tooltip, Typography, Zoom } from "@mui/material";
 import { t } from "i18next";
 import InfoIcon from "@mui/icons-material/Info";
 import { DeliveryCaption } from "../CheckOut.style";
@@ -92,9 +92,8 @@ const AddPaymentMethod = (props) => {
               textTransform="capitalize"
             >
               {paymentMethod === "offline_payment"
-                ? `${paymentMethod?.replaceAll("_", " ")} (${
-                    offlineMethod?.method_name
-                  })`
+                ? `${paymentMethod?.replaceAll("_", " ")} (${offlineMethod?.method_name
+                })`
                 : paymentMethod?.replaceAll("_", " ")}
             </Typography>
           </Stack>
@@ -111,7 +110,16 @@ const AddPaymentMethod = (props) => {
             >
               {t("Add Payment Method")}
             </Typography>
-            <InfoIcon color="error" style={{ width: "16px", height: "16px" }} />
+            <Stack sx={{ cursor: "pointer" }}>
+              <Tooltip
+                arrow
+                placement="top"
+                TransitionComponent={Zoom}
+                title={t("Please select a paymrnt method")}
+              >
+                <InfoIcon color="error" style={{ width: "16px", height: "16px" }} />
+              </Tooltip>
+            </Stack>
           </Stack>
         )}
 

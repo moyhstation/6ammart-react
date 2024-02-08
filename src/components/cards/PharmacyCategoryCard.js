@@ -1,4 +1,4 @@
-import { Skeleton, styled, Typography } from "@mui/material";
+import { Skeleton, styled, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { btoa } from "next/dist/compiled/@edge-runtime/primitives/encoding";
 import Link from "next/link";
@@ -92,16 +92,32 @@ const PharmacyCategoryCard = (props) => {
 								objectFit="cover"
 							/>
 						</ImageWrapper>
-						<TextWrapper>
-							<Typography
-								textAlign="center"
-								className={classes.singleLineEllipsis}
-								maxHeight="20px"
-								color={hover && "primary.main"}
-							>
-								{title}
-							</Typography>
-						</TextWrapper>
+						<Tooltip
+							title={title}
+							placement="bottom"
+							arrow
+							componentsProps={{
+								tooltip: {
+									sx: {
+										bgcolor: (theme) => theme.palette.toolTipColor,
+										"& .MuiTooltip-arrow": {
+											color: (theme) => theme.palette.toolTipColor,
+										},
+									},
+								},
+							}}
+						>
+							<TextWrapper>
+								<Typography
+									textAlign="center"
+									className={classes.singleLineEllipsis}
+									maxHeight="20px"
+									color={hover && "primary.main"}
+								>
+									{title}
+								</Typography>
+							</TextWrapper>
+						</Tooltip>
 					</Wrapper>
 				</Link>
 			)}

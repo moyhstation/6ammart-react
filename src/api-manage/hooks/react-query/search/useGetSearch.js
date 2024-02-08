@@ -1,11 +1,7 @@
 import MainApi from "../../../MainApi";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 
-import {
-  onErrorResponse,
-  onSingleErrorResponse,
-} from "../../../api-error-response/ErrorResponses";
-import { suggestedProducts_api } from "../../../ApiRoutes";
+import { onSingleErrorResponse } from "../../../api-error-response/ErrorResponses";
 
 const getSearch = async (pageParams) => {
   const {

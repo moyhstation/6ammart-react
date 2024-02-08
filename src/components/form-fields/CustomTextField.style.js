@@ -27,5 +27,10 @@ export const CustomTextFieldStyle = styled(TextField)(
       marginLeft: "0px",
       marginTop: "5px",
     },
+    "& .MuiOutlinedInput-input": {
+      fontSize: "14px",
+      fontWeight: 400,
+      height: ".8em !important",
+    },
   })
 );

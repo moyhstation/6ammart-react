@@ -1,27 +1,17 @@
 import React, { useEffect, useReducer, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import { DeliveryCaption } from "../CheckOut.style";
 import useGetAddressList from "../../../api-manage/hooks/react-query/address/useGetAddressList";
-import AddressSelectionField from "./AddressSelectionField";
 import AddressSelectionList from "./AddressSelectionList";
-import { IconButton, Skeleton, Typography, useTheme } from "@mui/material";
+import { IconButton, Typography, useTheme } from "@mui/material";
 import { Stack } from "@mui/system";
 import AddNewAddress from "../../address/add-new-address";
 import AdditionalAddresses from "../item-checkout/AdditionalAddresses";
-import { handleClick, handleCloseModal } from "../../address/HelperFunctions";
 import CustomModal from "../../modal";
 import SaveAddressModal from "../item-checkout/SaveAddressModal";
 import { initialState, reducer } from "../../address/states";
-import {
-  CustomListItem,
-  CustomStackFullWidth,
-} from "../../../styled-components/CustomStyles.style";
-import Radio from "@mui/material/Radio";
-import ListItemText from "@mui/material/ListItemText";
-import CreateIcon from "@mui/icons-material/Create";
 import usePostAddress from "../../../api-manage/hooks/react-query/address/usePostAddress";
 import toast from "react-hot-toast";
 import { onErrorResponse } from "../../../api-manage/api-error-response/ErrorResponses";
@@ -129,10 +119,10 @@ const DeliveryAddress = ({
         pt={{ xs: "18px", md: "0px" }}
         pb={{ xs: "8px", md: "0px" }}
       >
-        {renderOnNavbar !== "true" && orderType!=="take_away" && (
+        {renderOnNavbar !== "true" && orderType !== "take_away" && (
           <DeliveryCaption>{t("Delivery Addresses")}</DeliveryCaption>
         )}
-        {token && renderOnNavbar !== "true" && orderType!=="take_away" && (
+        {token && renderOnNavbar !== "true" && orderType !== "take_away" && (
           <AddNewAddressButton
             align="right"
             handleAddressModal={handleAddressModal}
@@ -205,7 +195,7 @@ const DeliveryAddress = ({
           )}
         </>
       )}
-      {renderOnNavbar !== "true" && token && orderType!=="take_away" && (
+      {renderOnNavbar !== "true" && token && orderType !== "take_away" && (
         <AdditionalAddresses
           t={t}
           additionalInformationDispatch={dispatch}

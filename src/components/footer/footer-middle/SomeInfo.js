@@ -8,72 +8,104 @@ import {
 import CustomImageContainer from "../../CustomImageContainer";
 import ClickToCall from "../../header/top-navbar/ClickToCall";
 import SendMail from "../../SendMail";
+import Link from "next/link";
 
 const SomeInfo = (props) => {
-  const { image, alt, title, info, t, phone } = props;
+  const { image, alt, title, info, t, href } = props;
   const theme = useTheme();
-  const handleClick = () => {};
   return (
-    <CustomStackFullWidth
-      alignItems="center"
-      justifyContent="center"
-      spacing={3}
-      sx={{
-        img: {
-          transition: "all ease 0.5s",
-        },
-        "&:hover": {
-          ".MuiTypography-body1": {
-            letterSpacing: "0.03em",
-            color: theme.palette.primary.main,
-          },
-          img: {
-            transform: "scale(1.1)",
-          },
-        },
-      }}
-    >
-      <CustomImageContainer src={image.src} alt={alt} height={50} width={50} />
+    <>{href ? (
+      <Link href={href}>
+        <CustomStackFullWidth
+          alignItems="center"
+          justifyContent="center"
+          spacing={3}
+          sx={{
+            cursor: "pointer",
+            img: {
+              transition: "all ease 0.5s",
+            },
+            "&:hover": {
+              ".MuiTypography-body1": {
+                color: theme.palette.primary.main,
+              },
+              ".MuiTypography-body2": {
+                color: theme.palette.primary.main,
+              },
+            },
+          }}
+        >
+          <CustomImageContainer src={image.src} alt={alt} height={50} width={50} />
+          <CustomStackFullWidth
+            alignItems="center"
+            justifyContent="center"
+            spacing={1}
+          >
+            <CustomTypographyBold
+              sx={{
+                textTransform: "capitalize",
+              }}
+            >
+              {t(title)}
+            </CustomTypographyBold>
+            <Typography
+              variant="body2"
+              sx={{
+                textAlign: "center",
+              }}
+            >
+              {info}
+            </Typography>
+          </CustomStackFullWidth>
+        </CustomStackFullWidth>
+      </Link>
+    ) : (
       <CustomStackFullWidth
         alignItems="center"
         justifyContent="center"
-        spacing={1}
-        onClick={handleClick}
-      >
-        <CustomTypographyBold
-          sx={{
-            textTransform: "capitalize",
+        spacing={3}
+        sx={{
+          cursor: "pointer",
+          img: {
             transition: "all ease 0.5s",
-          }}
+          },
+          "&:hover": {
+            ".MuiTypography-body1": {
+              color: theme.palette.primary.main,
+            },
+            ".MuiTypography-body2": {
+              color: theme.palette.primary.main,
+            },
+          },
+        }}
+      >
+        <CustomImageContainer src={image.src} alt={alt} height={50} width={50} />
+        <CustomStackFullWidth
+          alignItems="center"
+          justifyContent="center"
+          spacing={1}
         >
-          {t(title)}
-        </CustomTypographyBold>
-        {phone ? (
-          <ClickToCall phone={info}>
-            <Typography
-              variant="body2"
-              sx={{
-                textAlign: "center",
-                cursor: "pointer",
-              }}
-            >
-              {info}
-            </Typography>
-          </ClickToCall>
-        ) : (
-          <SendMail email={info}>
-            <Typography
-              variant="body2"
-              sx={{
-                textAlign: "center",
-              }}
-            >
-              {info}
-            </Typography>
-          </SendMail>
-        )}
+          <CustomTypographyBold
+            sx={{
+              textTransform: "capitalize",
+            }}
+          >
+            {t(title)}
+          </CustomTypographyBold>
+          <Typography
+            variant="body2"
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            {info}
+          </Typography>
+        </CustomStackFullWidth>
       </CustomStackFullWidth>
-    </CustomStackFullWidth>
+    )
+
+    }
+    </>
   );
 };
 

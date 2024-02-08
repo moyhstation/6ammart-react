@@ -6,8 +6,10 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import CustomDivider from "../../CustomDivider";
 import CustomImageContainer from "../../CustomImageContainer";
-import appleLogo from "./assets/apple-logo 1.png";
+import appleLogo from "./assets/apple-logo 1.svg";
 import playstore from "./assets/playstore 1.png";
+import AppleLogo from "./assets/AppleLogo";
+import PlayStoreIcon from "./assets/PlayStoreIcon";
 
 const ItemWrapper = styled(Box)(({ theme }) => ({
 	display: "flex",
@@ -35,13 +37,14 @@ const Item = ({ image, title, link, t }) => {
 			onMouseLeave={() => setHover(false)}
 			onClick={handleClick}
 		>
-			<CustomImageContainer
+			{/* <CustomImageContainer
 				src={image.src}
 				alt="facebook"
 				height="25px"
 				width="25px"
 				objectFit="cover"
-			/>
+			/> */}
+			{image}
 			<Typography color={hover ? "primary" : "text.secondary"}>
 				{title}
 			</Typography>
@@ -49,13 +52,14 @@ const Item = ({ image, title, link, t }) => {
 	);
 };
 const CustomPopover = (props) => {
-	const { openPopover, handleClose, t, urls } = props;
+	const { width,openPopover, handleClose,anchorEl, t, urls } = props;
 	return (
 		<ClickAwayListener onClickAway={handleClose}>
 			<Popper
-				open={openPopover?.open}
-				anchorEl={openPopover?.anchorEl}
+				open={openPopover}
+				anchorEl={anchorEl}
 				placement="bottom"
+				onClose={handleClose}
 				disablePortal={false}
 				modifiers={{
 					flip: {
@@ -67,10 +71,10 @@ const CustomPopover = (props) => {
 					},
 				}}
 			>
-				<Paper sx={{ marginTop: "6px" }}>
+				<Paper sx={{ marginTop: "6px", width: width }}>
 					{urls?.playStoreStatus === "1" && (
 						<Item
-							image={playstore}
+							image={<PlayStoreIcon />}
 							title={t("Google Play")}
 							link={urls?.playStoreUrl}
 							t={t}
@@ -82,7 +86,7 @@ const CustomPopover = (props) => {
 					) : null}
 					{urls?.appStoreStatus === "1" && (
 						<Item
-							image={appleLogo}
+							image={<AppleLogo />}
 							title={t("App Store")}
 							link={urls?.appStoreUrl}
 							t={t}

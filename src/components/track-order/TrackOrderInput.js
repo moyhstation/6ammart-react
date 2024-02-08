@@ -14,8 +14,10 @@ import { PrimaryButton } from "../Map/map.style";
 import TrackOrderDetails from "./TrackOrderDetails";
 import { getGuestId } from "../../helper-functions/getToken";
 import useGetTrackOrderData from "../../api-manage/hooks/react-query/order/useGetTrackOrderData";
+import { useDispatch } from "react-redux";
 
 const TrackOrderInput = ({ configData }) => {
+  const dispatch=useDispatch()
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const trackOrderFormik = useFormik({
     initialValues: {
@@ -24,9 +26,11 @@ const TrackOrderInput = ({ configData }) => {
     },
     onSubmit: async (values, helpers) => {
       try {
+        dispatch(setGuestUserInfo(values));
         setShowOrderDetails(true);
         refetchTrackOrder();
-        // dispatch(setGuestUserInfo(values));
+       
+        //dispatch(setTrackContactNumber(values));
         // handleClose();
       } catch (err) {}
     },

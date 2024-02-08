@@ -36,7 +36,8 @@ export const signIn_api = "/api/v1/auth/login";
 export const guest_checkout = "api/v1/auth/guest/request";
 export const profile_info = "/api/v1/customer/info";
 export const store_item_search_api = "/api/v1/items/search";
-export const parcel_delivery_instructions = "/api/v1/customer/order/parcel-instructions";
+export const parcel_delivery_instructions =
+  "/api/v1/customer/order/parcel-instructions";
 export const order_place_api = "/api/v1/customer/order/place";
 export const my_orders_api = "/api/v1/customer/order";
 export const user_info_api = "/api/v1/customer/info";
@@ -48,7 +49,7 @@ export const discounted_product_api = "/api/v1/items/discounted";
 export const discounted_stores_api = "/api/v1/stores/discounted";
 export const popular_items_in_store = "/api/v1/stores/popular-items";
 export const common_condition_product_in_store =
-  "api/v1/items/common-conditions";
+  "/api/v1/items/common-conditions";
 export const wallet_transactions_list_api =
   "/api/v1/customer/wallet/transactions";
 export const LP_transactions_list_api =
@@ -75,7 +76,7 @@ export const suggested_items_stores = "/api/v1/items/item-or-store-search";
 export const order_details_api = "/api/v1/customer/order/details";
 export const track_order_api = "/api/v1/customer/order/track";
 export const order_cancel_api = "/api/v1/customer/order/cancel";
-export const offline_payment_options = "/api/v1/offline_payment_method_list"
+export const offline_payment_options = "/api/v1/offline_payment_method_list";
 export const update_payment_method_api =
   "/api/v1/customer/order/payment-method";
 export const refund_reasons_api = "/api/v1/customer/order/refund-reasons";
@@ -107,3 +108,5 @@ export const cart_all_item_remove = "api/v1/customer/cart/remove";
 export const all_cart_list = "api/v1/customer/cart/list";
 export const cart_item_delete = "api/v1/customer/cart/remove-item";
 export const cart_item_update = "api/v1/customer/cart/update";
+export const last_item_review = "api/v1/customer/review-reminder";
+export const cancel_last_item_review = "api/v1/customer/review-reminder-cancel";

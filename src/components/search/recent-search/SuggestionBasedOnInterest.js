@@ -15,8 +15,8 @@ const SuggestionBasedOnInterest = ({ suggestedKeywords, t }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <CustomStackFullWidth spacing={2}>
-            <Typography variant="h6">{t("Groceries")}</Typography>
-            {[...Array(2)].map((item, index) => {
+            <Typography fontSize="14px">{t("Groceries")}</Typography>
+            {suggestedKeywords?.map((item, index) => {
               return (
                 <Stack
                   direction="row"
@@ -43,7 +43,7 @@ const SuggestionBasedOnInterest = ({ suggestedKeywords, t }) => {
                   <Typography
                     sx={{ color: (theme) => theme.palette.neutral[700] }}
                   >
-                    Great value totilla chips
+                    {item?.name}
                   </Typography>
                 </Stack>
               );

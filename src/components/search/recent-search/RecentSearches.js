@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, IconButton, Stack, Typography} from "@mui/material";
+import { Button, IconButton, Stack, Typography } from "@mui/material";
 import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,18 +8,23 @@ const RecentSearches = ({
   list,
   t,
   handleSearchHistoryOnClick,
-  handleDeleteAble,clearAll
+  handleDeleteAble,
+  clearAll,
 }) => {
   return (
-    <Stack spacing={1}>
-    <Stack direction="row" justifyContent="space-between">
+    <Stack>
+      <Stack direction="row" justifyContent="space-between">
         <Typography
-            sx={{ my: "10px", color: (theme) => theme.palette.neutral[500] }}
+          sx={{
+            my: "10px",
+            color: (theme) => theme.palette.neutral[500],
+            fontSize: "1rem",
+          }}
         >
-            {t("Recent Searches")}
+          {t("Recent Searches")}
         </Typography>
         <Button onClick={clearAll}>{t("Clear All")}</Button>
-    </Stack>
+      </Stack>
       <CustomStackFullWidth>
         {list
           .slice(0, 5)
@@ -37,6 +42,7 @@ const RecentSearches = ({
                   alignItems="center"
                   onClick={() => handleSearchHistoryOnClick(item)}
                   sx={{ cursor: "pointer" }}
+                  spacing={0.5}
                 >
                   <SearchIcon sx={{ fontSize: "18px" }} />
                   <Typography

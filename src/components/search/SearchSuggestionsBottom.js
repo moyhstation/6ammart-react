@@ -7,18 +7,15 @@ import { useRouter } from "next/router";
 import Skeleton from "@mui/material/Skeleton";
 import useGetSuggestedProducts from "../../api-manage/hooks/react-query/search/useGetSuggestedProducts";
 import RecentSearchWithSuggestions from "./recent-search/RecentSearchWithSuggestions";
-import CustomScrollBar from "../CustomScrollBar";
 import SuggestedSearches from "./recent-search/SuggestedSearches";
 import { getCurrentModuleType } from "../../helper-functions/getCurrentModuleType";
 import { ModuleTypes } from "../../helper-functions/moduleTypes";
-import useGetItemOrStore from "../../api-manage/hooks/react-query/search/useGetItemOrStore";
-import { debounce } from "lodash";
 
-const CustomPaper = styled(Paper)(({ theme, display }) => ({
+const CustomPaper = styled(Paper)(({ theme, display, padding }) => ({
   position: "absolute",
   top: getCurrentModuleType() === ModuleTypes.FOOD ? 77 : 32,
   width: "100%",
-  padding: "1.5rem",
+  padding: "1.5rem 1.5rem 2rem 1.5rem",
   zIndex: 999,
   display: display ? display : "inherit",
   borderTopLeftRadius: "0px",
@@ -54,7 +51,8 @@ const SearchSuggestionsBottom = (props) => {
   useEffect(() => {
     let getItem = JSON.parse(localStorage.getItem("searchedValues"));
     if (getItem && getItem.length > 0) {
-      setList(getItem);
+      const uniqueItems = Array.from(new Set([...list, ...getItem]));
+      setList(uniqueItems);
     }
     if (token) {
       refetch();
@@ -99,17 +97,25 @@ const SearchSuggestionsBottom = (props) => {
       localStorage.setItem("searchedValues", JSON.stringify(newItems));
     }
   };
-  const clearAll=()=>{
-    setList([])
+  const clearAll = () => {
+    setList([]);
     localStorage.removeItem("searchedValues");
-  }
+  };
   return (
     <>
       <CustomPaper
         elevation={8}
         onMouseEnter={() => setOnSearchdiv(true)}
         onMouseLeave={() => setOnSearchdiv(false)}
-        display={token ? "inherit" : (list.length > 0 || itemOrStoreSuggestionData) ? "inherit" : "none"}
+        display={
+          token
+            ? list.length > 0 || itemOrStoreSuggestionData
+              ? "inherit"
+              : "none"
+            : list.length > 0 || itemOrStoreSuggestionData
+            ? "inherit"
+            : "none"
+        }
       >
         <CustomStackFullWidth spacing={1}>
           {isEmpty ? (
@@ -124,6 +130,12 @@ const SearchSuggestionsBottom = (props) => {
                   clearAll={clearAll}
                 />
               )}
+              {/*{suggestedKeywords.length > 0 && (*/}
+              {/*  <SuggestionBasedOnInterest*/}
+              {/*    suggestedKeywords={suggestedKeywords}*/}
+              {/*    t={t}*/}
+              {/*  />*/}
+              {/*)}*/}
             </>
           ) : (
             <>

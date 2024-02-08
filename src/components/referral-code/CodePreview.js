@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Box, Stack } from "@mui/system";
-import { alpha, styled, Typography } from "@mui/material";
+import { alpha, styled, Typography, useMediaQuery } from "@mui/material";
 import {
   CustomStackFullWidth,
   CustomTypographyGray,
@@ -9,37 +9,23 @@ import {
 import { useSelector } from "react-redux";
 import CustomCopyWithTooltip from "../custom-copy-with-tooltip";
 import { useTheme } from "@emotion/react";
-
-const Wrapper = styled(CustomStackFullWidth)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.primary.main, 0.1),
-
-  paddingInlineStart: "24px",
-  paddingInlineEnd: "2px",
-  paddingBlock: "4px",
-  border: "1px dashed",
-  borderColor: theme.palette.primary.main,
-  borderRadius: "5px",
-  [theme.breakpoints.down("md")]: {
-    padding: "10px",
-  },
-}));
+import { CodePreviewWrapper } from "./ReferralCode.style";
+import ReferralShare from "./ReferralShare";
+import { t } from "i18next";
 
 const CodePreview = (props) => {
   const theme = useTheme();
-  const { t } = props;
+  const isXsmall = useMediaQuery(theme.breakpoints.down("sm"))
   const { profileInfo } = useSelector((state) => state.profileInfo);
   return (
     <Stack
       sx={{ p: "1rem" }}
-      spacing={1}
-      maxWidth="845px"
+      gap={{xs:"10px", sm:"15px", md:"20px"}}
+      maxWidth="450px"
       width="100%"
       justifyContent="center"
     >
-      <Typography fontWeight="bold" fontSize="1rem" align="left">
-        {t("Your Referral Code")}
-      </Typography>
-      <Wrapper
+      <CodePreviewWrapper
         direction="row"
         alignItems="center"
         justifyContent="space-between"
@@ -48,7 +34,11 @@ const CodePreview = (props) => {
           {profileInfo?.ref_code}{" "}
         </Typography>
         <CustomCopyWithTooltip t={t} value={profileInfo?.ref_code} />
-      </Wrapper>
+      </CodePreviewWrapper>
+      <Typography>
+        {t("OR SHARE")}
+      </Typography>
+        <ReferralShare referralCode={profileInfo?.ref_code} size={isXsmall ? 30 : 40 }/>
     </Stack>
   );
 };

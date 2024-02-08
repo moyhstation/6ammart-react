@@ -3,8 +3,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", "Signika Negative", sans-serif;
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", "Signika Negative", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -183,8 +183,6 @@ a {
 .magnify-image {
     height: 324px !important;
     border: 1px solid rgba(27, 127, 237, 0.1);
-    box-shadow: 0px 23px 24px -4px rgba(205, 205, 205, 0.1);
-    filter: drop-shadow(0px 4px 2px rgba(205, 205, 205, 0.1));
     border-radius: 10px;
 }
 
@@ -200,6 +198,7 @@ a {
 }
 
 @media (min-width: 800px) {
+
     /*.image {*/
     /*	flex: 0 0 33.5%;*/
     /*}*/
@@ -213,7 +212,7 @@ img,
 svg,
 button,
 a,
-a > div {
+a>div {
     transition: all ease 0.5s;
 }
 
@@ -281,4 +280,9 @@ video {
 
 .fade-out {
     animation: fadeOut 0.6s ease-in-out;
+}
+
+.custom-scrollbar .simplebar-scrollbar::before {
+    width: 4px;
+    /* Add other scrollbar pseudo-element styles as needed */
 }

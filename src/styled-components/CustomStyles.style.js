@@ -9,7 +9,9 @@ import {
   Divider,
   Fab,
   FormControlLabel,
+  Grid,
   InputBase,
+  List,
   ListItem,
   OutlinedInput,
   Paper,
@@ -20,12 +22,8 @@ import {
   TextareaAutosize,
   TextField,
   Typography,
-  List,
-  Grid,
-  Tab,
 } from "@mui/material";
 import Link from "@mui/material/Link";
-import { style } from "@mui/system";
 // import imgB from '../../public/static/Privacy/RectangleP.png'
 //import { Link } from 'react-router-dom'
 
@@ -66,7 +64,6 @@ export const FlexContainer = styled(Box)({
 });
 export const CustomTextField = styled(TextField)(({ theme }) => ({
   borderRadius: "13px",
-
   "& .MuiInputBase-input": {
     padding: "15px 10px",
     "& .MuiOutlinedInput-input": {
@@ -452,6 +449,7 @@ export const CustomImageContainerStyled = styled(Box)(
     padding: padding ? padding : "",
     marginBottom: margin_bottom,
     position: "relative",
+    borderRadius: border_radius ? border_radius : "none",
     //cursor: "pointer",
     [theme.breakpoints.down("md")]: {
       height: mdHeight ? mdHeight : "",
@@ -477,10 +475,14 @@ export const CustomListItem = styled(ListItem)(
     display: display,
     cursor: cursor && "pointer",
     border: border,
-    borderRadius: "5px",
-    marginBottom: "5px",
+    borderRadius: "10px",
+
     paddingInline: "5px",
     justifyContent: "flex-start",
+    // "&:hover": {
+    //   boxShadow: `0px 4px 4px 0px ${alpha(theme.palette.neutral[1000], 0.05)}`,
+    //   border: `1px solid ${alpha(theme.palette.neutral[400], 0.5)}`,
+    // },
   })
 );
 export const CustomBoxRelative = styled(Box)(({ theme, maxWidth, height }) => ({
@@ -518,7 +520,7 @@ export const CustomList = styled(List)(({ theme, border }) => ({
   paddingTop: "0px",
 }));
 export const SliderCustom = styled(Stack)(
-  ({ theme, language_direction, nopadding }) => ({
+  ({ theme, language_direction, nopadding, paddingBottom }) => ({
     position: "relative",
     width: "100%",
     paddingY: "10px",
@@ -528,9 +530,11 @@ export const SliderCustom = styled(Stack)(
       },
       "& .slick-list": {
         paddingY: nopadding !== "true" && "8px",
+        //paddingBottom: "1rem !important",
         "& .slick-track": {
           float: theme.direction === "ltr" ? "left" : "right",
           gap: "5px",
+          //paddingBottom: paddingBottom && "1rem !important",
         },
       },
     },
@@ -700,7 +704,7 @@ export const ScheduleTimeStack = styled(Stack)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
 }));
-export const UserInfoGrid = styled(Grid)(({ theme, page ,userToken}) => ({
+export const UserInfoGrid = styled(Grid)(({ theme, page, userToken }) => ({
   position: "relative",
   zIndex: 99,
   minHeight: "100px",
@@ -710,7 +714,7 @@ export const UserInfoGrid = styled(Grid)(({ theme, page ,userToken}) => ({
     left: 0,
     top: 0,
     right: 0,
-    bottom:userToken? "42%":"0%",
+    bottom: userToken ? "42%" : "0%",
     backgroundColor: alpha(theme.palette.primary.main, 0.1),
     zIndex: -1,
     [theme.breakpoints.down("md")]: {
@@ -723,7 +727,7 @@ export const UserInfoGrid = styled(Grid)(({ theme, page ,userToken}) => ({
     content: '""',
     position: "absolute",
     left: 0,
-    bottom:userToken? "42%":"0%",
+    bottom: userToken ? "42%" : "0%",
     top: 0,
     right: 0,
     backgroundColor: alpha(theme.palette.primary.main, 0.1),
@@ -821,5 +825,5 @@ export const CustomStackForFoodModal = styled(Stack)(({ theme, padding }) => ({
   background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgb(18 18 18 / 94%) 100%)`,
 }));
 export const CustomSpan = styled("span")(({ theme }) => ({
-	color: theme.palette.text.secondary,
+  color: theme.palette.text.secondary,
 }));

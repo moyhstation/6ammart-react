@@ -17,21 +17,18 @@ import { Box, Stack, styled } from "@mui/system";
 import { useTheme } from "@emotion/react";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
-import HowToUse from "../../../wallet/HowToUse";
-import orderConfirmImage from "../../../my-orders/assets/order-confirmed.png";
-import shippedImage from "../../../my-orders/assets/shhiped.png";
-import outForDelivery from "../../../my-orders/assets/out-for-delivery.png";
-import delivered from "../../../my-orders/assets/delivery.png";
-import TrackOrder, { handleStepper } from "../../../track-order";
 import CustomDivider from "../../../CustomDivider";
 import { t } from "i18next";
-import DeliveryManInfo from "../../../my-orders/order-details/other-order/DeliveryManInfo";
 import DeliveryManInfoCard from "../../../checkout/parcel/DeliveryManInfo";
 import ParcelTrackOderStepper from "../../../parcel/ParcelTrackOderStepper";
 import useGetTrackOrderData from "../../../../api-manage/hooks/react-query/order/useGetTrackOrderData";
 import CustomEmptyResult from "../../../custom-empty-result";
-import {getGuestId} from "../../../../helper-functions/getToken";
-import {getAmountWithSign} from "../../../../helper-functions/CardHelpers";
+import { getGuestId } from "../../../../helper-functions/getToken";
+import { getAmountWithSign } from "../../../../helper-functions/CardHelpers";
+import emptyImage from "../../../../assets/img/fi_10608837 (2).png";
+import { CustomCloseIconButton } from "../../../added-cart-view/Cart.style";
+import ClearIcon from "@mui/icons-material/Clear";
+
 const CustomLine = styled(Box)(({ theme }) => ({
   borderLeft: "1px dashed",
   borderColor: alpha(theme.palette.neutral[500], 0.5),
@@ -44,10 +41,10 @@ const TrackParcelOrderDrawer = (props) => {
   //const [error, setError] = useState(true);
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const [orderData, setOrderData] = useState(null);
-  const { sideDrawerOpen, orderId, setSideDrawerOpen } = props;
+  const { sideDrawerOpen, orderId, setSideDrawerOpen, phoneOrEmail } = props;
   const [actStep, setActStep] = useState(1);
-  const guestId=getGuestId()
-  const phone=""
+  const guestId = getGuestId();
+  const phone = phoneOrEmail;
 
   const handleSuccess = (res) => {
     setOrderData(res);
@@ -58,7 +55,7 @@ const TrackParcelOrderDrawer = (props) => {
     data: trackOrderData,
     isLoading,
     isRefetching,
-  } = useGetTrackOrderData(orderId,phone,guestId, handleSuccess);
+  } = useGetTrackOrderData(orderId, phone, guestId, handleSuccess);
   useEffect(() => {
     if (orderId) {
       refetch();
@@ -124,7 +121,18 @@ const TrackParcelOrderDrawer = (props) => {
       maxWidth="420px"
       width="100%"
       height="100vh"
+      sx={{ position: "relative" }}
     >
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        sx={{ position: "absolute", top: "1rem", right: ".5rem" }}
+      >
+        <CustomCloseIconButton onClick={closeHandler}>
+          <ClearIcon fontSize="16px" />
+        </CustomCloseIconButton>
+      </Stack>
       {orderData && !isLoading && (
         <>
           <CustomStackFullWidth padding="30px 24px 0px 24px">
@@ -140,9 +148,13 @@ const TrackParcelOrderDrawer = (props) => {
                   {trackOrderData?.id}
                 </Typography>
               </Typography>
-              <IconButton onClick={closeHandler}>
+              {/* <IconButton
+                onClick={() => {
+                  setSideDrawerOpen(false);
+                }}
+              >
                 <CloseRoundedIcon fontSize="14px" />
-              </IconButton>
+              </IconButton> */}
             </Stack>
 
             <CustomStackFullWidth sx={{ position: "relative" }}>
@@ -253,14 +265,19 @@ const TrackParcelOrderDrawer = (props) => {
         </>
       )}
       {isLoading && (
-        <CustomStackFullWidth padding="30px 24px 0px 24px">
+        <CustomStackFullWidth padding="70px 24px 0px 24px">
           <Skeleton variant="rectangular" width="100%" height="350px" />
         </CustomStackFullWidth>
       )}
 
       {!orderData && error && (
-        <CustomStackFullWidth padding="30px 24px 0px 24px">
-          <CustomEmptyResult label="Order not found" />
+        <CustomStackFullWidth padding="100px 24px 0px 24px">
+          <CustomEmptyResult
+            image={emptyImage}
+            label="Order not found"
+            height="100px"
+            width="100px"
+          />
         </CustomStackFullWidth>
       )}
     </CustomSideDrawer>

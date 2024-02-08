@@ -1,8 +1,9 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { IconButton, Paper, Stack } from "@mui/material";
+import { IconButton, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import CustomImageContainer from "../CustomImageContainer";
+
 const ChatImage = ({ body, removeImage }) => {
   const theme = useTheme();
   const [files, setFiles] = useState();
@@ -11,14 +12,11 @@ const ChatImage = ({ body, removeImage }) => {
   }, [body.file]);
 
   return (
-    <Paper
+    <Stack
       sx={{
-        position: "absolute",
-        bottom: 78,
-        padding: "5px",
         display: "flex",
         flexDirection: "row",
-        gap: "20px",
+        gap: "15px",
         flexWrap: "wrap",
       }}
     >
@@ -32,20 +30,32 @@ const ChatImage = ({ body, removeImage }) => {
             <CustomImageContainer
               objectFit="cover"
               src={URL.createObjectURL(item)}
-              height="70px"
-              width="100px"
-              borderRadius=".5rem"
+              height="40px"
+              width="40px"
+              borderRadius="4px"
             />
-            <IconButton sx={{ position: "absolute", right: -10, bottom: -10 }}>
+            <IconButton
+              sx={{
+                position: "absolute",
+                right: "-7px",
+                top: "-7px",
+                background: (theme) => theme.palette.neutral[400],
+                padding: "2px",
+              }}
+            >
               <CloseIcon
                 onClick={() => removeImage(item.name)}
-                sx={{ color: (theme) => theme.palette.error.main }}
+                sx={{
+                  color: (theme) => theme.palette.neutral[100],
+                  fontSize: "13px",
+                  fontWeight: "700",
+                }}
               />
             </IconButton>
           </Stack>
         );
       })}
-    </Paper>
+    </Stack>
   );
 };
 export default ChatImage;

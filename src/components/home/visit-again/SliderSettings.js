@@ -166,21 +166,21 @@ export const settings = {
       },
     },
     {
-      breakpoint: 1024,
+      breakpoint: 1150,
       settings: {
         slidesToShow: 3,
         slidesToScroll: 2,
         infinite: false,
       },
     },
-    // {
-    //   breakpoint: 1000,
-    //   settings: {
-    //     slidesToShow: 4,
-    //     slidesToScroll: 2,
-    //     infinite: false,
-    //   },
-    // },
+    {
+      breakpoint: 800,
+      settings: {
+        slidesToShow: 2.7,
+        slidesToScroll: 2,
+        infinite: false,
+      },
+    },
 
     {
       breakpoint: 700,
@@ -190,14 +190,14 @@ export const settings = {
         initialSlide: 2,
       },
     },
-    // {
-    //   breakpoint: 600,
-    //   settings: {
-    //     slidesToShow: 4.2,
-    //     slidesToScroll: 2,
-    //     initialSlide: 2,
-    //   },
-    // },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2.1,
+        slidesToScroll: 2,
+        initialSlide: 2,
+      },
+    },
     {
       breakpoint: 480,
       settings: {
@@ -213,14 +213,28 @@ export const settings = {
       },
     },
     {
-      breakpoint: 420,
+      breakpoint: 450,
+      settings: {
+        slidesToShow: 1.6,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 400,
       settings: {
         slidesToShow: 1.5,
         slidesToScroll: 1,
       },
     },
     {
-      breakpoint: 270,
+      breakpoint: 350,
+      settings: {
+        slidesToShow: 1.4,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 310,
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,

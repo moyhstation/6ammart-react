@@ -1,46 +1,43 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import CustomPopover from "./CustomPopover";
-import {CustomButton} from "./index";
+import { CustomButton } from "./index";
 
 const CustomButtonComponent = props => {
-    const { landingPageData, title, t , urls} = props
-    const [openPopover, setOpenPopover] = useState({
-        open:false,
-        anchorEl:null
-    })
+    const { landingPageData, title, t, urls } = props
+    const customButtonRef = useRef(null);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
 
-
-    const handleButtonClick = (e) => {
-        setOpenPopover({
-            open: true,
-            anchorEl: e.currentTarget
-        })
-    }
-    const handlePopoverClose=()=>{
-        setOpenPopover({
-            open: false,
-            anchorEl: null
-        })
-
-    }
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
     return (
-       <>
-           <CustomButton
-               variant="contained"
-               onClick={(e) => handleButtonClick?.(e)}
-           >
-               {title}
-               {openPopover?.open === true ?  <KeyboardArrowUpIcon/> :  <KeyboardArrowDownIcon/> }
-           </CustomButton>
-           {
-               openPopover?.open &&
-               <CustomPopover openPopover={openPopover} landingPageData={landingPageData} handleClose={handlePopoverClose} t={t} urls={urls}/>
-           }
-       </>
+        <>
+            <CustomButton
+                ref={customButtonRef}
+                variant="contained"
+                onClick={(e) => handleClick(e)}
+            >
+                {title}
+                {open === true ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </CustomButton>
+            {
+                open &&
+                <CustomPopover
+                    t={t}
+                    urls={urls}
+                    openPopover={open}
+                    anchorEl={anchorEl}
+                    handleClose={() => setAnchorEl(null)}
+                    landingPageData={landingPageData}
+                    width={`${customButtonRef?.current?.offsetWidth}px`}
+                />
+            }
+        </>
     );
 };
 

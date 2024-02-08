@@ -12,7 +12,6 @@ import {
   CustomTypographyAlign,
   ImageContainer,
 } from "../../../styled-components/CustomStyles.style";
-import closeIcon from "../../../assets/images/icons/close.png";
 import PropTypes from "prop-types";
 import {
   CustomButtonCancel,

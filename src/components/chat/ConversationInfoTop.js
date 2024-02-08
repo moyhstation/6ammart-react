@@ -1,8 +1,6 @@
 import React from "react";
 import { Avatar, IconButton, Stack, Typography } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
 import { ChatUserTop } from "./Chat.style";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { t } from "i18next";
@@ -16,6 +14,8 @@ const ConversationInfoTop = ({
   theme,
   deliveryman_name,
   deliveryUrl,
+  receiverType,
+  adminUser,
 }) => {
   const language_direction = localStorage.getItem("direction");
   return (
@@ -69,32 +69,52 @@ const ConversationInfoTop = ({
           />
         </IconButton>
         <Stack justifyContent="flex-start" alignItems="start">
-          {deliveryman_name ? (
-            <Typography
-              textAlign="left"
-              color={theme.palette.neutral[1000]}
-              fontSize="16px"
-              fontWeight="600"
-            >
-              {deliveryman_name}
-            </Typography>
+          {receiverType === "admin" ? (
+            <Stack>
+              <Typography
+                textAlign="left"
+                color={theme.palette.neutral[1000]}
+                fontSize="16px"
+                fontWeight="600"
+              >
+                {adminUser}
+              </Typography>
+              {receiverType === "admin" && (
+                <Typography textTransform="capitalize">
+                  {receiverType}
+                </Typography>
+              )}
+            </Stack>
           ) : (
-            <Typography
-              textAlign="left"
-              color={theme.palette.neutral[1000]}
-              fontSize="16px"
-              fontWeight="600"
-            >
-              {receiver?.sender_type === "customer"
-                ? receiver?.receiver?.f_name.concat(
-                    " ",
-                    receiver?.receiver?.l_name
-                  ) || " "
-                : receiver?.sender?.f_name.concat(
-                    " ",
-                    receiver?.sender?.l_name
-                  ) || " "}
-            </Typography>
+            <>
+              {deliveryman_name ? (
+                <Typography
+                  textAlign="left"
+                  color={theme.palette.neutral[1000]}
+                  fontSize="16px"
+                  fontWeight="600"
+                >
+                  {deliveryman_name}
+                </Typography>
+              ) : (
+                <Typography
+                  textAlign="left"
+                  color={theme.palette.neutral[1000]}
+                  fontSize="16px"
+                  fontWeight="600"
+                >
+                  {receiver?.sender_type === "customer"
+                    ? receiver?.receiver?.f_name.concat(
+                        " ",
+                        receiver?.receiver?.l_name
+                      ) || " "
+                    : receiver?.sender?.f_name.concat(
+                        " ",
+                        receiver?.sender?.l_name
+                      ) || " "}
+                </Typography>
+              )}
+            </>
           )}
 
           {/*<Typography*/}

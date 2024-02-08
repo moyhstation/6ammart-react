@@ -1,26 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CustomBoxFullWidth,
   CustomStackFullWidth,
 } from "../../styled-components/CustomStyles.style";
 import ChatSideBar from "./ChatSideBar";
 import ChatView from "./ChatView";
-import { Stack } from "@mui/material";
+import { alpha, Stack } from "@mui/material";
 import EmptyView from "./EmptyView";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 // import { useGetConversation } from "../../hooks/react-query/config/chat/useGetConversation";
 //import { useStoreMessage } from "../../hooks/react-query/config/chat/useStoreMessage";
-
 import { useRouter } from "next/router";
 //import { useSearchList } from "../../hooks/react-query/config/chat/useSearch";
-import { useSelector } from "react-redux";
 import { useTheme } from "@mui/material/styles";
 import ConversationInfoTop from "./ConversationInfoTop";
 //import Loading from "../custom-loading/Loading";
 import LoadingBox from "./LoadingBox";
 //import PushNotificationLayout from "../PushNotificationLayout";
-import { toast } from "react-hot-toast";
 import { useGetChannelList } from "../../api-manage/hooks/react-query/chat/useGetChannelLists";
 import { onErrorResponse } from "../../api-manage/api-error-response/ErrorResponses";
 import { useGetConversation } from "../../api-manage/hooks/react-query/chat/useGetConversation";
@@ -44,6 +41,7 @@ const Chatting = ({ configData }) => {
   const [receiver, setReceiver] = useState();
   const [receiverImage, setReceiverImage] = useState();
   const [userType, setUserType] = useState("");
+  const [resetState, setResetState] = useState(false);
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up("md"));
   const mdDown = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const router = useRouter();
@@ -129,7 +127,6 @@ const Chatting = ({ configData }) => {
             return item?.sender?.deliveryman_id == id;
           }
         });
-
       setReceiver(tempReceiver[0]);
       setReceiverImage(tempReceiver[0]?.receiver?.image);
       setChannelId(id);
@@ -138,6 +135,7 @@ const Chatting = ({ configData }) => {
       setApiFor(routeName);
       setIsSidebarOpen(false);
       setUserType(type);
+      setResetState(true);
     }
   }, [id, type, routeName, chatFrom, channelList]);
 
@@ -174,6 +172,7 @@ const Chatting = ({ configData }) => {
     }
     setDeliveryInfo(null);
     mdDown && setIsSidebarOpen(false);
+    setResetState(true);
   };
 
   useEffect(() => {
@@ -238,16 +237,26 @@ const Chatting = ({ configData }) => {
   const ChatImageUrl = () => {
     if (receiver?.receiver_type === "vendor") {
       return configData?.base_urls?.store_image_url;
-    }
-    if (receiver?.receiver_type === "delivery_man") {
+    } else if (receiver?.receiver_type === "delivery_man") {
       return configData?.base_urls?.delivery_man_image_url;
-    } else configData?.base_urls?.business_logo_url;
+    } else return configData?.base_urls?.business_logo_url;
   };
-  const userImage = deliveryInfo?.image ? deliveryInfo?.image : receiverImage;
-
+  const userImage =
+    receiverType === "admin"
+      ? configData?.fav_icon
+      : deliveryInfo?.image
+      ? deliveryInfo?.image
+      : receiverImage;
   return (
     <PushNotificationLayout refetch={refetch} pathName="chat">
-      <CustomBoxFullWidth mt={{ xs: "1rem", md: "2rem" }}>
+      <CustomBoxFullWidth
+        mt={{
+          xs: "1rem",
+          md: "2rem",
+          paddingInlineEnd: "1rem",
+          paddingBlockEnd: "1rem",
+        }}
+      >
         <CustomStackFullWidth spacing={1} direction="row">
           {mdDown ? (
             <>
@@ -273,6 +282,8 @@ const Chatting = ({ configData }) => {
                     userType={userType}
                     setUserType={setUserType}
                     setChannelId={setChannelId}
+                    configData={configData}
+                    setResetState={setResetState}
                   />
                 </Stack>
               )}
@@ -298,11 +309,18 @@ const Chatting = ({ configData }) => {
               userType={userType}
               setUserType={setUserType}
               setChannelId={setChannelId}
+              configData={configData}
+              setResetState={setResetState}
             />
           )}
 
-          <Stack width={mdDown ? (isSidebarOpen ? "" : "100%") : "100%"}>
-            {!isSidebarOpen && (
+          <Stack
+            width={mdDown ? (isSidebarOpen ? "" : "100%") : "100%"}
+            backgroundColor={alpha(theme.palette.background.default, 0.6)}
+            borderRadius="0px 10px 10px 0px"
+            sx={{ borderLeft: `1px solid ${theme.palette.neutral[200]}` }}
+          >
+            {!isSidebarOpen && resetState && (
               <ConversationInfoTop
                 receiver={receiver}
                 mdUp={mdUp}
@@ -312,7 +330,13 @@ const Chatting = ({ configData }) => {
                 theme={theme}
                 deliveryman_name={deliveryInfo?.name}
                 deliveryManImage={deliveryInfo?.image}
-                deliveryUrl={configData?.base_urls?.delivery_man_image_url}
+                deliveryUrl={
+                  type === "vendor"
+                    ? configData?.base_urls?.store_image_url
+                    : configData?.base_urls?.delivery_man_image_url
+                }
+                receiverType={receiverType}
+                adminUser={configData?.business_name}
               />
             )}
 
@@ -326,6 +350,7 @@ const Chatting = ({ configData }) => {
                   channelList={channelList}
                   handleScroll={handleScroll}
                   scrollBottom={scrollBottom}
+                  receiverType={receiverType}
                 />
               )}
             {isFetchingNextPage && <LoadingBox />}

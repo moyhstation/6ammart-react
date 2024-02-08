@@ -15,21 +15,21 @@ import Loading from "../custom-loading/Loading";
 const getModuleWiseData = (theme) => {
   switch (getCurrentModuleType()) {
     case ModuleTypes.GROCERY:
-      return theme.palette.primary.main;
+      return theme.palette.toolTipColor;
     case ModuleTypes.PHARMACY:
-      return theme.palette.primary.main;
+      return theme.palette.toolTipColor;
     case ModuleTypes.ECOMMERCE:
-      return theme.palette.primary.main;
+      return theme.palette.toolTipColor;
     case ModuleTypes.FOOD:
-      return theme.palette.moduleTheme.food;
+      return theme.palette.toolTipColor;
   }
 };
-const PrimaryToolTip = ({ children, text }) => {
+export const PrimaryToolTip = ({ children, text, placement, arrow }) => {
   return (
     <Tooltip
       title={t(text)}
       arrow
-      placement="top"
+      placement={placement ?? "top"}
       componentsProps={{
         tooltip: {
           sx: {
@@ -56,7 +56,7 @@ const IconButtonStyled = styled(IconButton)(({ theme }) => ({
   width: "36px",
   marginInlineEnd: "6px",
   "&:hover": {
-    backgroundColor: getModuleWiseData(theme),
+    backgroundColor: theme.palette.primary.main,
     border: `0.5px solid ${theme.palette.neutral[100]}`,
   },
 }));
@@ -71,57 +71,77 @@ const QuickView = ({
   isWishlisted,
   isProductExist,
   addToCartHandler,
-    isLoading,updateLoading
+  isLoading,
+  updateLoading,
+
+  setOpenLocationAlert,
 }) => {
-  const theme=useTheme()
+  const theme = useTheme();
+
+  let location = undefined;
+  if (typeof window !== "undefined") {
+    location = localStorage.getItem("location");
+  }
+
   const cartAddToCartClick = (e) => {
-    e.stopPropagation();
-    addToCartHandler?.(e);
-    handleCart?.(e);
+    if (location) {
+      e.stopPropagation();
+      addToCartHandler?.(e);
+      handleCart?.(e);
+    } else {
+      e.stopPropagation();
+      setOpenLocationAlert(true);
+    }
   };
   return (
-    <CustomStackFullWidth
-      direction="row"
-      alignItems="center"
-      justifyContent="center"
-      height="100%"
-    >
-      {!noQuickview && (
-        <PrimaryToolTip text="Quick View">
-          <IconButtonStyled onClick={(e) => quickViewHandleClick(e)}>
-            <RemoveRedEyeIcon />
-          </IconButtonStyled>
-        </PrimaryToolTip>
-      )}
-      {!noWishlist && (
-        <>
-          {isWishlisted ? (
-            <PrimaryToolTip text="Remove from wishlist">
-              <IconButtonStyled onClick={(e) => removeFromWishlistHandler(e)}>
-                <FavoriteIcon />
-              </IconButtonStyled>
-            </PrimaryToolTip>
-          ) : (
-            <PrimaryToolTip text="Add to wishlist">
-              <IconButtonStyled onClick={(e) => addToWishlistHandler(e)}>
-                <FavoriteBorderIcon />
-              </IconButtonStyled>
-            </PrimaryToolTip>
-          )}
-        </>
-      )}
-      {showAddtocart && (
-        <>
-          {isLoading?(<IconButtonStyled>
-            <Loading color={theme.palette.neutral[100]} />
-               </IconButtonStyled> ):(<PrimaryToolTip text="Add to cart">
-            <IconButtonStyled onClick={(e) => cartAddToCartClick?.(e)}>
-              <ShoppingBagIcon />
+    <>
+      <CustomStackFullWidth
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        height="100%"
+      >
+        {!noQuickview && (
+          <PrimaryToolTip text="Quick View">
+            <IconButtonStyled onClick={(e) => quickViewHandleClick(e)}>
+              <RemoveRedEyeIcon />
             </IconButtonStyled>
-          </PrimaryToolTip>)}
-        </>
-      )}
-    </CustomStackFullWidth>
+          </PrimaryToolTip>
+        )}
+        {!noWishlist && (
+          <>
+            {isWishlisted ? (
+              <PrimaryToolTip text="Remove from wishlist">
+                <IconButtonStyled onClick={(e) => removeFromWishlistHandler(e)}>
+                  <FavoriteIcon />
+                </IconButtonStyled>
+              </PrimaryToolTip>
+            ) : (
+              <PrimaryToolTip text="Add to wishlist">
+                <IconButtonStyled onClick={(e) => addToWishlistHandler(e)}>
+                  <FavoriteBorderIcon />
+                </IconButtonStyled>
+              </PrimaryToolTip>
+            )}
+          </>
+        )}
+        {showAddtocart && (
+          <>
+            {isLoading ? (
+              <IconButtonStyled>
+                <Loading color={theme.palette.neutral[100]} />
+              </IconButtonStyled>
+            ) : (
+              <PrimaryToolTip text="Add to cart">
+                <IconButtonStyled onClick={(e) => cartAddToCartClick?.(e)}>
+                  <ShoppingBagIcon />
+                </IconButtonStyled>
+              </PrimaryToolTip>
+            )}
+          </>
+        )}
+      </CustomStackFullWidth>
+    </>
   );
 };
 

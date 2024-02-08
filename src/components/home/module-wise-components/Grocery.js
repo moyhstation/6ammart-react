@@ -16,15 +16,29 @@ import PromotionalBanner from "../PromotionalBanner";
 import LoveItem from "../love-item";
 import useGetOtherBanners from "../../../api-manage/hooks/react-query/useGetOtherBanners";
 import PharmacyStaticBanners from "./pharmacy/pharmacy-banners/PharmacyStaticBanners";
+import { useSelector } from "react-redux";
+import OrderDetailsModal from "../../order-details-modal/OrderDetailsModal";
+import { getToken } from "../../../helper-functions/getToken";
+import { getCurrentModuleId } from "../../../helper-functions/getCurrentModuleType";
 
 const menus = ["All", "Beauty", "Bread & Juice", "Drinks", "Milks"];
 const Grocery = (props) => {
   const { configData } = props;
+  const token = getToken();
+  const { orderDetailsModalOpen, orderInformation } = useSelector(
+    (state) => state.utilsData
+  );
   const { data, refetch, isLoading } = useGetOtherBanners();
   useEffect(() => {
     refetch();
   }, []);
-
+  const visitedStores = localStorage.getItem("visitedStores")
+    ? JSON.parse(localStorage.getItem("visitedStores"))?.length > 0
+      ? JSON.parse(localStorage.getItem("visitedStores"))?.filter(
+          (item) => item?.module_id === getCurrentModuleId()
+        )
+      : []
+    : [];
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} sx={{ marginTop: { xs: "-10px", sm: "10px" } }}>
@@ -34,10 +48,10 @@ const Grocery = (props) => {
       </Grid>
       <Grid item xs={12} mb={3}>
         {IsSmallScreen() ? (
-          <VisitAgain configData={configData} />
+          <VisitAgain configData={configData} visitedStores={visitedStores} />
         ) : (
           <CustomContainer>
-            <VisitAgain configData={configData} />
+            <VisitAgain configData={configData} visitedStores={visitedStores} />
           </CustomContainer>
         )}
       </Grid>
@@ -113,6 +127,12 @@ const Grocery = (props) => {
           <Stores />
         </CustomContainer>
       </Grid>
+      {orderDetailsModalOpen && !token && (
+        <OrderDetailsModal
+          orderDetailsModalOpen={orderDetailsModalOpen}
+          orderInformation={orderInformation}
+        />
+      )}
     </Grid>
   );
 };

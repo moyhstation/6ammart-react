@@ -7,15 +7,12 @@ import IncrementDecrementManager from "./IncrementDecrementManager";
 import ProductInformationBottomSection from "./ProductInformationBottomSection";
 
 import { ACTION, initialState, reducer } from "./states";
-import { setCart, setCartList, setUpdateItemToCart } from "../../../redux/slices/cart";
+import { setCart, setCartList } from "../../../redux/slices/cart";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import CustomModal from "../../modal";
 import CartClearModal from "./CartClearModal";
-import {
-  handleInitialTotalPriceVarPriceQuantitySet,
-  handleValuesFromCartItems,
-} from "./helperFunction";
+import { handleInitialTotalPriceVarPriceQuantitySet } from "./helperFunction";
 import {
   not_logged_in_message,
   out_of_limits,
@@ -30,10 +27,7 @@ import { getCartListModuleWise } from "../../../helper-functions/getCartListModu
 import Link from "next/link";
 import { getModuleId } from "../../../helper-functions/getModuleId";
 import PricePreviewWithStock from "./PricePreviewWithStock";
-import CustomImageContainer from "../../CustomImageContainer";
-import { handleDiscountChip } from "./ProductDetailsSection";
 import { useTranslation } from "react-i18next";
-import OrganicTag from "../../organic-tag";
 import InStockTag from "../InStockTag";
 import CategoryInformation from "../CategoryInformation";
 import { ReadMore } from "../../ReadMore";
@@ -41,6 +35,10 @@ import useAddCartItem from "../../../api-manage/hooks/react-query/add-cart/useAd
 import { getGuestId } from "../../../helper-functions/getToken";
 import { onErrorResponse } from "../../../api-manage/api-error-response/ErrorResponses";
 import useCartItemUpdate from "../../../api-manage/hooks/react-query/add-cart/useCartItemUpdate";
+import { useRouter } from "next/router";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
+
 export const getItemObject = (productData) => {
   return {
     guest_id: getGuestId(),
@@ -62,6 +60,7 @@ const ProductInformation = ({
   isSmall,
 }) => {
   const theme = useTheme();
+  const router = useRouter();
   const [wishListCount, setWishListCount] = useState(
     productDetailsData?.whislists_count
   );
@@ -74,7 +73,8 @@ const ProductInformation = ({
   const [state, dispatch] = useReducer(reducer, initialState);
   const { t } = useTranslation();
   const { mutate, isLoading } = useAddCartItem();
-  const { mutate: updateMutate, isLoading: updateIsLoading } = useCartItemUpdate();
+  const { mutate: updateMutate, isLoading: updateIsLoading } =
+    useCartItemUpdate();
   const handleClearCartModalOpen = () => setClearCartModal(true);
 
   const handleClose = (value) => {
@@ -211,7 +211,6 @@ const ProductInformation = ({
 
   const updateCartSuccessHandler = (res) => {
     if (res) {
-
       const pp = res?.map((item) => {
         const newItem = {
           ...item?.item,
@@ -238,7 +237,7 @@ const ProductInformation = ({
       toast.success(t(product_update_to_cart_message));
       handleModalClose?.();
     }
-  }
+  };
 
   const handleUpdateToCart = (cartItem) => {
     if (
@@ -251,19 +250,22 @@ const ProductInformation = ({
       const itemIsInCart = cartList.find(
         (item) =>
           item?.id === productDetailsData?.id &&
-          JSON.stringify(item?.selectedOption?.[0]) === JSON.stringify(state.modalData[0]?.selectedOption?.[0])
+          JSON.stringify(item?.selectedOption?.[0]) ===
+            JSON.stringify(state.modalData[0]?.selectedOption?.[0])
       );
       const cartItemObject = {
         cart_id: itemIsInCart?.cartItemId,
         guest_id: getGuestId(),
-        model: state.modalData[0]?.available_date_starts ? "ItemCampaign" : "Item",
+        model: state.modalData[0]?.available_date_starts
+          ? "ItemCampaign"
+          : "Item",
         add_on_ids: [],
         add_on_qtys: [],
         item_id: state.modalData[0]?.id,
         price: state.modalData[0]?.totalPrice,
         quantity: state.modalData[0]?.quantity,
         variation: state.modalData[0]?.selectedOption,
-      }
+      };
       updateMutate(cartItemObject, {
         onSuccess: updateCartSuccessHandler,
         onError: onErrorResponse,
@@ -296,6 +298,7 @@ const ProductInformation = ({
       });
     } else toast.error(t(not_logged_in_message));
   };
+
   const topInformation = () => {
     return (
       <CustomStackFullWidth
@@ -307,27 +310,49 @@ const ProductInformation = ({
         }}
       >
         {state.modalData[0]?.store_name ? (
-          <Link
-            href={{
-              pathname: "/store/[id]",
-              query: {
-                id: `${state.modalData[0]?.store_id}`,
-                module_id: `${getModuleId()}`,
-                lat: currentLocation?.lat,
-                lng: currentLocation?.lng,
-              },
-            }}
-          >
-            {" "}
+          router.pathname !== `/store/[id]` ? (
+            <Link
+              href={{
+                pathname: "/store/[id]",
+                query: {
+                  id: `${state.modalData[0]?.store_id}`,
+                  module_id: `${getModuleId()}`,
+                  lat: currentLocation?.lat,
+                  lng: currentLocation?.lng,
+                  store_zone_id: `${state?.modalData[0]?.zone_id}`,
+                },
+              }}
+            >
+              {" "}
+              <Typography
+                variant="body1"
+                fontWeight="400"
+                lineHeight="normal"
+                color="customColor.textGray"
+                sx={{
+                  "&:hover": {
+                    color: (theme) => theme.palette.primary.main,
+                  },
+                }}
+              >
+                {state.modalData[0]?.store_name}
+              </Typography>
+            </Link>
+          ) : (
             <Typography
               variant="body1"
               fontWeight="400"
               lineHeight="normal"
               color="customColor.textGray"
+              sx={{
+                "&:hover": {
+                  color: (theme) => theme.palette.primary.main,
+                },
+              }}
             >
               {state.modalData[0]?.store_name}
             </Typography>
-          </Link>
+          )
         ) : (
           <Skeleton width={100} variant="text" />
         )}
@@ -336,11 +361,11 @@ const ProductInformation = ({
             direction="row"
             alignItems="center"
             spacing={1.5}
+            marginTop={{ xs: "25px", sm: "0px" }}
           >
             <Typography
               fontSize={{ xs: "14px", sm: "18px" }}
               fontWeight="600"
-              marginTop={{ xs: "25px", sm: "0px" }}
             >
               {state.modalData[0]?.name}
             </Typography>
@@ -400,32 +425,39 @@ const ProductInformation = ({
     <>
       {state.modalData.length > 0 && (
         <CustomStackFullWidth spacing={2}>
-          {topInformation()}
-          <Stack padding={{ xs: "10px 20px 10px 20px", sm: "20px", md: "0px" }}>
-            {state.modalData[0]?.variations?.length > 0 && (
-              <VariationsManager
-                productDetailsData={state.modalData[0]}
-                handleChoices={handleChoices}
-              />
-            )}
-            {/*<SizeVariation productDetailsData={productDetailsData} />*/}
-            {state.modalData.length > 0 && (
-              <IncrementDecrementManager
-                decrementQuantity={decrementQuantity}
-                incrementQuantity={incrementQuantity}
-                modalData={state?.modalData[0]}
-                productUpdate={productUpdate}
-              />
-            )}
-            {isSmall && (
-              <CustomStackFullWidth sx={{ mt: ".5rem" }}>
-                <CategoryInformation
-                  tags={state?.modalData?.[0]?.tags}
-                  categories={state?.modalData?.[0]?.category_ids}
-                />
-              </CustomStackFullWidth>
-            )}
-          </Stack>
+          <SimpleBar style={{ maxHeight: "315px" }}>
+            <>
+              {topInformation()}
+              <Stack
+                padding={{ xs: "10px 20px 10px 20px", sm: "20px", md: "0px" }}
+              >
+                {state.modalData[0]?.variations?.length > 0 && (
+                  <VariationsManager
+                    productDetailsData={state.modalData[0]}
+                    handleChoices={handleChoices}
+                  />
+                )}
+                {/*<SizeVariation productDetailsData={productDetailsData} />*/}
+                {state.modalData.length > 0 && (
+                  <IncrementDecrementManager
+                    decrementQuantity={decrementQuantity}
+                    incrementQuantity={incrementQuantity}
+                    modalData={state?.modalData[0]}
+                    productUpdate={productUpdate}
+                  />
+                )}
+                {isSmall && (
+                  <CustomStackFullWidth sx={{ mt: ".5rem" }}>
+                    <CategoryInformation
+                      tags={state?.modalData?.[0]?.tags}
+                      categories={state?.modalData?.[0]?.category_ids}
+                    />
+                  </CustomStackFullWidth>
+                )}
+              </Stack>
+            </>
+          </SimpleBar>
+
           <ProductInformationBottomSection
             addToCard={addToCard}
             handleUpdateToCart={handleUpdateToCart}

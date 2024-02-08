@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import {
   CustomStackFullWidth,
@@ -18,9 +18,11 @@ import { t } from "i18next";
 import { toast } from "react-hot-toast";
 import { useDeleteProfile } from "../../api-manage/hooks/react-query/profile/useDeleteProfile";
 import { useRouter } from "next/router";
+import PushNotificationLayout from "../PushNotificationLayout";
 
 const UserInformation = ({ page, configData, orderId }) => {
   const theme = useTheme();
+  const [accountDeleteStatus, setAccountDeleteStatus] = useState(true)
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch = useDispatch();
   const router = useRouter();
@@ -33,7 +35,8 @@ const UserInformation = ({ page, configData, orderId }) => {
   const { data, refetch, isLoading } = useGetUserInfo(handleSuccess);
   const onSuccessHandlerForUserDelete = (res) => {
     if (res?.errors) {
-      toast.error(res?.errors?.[0]?.message);
+      // toast.error(res?.errors?.[0]?.message);
+      setAccountDeleteStatus(false)
     } else {
       localStorage.removeItem("token");
       toast.success(t("Account has been deleted"));
@@ -49,76 +52,84 @@ const UserInformation = ({ page, configData, orderId }) => {
   };
 
   return (
-    <CustomStackFullWidth>
-      <Grid container gap="10px">
-        <UserInfoGrid
-          userToken={userToken}
-          container
-          item
-          xs={12}
-          sm={12}
-          md={12}
-          page={page}
-        >
-          {!userToken && (
-            <Grid item md={12} justifyContent="center" alignSelf="center">
-              <Typography fontSize="16px" textAlign="center">
-                {t("Order Details")}
-              </Typography>
-            </Grid>
-          )}
-          <CustomContainer>
-            <Stack
-              direction={{ xs: "column", sm: "column", md: "row" }}
-              gap="1rem"
-            >
-              {userToken && (
-                <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                  md={4}
-                  marginTop={{
-                    xs: page ? "21px" : "28px",
-                    sm: "28px",
-                    md: "18px",
-                  }}
-                  paddingBottom={{ xs: page === "inbox" ? "10px" : "0px" }}
-                >
-                  <UserDetails
-                    data={data}
-                    page={page}
-                    deleteUserHandler={deleteUserHandler}
-                  />
-                </Grid>
-              )}
+    <PushNotificationLayout>
+      <CustomStackFullWidth>
+        <Grid container gap="10px">
+          <UserInfoGrid
+            userToken={userToken}
+            container
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            page={page}
+          >
+            {!userToken && (
+              <Grid item md={12} justifyContent="center" alignSelf="center">
+                <Typography fontSize="16px" textAlign="center">
+                  {t("Order Details")}
+                </Typography>
+              </Grid>
+            )}
+            <CustomContainer>
+              <Stack
+                direction={{ xs: "column", sm: "column", md: "row" }}
+                gap="1rem"
+              >
+                {userToken && (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={4}
+                    marginTop={{
+                      xs: page ? "21px" : "28px",
+                      sm: "28px",
+                      md: "18px",
+                    }}
+                    paddingBottom={{ xs: page === "inbox" ? "10px" : "0px" }}
+                  >
+                    <UserDetails
+                      data={data}
+                      page={page}
+                      deleteUserHandler={deleteUserHandler}
+                      setAccountDeleteStatus={setAccountDeleteStatus}
+                      accountDeleteStatus={accountDeleteStatus}
+                      isLoadingDelete={isLoadingDelete}
+                    />
+                  </Grid>
+                )}
 
-              {isSmall ? (
-                page === "profile-settings" &&
-                userToken && <UserDashBoard data={data} isLoading={isLoading} />
-              ) : (
-                <>
-                  {userToken && (
-                    <UserDashBoard data={data} isLoading={isLoading} />
-                  )}
-                </>
-              )}
-            </Stack>
-          </CustomContainer>
-        </UserInfoGrid>
-        <Grid item xs={12} sm={12} md={12}>
-          <CustomContainer>
-            <BodySection
-              page={page}
-              configData={configData}
-              orderId={orderId}
-              userToken={userToken}
-              deleteUserHandler={deleteUserHandler}
-            />
-          </CustomContainer>
+                {isSmall ? (
+                  page === "profile-settings" &&
+                  userToken && <UserDashBoard data={data} isLoading={isLoading} />
+                ) : (
+                  <>
+                    {userToken && (
+                      <UserDashBoard data={data} isLoading={isLoading} />
+                    )}
+                  </>
+                )}
+              </Stack>
+            </CustomContainer>
+          </UserInfoGrid>
+          <Grid item xs={12} sm={12} md={12}>
+            <CustomContainer>
+              <BodySection
+                page={page}
+                configData={configData}
+                orderId={orderId}
+                userToken={userToken}
+                deleteUserHandler={deleteUserHandler}
+                accountDeleteStatus={accountDeleteStatus}
+                setAccountDeleteStatus={setAccountDeleteStatus}
+                isLoadingDelete={isLoadingDelete}
+              />
+            </CustomContainer>
+          </Grid>
         </Grid>
-      </Grid>
-    </CustomStackFullWidth>
+      </CustomStackFullWidth>
+    </PushNotificationLayout>
   );
 };
 

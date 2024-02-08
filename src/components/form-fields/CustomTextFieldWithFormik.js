@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 //import PropTypes from 'prop-types'
 import { CustomTextFieldStyle } from "./CustomTextField.style";
-import { InputAdornment } from "@mui/material";
+import { InputAdornment, alpha, useTheme } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
@@ -22,7 +22,9 @@ const CustomTextFieldWithFormik = (props) => {
     disabled,
     placeholder,
     height,
+    startIcon
   } = props;
+  const theme = useTheme();
   const [inputValue, setInputValue] = useState(value);
   const [showPassword, setShowPassword] = useState(false);
   const onChangeHandlerForField = (e) => {
@@ -50,6 +52,7 @@ const CustomTextFieldWithFormik = (props) => {
             error={Boolean(touched && errors)}
             helperText={touched && errors}
             value={inputValue}
+            placeholder={placeholder ? placeholder : ""}
             onChange={onChangeHandlerForField}
             onBlur={onBlurHandler}
             type={showPassword ? "text" : type}
@@ -58,14 +61,17 @@ const CustomTextFieldWithFormik = (props) => {
               style: {
                 height: "45px", // Set your desired height value here
               },
+              startAdornment: startIcon,
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={() => setShowPassword((prevState) => !prevState)}
-                    // onMouseDown={handleMouseDownPassword}
+                  // onMouseDown={handleMouseDownPassword}
                   >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                    {showPassword ?
+                      <Visibility sx={{ color: alpha(theme.palette.neutral[500], 0.4) }} /> :
+                      <VisibilityOff sx={{ color: alpha(theme.palette.neutral[500], 0.4) }} />}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -83,7 +89,7 @@ const CustomTextFieldWithFormik = (props) => {
             multiline={multiline}
             rows={rows ? rows : 6}
             label={label}
-            placeholder={ placeholder ? placeholder : "" }
+            placeholder={placeholder ? placeholder : ""}
             name={label}
             required={required}
             error={Boolean(touched && errors)}
@@ -94,6 +100,7 @@ const CustomTextFieldWithFormik = (props) => {
             type={type}
             height={height}
             InputProps={{
+              startAdornment: startIcon,
               inputProps: { min: 0 },
               style: {
                 height: "45px", // Set your desired height value here

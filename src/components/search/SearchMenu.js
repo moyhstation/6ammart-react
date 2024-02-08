@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CustomBoxFullWidth } from "../../styled-components/CustomStyles.style";
-import {
-  Button,
-  Grid,
-  Skeleton,
-  styled,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Grid, Skeleton, styled, useMediaQuery, useTheme } from "@mui/material";
 import H1 from "../typographies/H1";
 import HighToLow from "../../sort/HighToLow";
 import { Box } from "@mui/system";
@@ -15,10 +8,7 @@ import WindowIcon from "@mui/icons-material/Window";
 import Body2 from "../typographies/Body2";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import Filter from "../home/stores/Filter";
-import { IsSmallScreen } from "../../utils/CommonValues";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Funnel from "../svg-components/Funnel";
-import CustomDivider from "../CustomDivider";
 import { t } from "i18next";
 
 const ViewWrapper = styled(Box)(({ theme, active }) => ({
@@ -46,8 +36,9 @@ const SearchMenu = (props) => {
     setOpenSideDrawer,
     priceRange,
     filterDataAndFunctions,
-    // filterData,
-    // setFilterData,
+    filterData,
+    setFilterData,
+    setIsClicked,
   } = props;
   const total = 1000;
   const [showView, setShowView] = useState(true);
@@ -68,7 +59,7 @@ const SearchMenu = (props) => {
   return (
     <CustomBoxFullWidth sx={{ marginBottom: "20px" }}>
       <Grid container alignItems="center" justifyContent="center">
-        <Grid item xs={9} md={5}>
+        <Grid item xs={9} md={6}>
           {isRefetching ? (
             <Skeleton variant="text" width="150px" />
           ) : (
@@ -79,7 +70,7 @@ const SearchMenu = (props) => {
             />
           )}
         </Grid>
-        <Grid item xs={3} md={7} container spacing={2}>
+        <Grid item xs={3} md={6} container spacing={2}>
           <Grid item xs={3} md={2}>
             {showView ? (
               <ViewWrapper
@@ -103,7 +94,7 @@ const SearchMenu = (props) => {
             ) : null}
           </Grid>
           {isSmallSize ? null : (
-            <Grid item xs={0} md={5.5}>
+            <Grid item xs={0} md={5.5} align="center">
               {showView ? (
                 <HighToLow handleSortBy={handleSortBy} sortBy={sortBy} />
               ) : null}
@@ -135,8 +126,8 @@ const SearchMenu = (props) => {
                 border
                 priceRange={priceRange}
                 filterDataAndFunctions={filterDataAndFunctions}
-                // filterData={filterData}
-                // setFilterData={setFilterData}
+                filterData={filterData}
+                setFilterData={setFilterData}
               />
             )}
           </Grid>

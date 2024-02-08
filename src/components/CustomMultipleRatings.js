@@ -1,13 +1,19 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Rating, styled } from "@mui/material";
-import { Box, Stack } from "@mui/system";
+import { alpha, Rating, styled } from "@mui/material";
+import { Stack } from "@mui/system";
 import Body2 from "./typographies/Body2";
-export const StyledRating = styled(Rating)(({ theme, primary_color }) => ({
-  "& .MuiRating-iconFilled": {
-    color: primary_color === "true" && theme.palette.primary.main,
-  },
-}));
+import StarIcon from "@mui/icons-material/Star";
+
+export const StyledRating = styled(Rating)(
+  ({ theme, primary_color, hasRating }) => ({
+    "& .MuiRating-iconFilled": {
+      color:
+        primary_color === "true"
+          ? theme.palette.primary.main
+          : hasRating && alpha(theme.palette.whiteContainer.main, 0.6),
+    },
+  })
+);
 const CustomMultipleRatings = (props) => {
   const { rating, PrimaryColor, withCount } = props;
   const handleRating = (rating) => {
@@ -28,6 +34,9 @@ const CustomMultipleRatings = (props) => {
             value={rating}
             readOnly
             sx={{ fontSize: { xs: "18px", md: "22px" } }}
+            emptyIcon={
+              <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+            }
           />
           <Body2 text={handleRating(rating)} />
         </Stack>
@@ -38,6 +47,7 @@ const CustomMultipleRatings = (props) => {
           value={rating}
           readOnly
           sx={{ fontSize: { xs: "18px", md: "17px" } }}
+          emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
         />
       )}
     </>

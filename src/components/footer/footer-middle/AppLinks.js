@@ -1,5 +1,5 @@
 import { useTheme } from "@emotion/react";
-import { Button, Stack, styled, Typography } from "@mui/material";
+import { Button, Stack, styled, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import appleicon from "../../../../public/static/footer/apple.svg";
@@ -7,8 +7,9 @@ import playstoreicon from "../../../../public/static/footer/playstore.svg";
 import CustomImageContainer from "../../CustomImageContainer";
 
 export const CustomButton = styled(Button)(({ theme, graybackground }) => ({
-	// width: "153px",
-	height: "45px",
+	// width: "115px",
+	height: "50px",
+	padding: "8px 15px",
 	borderRadius: "5px",
 	cursor: "pointer",
 	backgroundColor:
@@ -19,13 +20,14 @@ export const CustomButton = styled(Button)(({ theme, graybackground }) => ({
 		backgroundColor: theme.palette.footer.appDownloadButtonBgHover,
 	},
 	[theme.breakpoints.down("md")]: {
-		maxWidth: "150px",
-		height: "40px",
+		maxWidth: "140px",
+		height: "50px",
 	},
 }));
 const AppLinks = (props) => {
 	const { changeSingle, graybackground, landingPageData } = props;
 	const theme = useTheme();
+	const isSmall = useMediaQuery(theme.breakpoints.down("sm"))
 
 	let language_direction;
 	if (typeof window !== "undefined") {
@@ -59,16 +61,16 @@ const AppLinks = (props) => {
 				<Stack alignItems="flex-start" justifyContent="center">
 					<Typography
 						sx={{
-							fontSize: { xs: "8px", sm: "11px" },
-							color: "customColor.textGray",
+							fontSize: { xs: "8px", sm: "10px", md:"12px" },
+							color: theme.palette.whiteContainer.main,
 						}}
 					>
 						{t("GET IT ON")}
 					</Typography>
 					<Typography
 						sx={{
-							fontWeight: "bold",
-							fontSize: { xs: "10px", sm: "13px" },
+							fontWeight: 700,
+							fontSize: { xs: "10px", sm: "13px",md:"16px" },
 						}}
 						color={theme.palette.whiteContainer.main}
 					>
@@ -96,22 +98,22 @@ const AppLinks = (props) => {
 					src={appleicon.src}
 					alt="GooglePlay"
 					objectFit="cover"
-					height="26px"
-					width="26px"
+					height="33px"
+					width="33px"
 				/>
 				<Stack alignItems="flex-start" justifyContent="center">
 					<Typography
 						sx={{
-							fontSize: { xs: "8px", sm: "11px" },
-							color: "customColor.textGray",
+							fontSize: { xs: "8px", sm: "10px", md:"12px" },
+							color: theme.palette.whiteContainer.main,
 						}}
 					>
 						{t("Download ON")}
 					</Typography>
 					<Typography
 						sx={{
-							fontWeight: "bold",
-							fontSize: { xs: "10px", sm: "13px" },
+							fontWeight: 700,
+							fontSize: { xs: "10px", sm: "13px",md:"16px" },
 						}}
 						color={theme.palette.whiteContainer.main}
 					>
@@ -125,7 +127,7 @@ const AppLinks = (props) => {
 		<Stack
 			direction="row"
 			spacing={2}
-			sx={{ mt: 4 }}
+			// sx={{ mt: 4 }}
 			gap={language_direction === "rtl" && "10px"}
 			justifyContent="center"
 		>

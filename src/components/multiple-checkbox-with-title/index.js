@@ -37,7 +37,6 @@ const MultipleCheckboxWithTitle = (props) => {
     setSelectedId(id);
   }, [id]);
 
-  
   useEffect(() => {
     selectedCategoriesHandler?.(selectedItems);
   }, [selectedItems]);
@@ -98,13 +97,16 @@ const MultipleCheckboxWithTitle = (props) => {
     <CustomStackFullWidth>
       <Typography
         fontWeight="bold"
-        sx={{ color: (theme) => theme.palette.neutral[1000] }}
+        sx={{
+          color: (theme) => theme.palette.neutral[1000],
+          paddingBottom: "1rem",
+        }}
       >
         {t(title)}
       </Typography>
       <CustomPaperBox>
         <CustomStackFullWidth p="1rem">
-          <Scrollbar style={{ maxHeight: "300px" }} scrollbarMinSize={5}>
+          <Scrollbar style={{ maxHeight: "330px" }} scrollbarMinSize={1}>
             {showAll && (
               <CustomCheckbox
                 item={{ name: "All", id: "all" }}

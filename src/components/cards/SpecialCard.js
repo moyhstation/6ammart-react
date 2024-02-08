@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Box, Stack, styled } from "@mui/system";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,10 +17,9 @@ import ImageBottomBox from "../ImageBottomBox";
 import OrganicTag from "../organic-tag";
 import RecommendTag from "../recommendTag";
 import Body2 from "../typographies/Body2";
-import H4 from "../typographies/H4";
 import AddWithIncrementDecrement from "./AddWithIncrementDecrement";
 import { CustomOverLay } from "./Card.style";
-import QuickView from "./QuickView";
+import QuickView, { PrimaryToolTip } from "./QuickView";
 
 const VegNonVegFlag = styled(Box)(({ theme, veg }) => ({
   height: "14px",
@@ -57,8 +56,10 @@ const SpecialCard = (props) => {
     handleDecrement,
     count,
     showAddtocart,
-    handleClick,updateLoading,
-      isLoading
+    handleClick,
+    updateLoading,
+    setOpenLocationAlert,
+    isLoading,
   } = props;
 
   const { configData } = useSelector((state) => state.configData);
@@ -72,12 +73,30 @@ const SpecialCard = (props) => {
     if (getCurrentModuleType() === ModuleTypes.FOOD) {
       return (
         <Stack direction="row" alignItems="center" spacing={0.8}>
-          <H4 text={item?.name} />
+          <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+            <Typography
+              className={classes.singleLineEllipsis}
+              fontSize={{ xs: "12px", md: "14px" }}
+              fontWeight="500"
+            >
+              {item?.name}
+            </Typography>
+          </PrimaryToolTip>
           <FoodVegNonVegFlag veg={item?.veg == 0 ? false : true} />
         </Stack>
       );
     } else {
-      return <H4 text={item?.name} />;
+      return (
+        <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+          <Typography
+            className={classes.singleLineEllipsis}
+            fontSize={{ xs: "12px", md: "14px" }}
+            fontWeight="500"
+          >
+            {item?.name}
+          </Typography>
+        </PrimaryToolTip>
+      );
     }
   };
 
@@ -88,12 +107,12 @@ const SpecialCard = (props) => {
         cursor: "pointer",
         background: (theme) => theme.palette.neutral[100],
         // boxShadow: "0px 10px 20px rgba(88, 110, 125, 0.1)",
-        borderRadius: "5px",
-        width: { xs: "190px", md: "220px" },
+        borderRadius: "10px",
+        width: { xs: "190px", md: "230px" },
         height: "100%",
         "&:hover": {
           img: {
-            transform: "scale(1.2)",
+            transform: "scale(1.05)",
           },
         },
       }}
@@ -107,9 +126,9 @@ const SpecialCard = (props) => {
           height: { xs: "140px", md: "180px" },
         }}
       >
-        {!isHover && <RecommendTag status={item?.recommended} top="90px" />}
-        {!isHover && <OrganicTag status={item?.organic} top="50px" />}
-        {!isHover && handleBadge()}
+        {<RecommendTag status={item?.recommended} top="70px" />}
+        {<OrganicTag status={item?.organic} top="40px" />}
+        {handleBadge()}
         <Box borderRadius="8px" overflow="hidden">
           <CustomImageContainer
             src={`${imageBaseUrl}/${item?.image}`}
@@ -133,7 +152,7 @@ const SpecialCard = (props) => {
             showAddtocart={!isProductExist}
             isLoading={isLoading}
             updateLoading={updateLoading}
-
+            setOpenLocationAlert={setOpenLocationAlert}
           />
           <Box
             sx={{
@@ -162,11 +181,11 @@ const SpecialCard = (props) => {
           free_delivery={item?.free_delivery}
         />
       </CustomStackFullWidth>
-      <CustomStackFullWidth mt="15px" mb="7px" sx={{ padding: "5px" }}>
+      <CustomStackFullWidth mt="15px" sx={{ padding: "5px" }} spacing={0.5}>
         {getModuleWiseItemName()}
         <Body2 text={item?.store_name} />
       </CustomStackFullWidth>
-      <CustomBoxFullWidth sx={{ padding: "5px" }}>
+      <CustomBoxFullWidth sx={{ padding: "0px 5px 5px 5px" }}>
         <Grid container>
           <Grid item xs={9.5} sm={9}>
             <AmountWithDiscountedAmount item={item} />

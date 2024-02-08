@@ -1,21 +1,15 @@
 import React, { useEffect, useId } from "react";
 
-import { Popover, Stack, Typography, useTheme } from "@mui/material";
-import Link from "next/link";
-import CustomImageContainer from "../../CustomImageContainer";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { Skeleton } from "@mui/material";
+import { Popover, useTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import {
-  CustomStackFullWidth,
-  CustomTypographyGray,
-} from "../../../styled-components/CustomStyles.style";
+import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
 import CategoryPopover from "./CategoryPopover";
-import NavStorePopover from "./NavStorePopover";
 import { getLanguage } from "../../../helper-functions/getLanguage";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetCategories } from "../../../api-manage/hooks/react-query/all-category/all-categorys";
 import { setCategories } from "../../../redux/slices/storedData";
+import NavStorePopover from "./NavStorePopover";
+
 const useStyles = makeStyles((theme) => ({
   popover: {
     pointerEvents: "none",
@@ -70,7 +64,9 @@ const NavPopover = ({
             anchorElSub={anchorElSub}
             subCategory={subCategory}
             handlePopoverCloseSub={handlePopoverCloseSub}
-            categories={categories}
+            categories={[...categories].sort(
+              (a, b) => b.childes.length - a.childes.length
+            )}
           />
         );
       }

@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  alpha,
-  Button,
-  Grid,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { alpha, Grid, Stack, Typography, useTheme } from "@mui/material";
 import { PrimaryButton } from "../../Map/map.style";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { useAddToWishlist } from "../../../api-manage/hooks/react-query/wish-list/useAddWishList";
 import {
@@ -18,9 +10,7 @@ import {
 import toast from "react-hot-toast";
 import { not_logged_in_message } from "../../../utils/toasterMessages";
 import { useWishListDelete } from "../../../api-manage/hooks/react-query/wish-list/useWishListDelete";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import moment from "moment";
-import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
 import Loading from "../../custom-loading/Loading";
 
 const AddOrderToCart = (props) => {
@@ -33,7 +23,7 @@ const AddOrderToCart = (props) => {
     router,
     isScheduled,
     isLoading,
-    updateIsLoading
+    updateIsLoading,
   } = props;
   const [wishListCount, setWishListCount] = useState(
     product?.wishlist_count || 0
@@ -107,8 +97,18 @@ const AddOrderToCart = (props) => {
             </Grid>
             <Grid item xs={6} sm={6} md={6}>
               {isInCart(product?.id) && (
-                <PrimaryButton onClick={() => addToCard()} >
-                  {updateIsLoading ?<Stack height="25px" alignItems="center" justifyContent="center"> <Loading /></Stack> : t("Update to cart")}
+                <PrimaryButton onClick={() => addToCard()}>
+                  {updateIsLoading ? (
+                    <Stack
+                      height="25px"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <Loading />
+                    </Stack>
+                  ) : (
+                    t("Update to cart")
+                  )}
                 </PrimaryButton>
               )}
               {!isInCart(product?.id) && (
@@ -219,13 +219,40 @@ const AddOrderToCart = (props) => {
           </Grid>
           <Grid item xs={6} sm={6} md={6}>
             {isInCart(product?.id) && (
-              <PrimaryButton onClick={() => addToCard()} sx={{ width: 200, fontSize: { xs: "12px", md: "14px" } }}>
-                {updateIsLoading ?<Stack height="25px" alignItems="center" justifyContent="center"> <Loading /></Stack> : t("Update to cart")}
+              <PrimaryButton
+                onClick={() => addToCard()}
+                sx={{ width: 200, fontSize: { xs: "12px", md: "14px" } }}
+              >
+                {updateIsLoading ? (
+                  <Stack
+                    height="25px"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Loading />
+                  </Stack>
+                ) : (
+                  t("Update to cart")
+                )}
               </PrimaryButton>
             )}
             {!isInCart(product?.id) && (
-              <PrimaryButton onClick={() => addToCard()} loading={isLoading} sx={{ width: 200, fontSize: { xs: "12px", md: "14px" } }}>
-                {isLoading ?<Stack height="25px" alignItems="center" justifyContent="center"> <Loading /></Stack> : t("Add to Cart")}
+              <PrimaryButton
+                onClick={() => addToCard()}
+                loading={isLoading}
+                sx={{ width: 200, fontSize: { xs: "12px", md: "14px" } }}
+              >
+                {isLoading ? (
+                  <Stack
+                    height="25px"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Loading />
+                  </Stack>
+                ) : (
+                  t("Add to Cart")
+                )}
               </PrimaryButton>
             )}
           </Grid>

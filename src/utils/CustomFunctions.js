@@ -165,7 +165,7 @@ const handlePurchasedAmount = (cartList) => {
         (product.food_variations.length > 0
           ? handleProductValueWithOutDiscount(product)
           : product.price) *
-          product.quantity +
+        product.quantity +
         selectedAddonsTotal(product.selectedAddons) +
         total,
       0
@@ -176,7 +176,7 @@ const handlePurchasedAmount = (cartList) => {
         (product?.selectedOption?.length > 0
           ? handleValueWithOutDiscount(product)
           : product.price) *
-          product.quantity +
+        product.quantity +
         total,
       0
     );
@@ -319,20 +319,21 @@ const handleTotalDiscountBasedOnModules = (
       (total, product) =>
         (product.food_variations.length > 0
           ? handleProductValueWithOutDiscount(product) -
-            getConvertDiscount(
-              restaurentDiscount,
-              resDisType,
-              handleProductValueWithOutDiscount(product),
-              product.store_discount
-            )
+          getConvertDiscount(
+            restaurentDiscount,
+            resDisType,
+            handleProductValueWithOutDiscount(product),
+            product.store_discount
+          )
           : product.price -
-            getConvertDiscount(
-              restaurentDiscount,
-              resDisType,
-              product.price,
-              product.store_discount
-            )) *
-          product.quantity +
+          getConvertDiscount(
+            restaurentDiscount,
+            resDisType,
+            product.price,
+            product.store_discount,
+            product.flash_sale
+          )) *
+        product.quantity +
         total,
       0
     );
@@ -341,20 +342,20 @@ const handleTotalDiscountBasedOnModules = (
       (total, product) =>
         (product?.selectedOption?.length > 0
           ? handleValueWithOutDiscount(product) -
-            getConvertDiscount(
-              restaurentDiscount,
-              resDisType,
-              handleValueWithOutDiscount(product),
-              product.store_discount
-            )
+          getConvertDiscount(
+            restaurentDiscount,
+            resDisType,
+            handleValueWithOutDiscount(product),
+            product.store_discount
+          )
           : product.price -
-            getConvertDiscount(
-              restaurentDiscount,
-              resDisType,
-              product.price,
-              product.store_discount
-            )) *
-          product.quantity +
+          getConvertDiscount(
+            restaurentDiscount,
+            resDisType,
+            product.price,
+            product.store_discount
+          )) *
+        product.quantity +
         total,
       0
     );
@@ -412,11 +413,11 @@ export const getProductDiscount = (items, storeData) => {
             : product?.price) +
             (product?.selectedAddons?.length > 0
               ? product?.selectedAddons?.reduce(
-                  (total, addOn) => addOn.price * addOn.quantity + total,
-                  0
-                )
+                (total, addOn) => addOn.price * addOn.quantity + total,
+                0
+              )
               : 0)) *
-            product.quantity +
+          product.quantity +
           total,
         0
       );
@@ -576,8 +577,8 @@ function distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
   const a =
     Math.pow(Math.sin(dLat / 2), 2) +
     Math.pow(Math.sin(dLon / 2), 2) *
-      Math.cos(toRadians(startLatitude)) *
-      Math.cos(toRadians(endLatitude));
+    Math.cos(toRadians(startLatitude)) *
+    Math.cos(toRadians(endLatitude));
   const c = 2 * Math.asin(Math.sqrt(a));
 
   return earthRadius * c;
@@ -808,7 +809,7 @@ export const getSubTotalPrice = (cartList) => {
         (product?.food_variations.length > 0
           ? getItemTotalWithoutDiscount(product)
           : product.price) *
-          product.quantity +
+        product.quantity +
         selectedAddonsTotal(product.selectedAddons) +
         total,
       0
@@ -819,7 +820,7 @@ export const getSubTotalPrice = (cartList) => {
         (product?.selectedOption?.length > 0
           ? product?.selectedOption?.[0]?.price
           : product.price) *
-          product.quantity +
+        product.quantity +
         total,
       0
     );

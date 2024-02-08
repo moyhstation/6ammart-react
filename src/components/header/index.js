@@ -1,39 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { AppBarStyle } from "./NavBar.style";
 
-import {Box, Card, useMediaQuery, useScrollTrigger, useTheme} from "@mui/material";
+import {
+  Card,
+  NoSsr,
+  useMediaQuery,
+  useScrollTrigger,
+  useTheme,
+} from "@mui/material";
 import { useRouter } from "next/router";
-import TopNavBar from "../header/top-navbar/TopNavBar";
-import SecondNavBar from "../header/second-navbar/SecondNavbar";
-import { debounce } from "lodash";
-const HeaderComponent = ({ configData }) => {
+import { useSelector } from "react-redux";
+import { Box } from "@mui/system";
+import SecondNavBar from "./second-navbar/SecondNavbar";
+import TopNavBar from "./top-navbar/TopNavBar";
+
+const HeaderComponent = () => {
   const router = useRouter();
-  const theme=useTheme()
-    const isSmall = useMediaQuery(theme.breakpoints.down("md"));
-  const scrolling = useScrollTrigger()
+  const { configData } = useSelector((state) => state.configData);
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down("md"));
+  const scrolling = useScrollTrigger();
+  let token = undefined;
+  let location = undefined;
+  if (typeof window !== "undefined") {
+    location = localStorage.getItem("location");
+    token = localStorage.getItem("token");
+  }
 
   return (
-      <AppBarStyle scrolling={scrolling}
-                   isSmall={isSmall}
-      >
-        {router.pathname === "/" ? (
-            <Box
-            ><TopNavBar configData={configData} />
-              <SecondNavBar configData={configData} />
-            </Box>
-        ) : (
-            <>
-              <Card
-                  sx={{
-                    boxShadow: "none",
-                  }}
-              >
-                <TopNavBar configData={configData} />
-              </Card>
-              <SecondNavBar configData={configData} />
-            </>
-        )}
-      </AppBarStyle>
+    <AppBarStyle
+      scrolling={location || token ? scrolling : false}
+      isSmall={isSmall}
+    >
+      <Box>
+        <NoSsr>
+          {(location || token) && (
+            <Card
+              sx={{
+                boxShadow: "none",
+              }}
+            >
+              <TopNavBar configData={configData} />
+            </Card>
+          )}
+          <SecondNavBar configData={configData} />
+        </NoSsr>
+      </Box>
+    </AppBarStyle>
   );
 };
 

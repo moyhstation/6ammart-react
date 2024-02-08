@@ -21,6 +21,9 @@ const BodySection = ({
   orderId,
   userToken,
   deleteUserHandler,
+  isLoadingDelete,
+  accountDeleteStatus,
+  setAccountDeleteStatus
 }) => {
   const [editProfile, setEditProfile] = useState(false);
   const [addAddress, setAddAddress] = useState(false);
@@ -58,6 +61,9 @@ const BodySection = ({
         {!isSmall && userToken && (
           <ProfileTab
             deleteUserHandler={deleteUserHandler}
+            isLoadingDelete={isLoadingDelete}
+            accountDeleteStatus={accountDeleteStatus}
+            setAccountDeleteStatus={setAccountDeleteStatus}
             page={page}
             menuData={menuData}
             handlePage={handleActivePage}

@@ -1,7 +1,6 @@
 import React from "react";
-import { Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { ChatSidebarDesktop, ChatSidebarMobile } from "./Chat.style";
+import { ChatSidebarDesktop } from "./Chat.style";
 import ChatContent from "./ChatContent";
 import { CustomPaperBigCard } from "../../styled-components/CustomStyles.style";
 
@@ -24,6 +23,8 @@ const ChatSideBar = ({
   setUserType,
   setChannelId,
   setIsSidebarOpen,
+  configData,
+  setResetState,
 }) => {
   const mdUp = useMediaQuery((theme) => theme.breakpoints.up("md"));
 
@@ -51,6 +52,8 @@ const ChatSideBar = ({
           userType={userType}
           setUserType={setUserType}
           setChannelId={setChannelId}
+          configData={configData}
+          setResetState={setResetState}
         />
       </ChatSidebarDesktop>
     );
@@ -77,6 +80,8 @@ const ChatSideBar = ({
             userType={userType}
             setUserType={setUserType}
             setChannelId={setChannelId}
+            configData={configData}
+            setResetState={setResetState}
           />
         </CustomPaperBigCard>
       )}

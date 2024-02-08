@@ -169,7 +169,7 @@ export const ModuleSelection = ({
 								<Typography variant="h6" textAlign="center">
 									{t(module_header)}
 								</Typography>
-								<Grid container spacing={isXSmall ? 0.5 : 2}>
+								<Grid container spacing={isXSmall ? 1 : 2} width="98%">
 									{data &&
 										(data?.length > 0 ? (
 											zoneWiseModule?.(data)?.map((item, index) => {

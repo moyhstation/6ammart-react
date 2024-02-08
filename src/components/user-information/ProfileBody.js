@@ -52,7 +52,8 @@ const ProfileBody = ({
     if (
       page === "wallet" ||
       page === "wallet?flag=success" ||
-      page === "wallet?flag=cancel"
+      page === "wallet?flag=cancel" ||
+      page === "wallet?flag=fail"
     ) {
       return <Wallet configData={configData} />;
     }

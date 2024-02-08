@@ -1,4 +1,11 @@
-import { alpha, Skeleton, Stack, styled, Typography } from "@mui/material";
+import {
+  alpha,
+  Skeleton,
+  Stack,
+  styled,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import CustomImageContainer from "../../../CustomImageContainer";
@@ -87,6 +94,7 @@ const FeaturedItemCard = (props) => {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             sx={{
+              padding: ".5rem",
               cursor: "pointer",
               height: { xs: "130px", md: "155px" },
               width: { xs: "100px", md: "124px" },
@@ -97,25 +105,23 @@ const FeaturedItemCard = (props) => {
               borderRadius: "10px",
               // margin: "10px",
               "&:hover": {
-                boxShadow: "0px 15px 25px rgba(88, 110, 125, 0.1)",
+                boxShadow: "0px 10px 20px 0px rgba(88, 110, 125, 0.10)",
                 border: "0px",
+                img: {
+                  transform: "scale(1.04)",
+                },
+              },
+              div: {
+                borderRadius: "8px",
+                overflow: "hidden",
               },
             }}
           >
-            <Card
+            <Stack
               sx={{
                 position: "relative",
                 height: { xs: "95px", md: "110px" },
-                width: { xs: "95px", md: "120px" },
-                div: {
-                  borderRadius: "8px",
-                  overflow: "hidden",
-                },
-                "&:hover": {
-                  img: {
-                    transform: "scale(1.14)",
-                  },
-                },
+                width: "100%",
               }}
             >
               <CustomImageContainer
@@ -125,18 +131,34 @@ const FeaturedItemCard = (props) => {
                 width="100%"
                 objectFit="cover"
               />
-            </Card>
-            <CustomBoxFullWidth sx={{ px: "10px" }}>
-              <Typography
-                textAlign="center"
-                // fontWeight="bold"
-                className={classes.singleLineEllipsis}
-                maxHeight="20px"
-                color={hover && "primary.main"}
-              >
-                {title}
-              </Typography>
-            </CustomBoxFullWidth>
+            </Stack>
+            <Tooltip
+              title={title}
+              placement="bottom"
+              arrow
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: (theme) => theme.palette.toolTipColor,
+                    "& .MuiTooltip-arrow": {
+                      color: (theme) => theme.palette.toolTipColor,
+                    },
+                  },
+                },
+              }}
+            >
+              <CustomBoxFullWidth sx={{ px: "10px" }}>
+                <Typography
+                  textAlign="center"
+                  // fontWeight="bold"
+                  className={classes.singleLineEllipsis}
+                  maxHeight="20px"
+                  color={hover && "primary.main"}
+                >
+                  {title}
+                </Typography>
+              </CustomBoxFullWidth>
+            </Tooltip>
           </Stack>
         </Link>
       )}

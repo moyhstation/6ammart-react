@@ -4,6 +4,8 @@ const initialState = {
   selectedModule: null,
   orderType: 0,
   currentTab: "",
+  orderDetailsModalOpen: false,
+  orderInformation: {},
 };
 export const utilsSlice = createSlice({
   name: "utils-data",
@@ -18,10 +20,21 @@ export const utilsSlice = createSlice({
     setCurrentTab: (state, action) => {
       state.currentTab = action.payload;
     },
+    setOrderDetailsModalOpen: (state, action) => {
+      state.orderDetailsModalOpen = action.payload;
+    },
+    setOrderInformation: (state, action) => {
+      state.orderInformation = action.payload;
+    },
   },
 });
 
-export const { setSelectedModule, setOrderType, setCurrentTab } =
-  utilsSlice.actions;
+export const {
+  setSelectedModule,
+  setOrderType,
+  setCurrentTab,
+  setOrderDetailsModalOpen,
+  setOrderInformation,
+} = utilsSlice.actions;
 
 export default utilsSlice.reducer;

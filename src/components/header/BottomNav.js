@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import HomeIcon from "@mui/icons-material/Home";
 import SmsRoundedIcon from "@mui/icons-material/SmsRounded";
@@ -15,8 +15,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { getCartListModuleWise } from "../../helper-functions/getCartListModuleWise";
 import WishListCardView from "../wishlist";
-import {getToken} from "../../helper-functions/getToken";
-import {toast} from "react-hot-toast";
+import { getToken } from "../../helper-functions/getToken";
 
 const styles = {
   maxWidth: 2000,
@@ -39,14 +38,13 @@ const BottomNav = () => {
     setSideDrawerOpen(true);
   };
   const handleWishListsDrawerOpen = () => {
-      if(getToken()){
-          setWishListSideDrawerOpen(true);
-      }else{
-          router.push('/auth/sign-in');
-      }
-
+    if (getToken()) {
+      setWishListSideDrawerOpen(true);
+    } else {
+      router.push("/auth/sign-in");
+    }
   };
- // const handleChange = () => {};
+  // const handleChange = () => {};
   return (
     <CustomStackFullWidth>
       <Paper
@@ -57,7 +55,8 @@ const BottomNav = () => {
           right: 0,
           padding: "5px",
           width: "100%",
-          zIndex: 1111,
+          zIndex: 1082,
+          boxShadow: "0px -10px 10px -5px rgba(0, 0, 0, 0.2)",
         }}
         elevation={3}
       >
@@ -66,23 +65,24 @@ const BottomNav = () => {
             showLabels
             value={currentRoute}
             onChange={(event, newValue) => {
-              if (newValue !== "cart" && newValue !== "wishlist"){
+              if (newValue !== "cart" && newValue !== "wishlist") {
                 if (newValue !== "home") {
-                    if(getToken()){
-                        router.push(
-                            { pathname: "/profile", query: { page: newValue } },
-                            undefined,
-                            {
-                                shallow: true,
-                            }
-                        );
-                    }else{
-                        router.push('/auth/sign-in');
-                    }
+                  if (getToken()) {
+                    router.push(
+                      { pathname: "/profile", query: { page: newValue } },
+                      undefined,
+                      {
+                        shallow: true,
+                      }
+                    );
+                  } else {
+                    router.push("/auth/sign-in");
+                  }
                 } else {
                   router.push(`/${newValue}`);
                 }
-            }}}
+              }
+            }}
           >
             <CustomBottomNavigationAction
               label={t("Home")}

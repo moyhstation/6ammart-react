@@ -3,7 +3,6 @@ import React from "react";
 const DollarSignHighlighter = ({ theme, text }) => {
   const regex = /\$\w+\$/g;
   const matches = text?.match(regex);
-
   return (
     <>
       {text &&

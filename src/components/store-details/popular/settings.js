@@ -35,11 +35,11 @@ const NextWrapper = styled(Box)(({ theme, isdisabled }) => ({
 }));
 const ButtonContainer = styled(Box)(({ theme, right, isdisabled }) => ({
   top: 0,
-  height: "100%",
+  height: "92%",
   width: "73px",
   background:
     right === "true"
-      ? "linear-gradient(270deg, rgba(75, 86, 107, 0.15) 0%, rgba(75, 86, 107, 0) 100%)"
+      ? "linear-gradient(270deg, rgba(75, 86, 107, 0.15) 0%, rgba(75, 86, 107, 0.00) 100%)"
       : "linear-gradient(to right, rgba(75, 86, 107, 0.15) 0%, rgba(75, 86, 107, 0) 100%)",
 
   zIndex: 1,
@@ -112,7 +112,7 @@ export const settings = {
   dots: false,
   infinite: false,
   speed: 500,
-  slidesToShow: 5,
+  slidesToShow: 4.8,
   slidesToScroll: 1,
   nextArrow: <Next />,
   prevArrow: <Prev />,
@@ -191,7 +191,7 @@ export const settings = {
     {
       breakpoint: 380,
       settings: {
-        slidesToShow: 1.5,
+        slidesToShow: 1.6,
         slidesToScroll: 1,
       },
     },

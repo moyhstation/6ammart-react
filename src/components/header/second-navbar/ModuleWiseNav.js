@@ -1,6 +1,6 @@
 import { Avatar, Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useGetModule from "../../../api-manage/hooks/react-query/useGetModule";
 import { getLanguage } from "../../../helper-functions/getLanguage";
@@ -16,7 +16,9 @@ import MobileModuleSelection from "./mobile-module-select";
 
 const ModuleWiseNav = (props) => {
   const { router, configData, token, setToggled, location } = props;
+
   const { modules } = useSelector((state) => state.configData);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const { data, refetch } = useGetModule();
   const { profileInfo } = useSelector((state) => state.profileInfo);
   const profileImageUrl = `${configData?.base_urls?.customer_image_url}/${profileInfo?.image}`;
@@ -57,7 +59,11 @@ const ModuleWiseNav = (props) => {
         sx={{ width: 18, height: 18, cursor: "pointer" }}
         onClick={handleProfileClick}
       />
-      <DrawerMenu setToggled={setToggled} />
+      <DrawerMenu
+        setToggled={setToggled}
+        setOpenDrawer={setOpenDrawer}
+        openDrawer={openDrawer}
+      />
     </CustomStackFullWidth>
   );
   const handleIconClick = () => {
@@ -110,7 +116,7 @@ const ModuleWiseNav = (props) => {
                 spacing={2}
               >
                 <Grid item xs={1} sm={1} align="left">
-                  {router.pathname === "/home" ? (
+                  {router.pathname === "/home" && !router.query.search ? (
                     modules.length >= 2 ? (
                       <MobileModuleSelection />
                     ) : (
@@ -122,7 +128,11 @@ const ModuleWiseNav = (props) => {
                 </Grid>
                 {location ? (
                   <Grid item xs={11} sm={11} align="left">
-                    <AddressReselect location={location} />
+                    <AddressReselect
+                      setOpenDrawer={setOpenDrawer}
+                      location={location}
+                      openDrawer={openDrawer}
+                    />
                   </Grid>
                 ) : (
                   <Grid item xs={10} sm={11}></Grid>

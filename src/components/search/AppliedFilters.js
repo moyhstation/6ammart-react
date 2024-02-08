@@ -12,7 +12,7 @@ const FilterItem = ({ item, handleSelection }) => {
   return (
     <Box
       sx={{
-        padding: "5px",
+        padding: "2px 5px",
         border: (theme) => `1px solid ${theme.palette.primary.main}`,
         borderRadius: "5px",
         display: "flex",
@@ -39,7 +39,7 @@ const AppliedFilters = (props) => {
 
   const checkedSelection = () => {
     const isSelectedAny = filterData
-      ?.filter((item) => item?.value !== "price" && item?.value!=="test")
+      ?.filter((item) => item?.value !== "price" && item?.value !== "test")
       ?.some((item) => item?.checked);
     return !!isSelectedAny;
   };
@@ -70,7 +70,11 @@ const AppliedFilters = (props) => {
             {t("Applied filters:")}
           </Typography>
           {filterData?.map((item, index) => {
-            if (item?.checked && item?.value !== "price" && item?.value !== "test") {
+            if (
+              item?.checked &&
+              item?.value !== "price" &&
+              item?.value !== "test"
+            ) {
               return (
                 <FilterItem
                   item={item}

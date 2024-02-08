@@ -1,10 +1,6 @@
 import React from "react";
-import Link from "next/link";
-import { Badge, IconButton, Stack, Typography, useTheme } from "@mui/material";
-
-import { useSelector } from "react-redux";
+import { Badge, IconButton, Stack, Tooltip, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 
 const NavBarIcon = ({ icon, label, user, handleClick, badgeCount }) => {
   const theme = useTheme();
@@ -24,9 +20,25 @@ const NavBarIcon = ({ icon, label, user, handleClick, badgeCount }) => {
           }}
           onClick={() => handleClick()}
         >
-          <Badge color="primary" badgeContent={badgeCount} showZero>
-            {icon}
-          </Badge>
+          <Tooltip
+            title={t(label)}
+            arrow
+            placement="top"
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  bgcolor: (theme) => theme.palette.toolTipColor,
+                  "& .MuiTooltip-arrow": {
+                    color: (theme) => theme.palette.toolTipColor,
+                  },
+                },
+              },
+            }}
+          >
+            <Badge color="primary" badgeContent={badgeCount} showZero>
+              {icon}
+            </Badge>
+          </Tooltip>
           {/*<Typography color={theme.palette.neutral[1000]}>{label}</Typography>*/}
         </IconButton>
       </Stack>

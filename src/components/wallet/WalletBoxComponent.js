@@ -1,33 +1,30 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-import { useTheme } from "@emotion/react";
+import {useTheme} from "@emotion/react";
 import styled from "@emotion/styled";
-import { AddCircle, CheckCircle, InfoOutlined } from "@mui/icons-material";
-import { Button, OutlinedInput, Skeleton, Typography } from "@mui/material";
+import {AddCircle, CheckCircle, InfoOutlined} from "@mui/icons-material";
+import {Button, OutlinedInput, Skeleton, Typography} from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
-import { Box, Stack } from "@mui/system";
-import { useFormik } from "formik";
-import { t } from "i18next";
+import {Box, Stack} from "@mui/system";
+import {useFormik} from "formik";
+import {t} from "i18next";
 import Image from "next/image";
 import Router from "next/router";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
-import { onErrorResponse } from "../../api-manage/api-error-response/ErrorResponses";
-import { useAddFundToWallet } from "../../api-manage/hooks/react-query/payment-method/useAddFundToWallet";
-import { getAmountWithSign } from "../../helper-functions/CardHelpers";
-import { CustomButtonSuccess } from "../../styled-components/CustomButtons.style";
-import {
-  CustomStackFullWidth,
-  RoundedStack,
-} from "../../styled-components/CustomStyles.style";
+import {onErrorResponse} from "../../api-manage/api-error-response/ErrorResponses";
+import {useAddFundToWallet} from "../../api-manage/hooks/react-query/payment-method/useAddFundToWallet";
+import {getAmountWithSign} from "../../helper-functions/CardHelpers";
+import {CustomButtonSuccess} from "../../styled-components/CustomButtons.style";
+import {CustomStackFullWidth, RoundedStack,} from "../../styled-components/CustomStyles.style";
 import CustomImageContainer from "../CustomImageContainer";
 import CustomModal from "../modal";
 import WalletBgSvg from "./WalletBgSvg";
 import walletIcon from "./assets/wallet-icon.png";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { getLanguage } from "../../helper-functions/getLanguage";
+import {getLanguage} from "../../helper-functions/getLanguage";
 
 const validationSchema = Yup.object({
   amount: Yup.string().required("Please Enter amount"),
@@ -125,7 +122,7 @@ const WalletBoxComponent = (props) => {
                 <Stack justifyContent="end" paddingTop="1rem">
                   <Typography
                     color={theme.palette.whiteContainer.main}
-                    sx={{ textDecoration: "underline" }}
+                    sx={{ textDecoration: "underline", cursor: "pointer" }}
                     onClick={handleConvertCurrency}
                     fontSize="13px"
                     fontWeight="700"
@@ -193,7 +190,7 @@ const WalletBoxComponent = (props) => {
               >
                 <Stack sx={{ alignItems: "center" }} direction="row" gap={1}>
                   <Box>{title}</Box>
-                  <Box fontSize="18px" sx={{ cursor: "pointer" }}>
+                  <Stack fontSize="18px" sx={{ cursor: "pointer" }}>
                     <Tooltip
                       title={t(
                         "If you want to add fund to your wallet then click add fund button"
@@ -203,7 +200,7 @@ const WalletBoxComponent = (props) => {
                     >
                       <InfoOutlined fontSize="20px" />
                     </Tooltip>
-                  </Box>
+                  </Stack>
                 </Stack>
               </Typography>
               <Typography
@@ -245,7 +242,10 @@ const WalletBoxComponent = (props) => {
             }}
             onClick={() => setOpen(!open)}
           >
-            <Typography component="span" sx={{ fontSize: "13px" }}>
+            <Typography
+              component="span"
+              sx={{ fontSize: "14px", fontWeight: 500 }}
+            >
               {t("Add fund")}
             </Typography>
             <AddCircle />

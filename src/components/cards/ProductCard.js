@@ -1,9 +1,9 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
+  alpha,
   Card,
   CardMedia,
   Typography,
-  alpha,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -45,9 +45,8 @@ import { getCurrentModuleType } from "../../helper-functions/getCurrentModuleTyp
 import { getModuleId } from "../../helper-functions/getModuleId";
 import { ModuleTypes } from "../../helper-functions/moduleTypes";
 import { addWishList, removeWishListItem } from "../../redux/slices/wishList";
-import { getConvertDiscount, getTotalVariationsPrice, isAvailable } from "../../utils/CustomFunctions";
+import { isAvailable } from "../../utils/CustomFunctions";
 import {
-  cart_item_remove,
   not_logged_in_message,
   out_of_limits,
   out_of_stock,
@@ -64,21 +63,20 @@ import AddWithIncrementDecrement from "./AddWithIncrementDecrement";
 import { CustomOverLay } from "./Card.style";
 import ModuleModal from "./ModuleModal";
 import ProductsUnavailable from "./ProductsUnavailable";
-import QuickView from "./QuickView";
+import QuickView, { PrimaryToolTip } from "./QuickView";
 import SpecialCard, { FoodVegNonVegFlag } from "./SpecialCard";
-import MoreFromTheStoreCard from "./MoreFromTheStoreCard";
-import { t } from "i18next";
 import { getLanguage } from "../../helper-functions/getLanguage";
 import CustomLinearProgressbar from "../linear-progressbar";
 import useAddCartItem from "../../api-manage/hooks/react-query/add-cart/useAddCartItem";
 import {
-  getItemDataForAddToCart, getPriceAfterQuantityChange,
-  handleValuesFromCartItems,
+  getItemDataForAddToCart,
+  getPriceAfterQuantityChange,
 } from "../product-details/product-details-section/helperFunction";
 import { onErrorResponse } from "../../api-manage/api-error-response/ErrorResponses";
 import { getGuestId } from "../../helper-functions/getToken";
 import useCartItemUpdate from "../../api-manage/hooks/react-query/add-cart/useCartItemUpdate";
 import useDeleteCartItem from "../../api-manage/hooks/react-query/add-cart/useDeleteCartItem";
+import GetLocationAlert from "../GetLocationAlert";
 
 export const CardWrapper = styled(Card)(
   ({
@@ -92,6 +90,9 @@ export const CardWrapper = styled(Card)(
     cardWidth,
   }) => ({
     cursor: "pointer",
+    backgroundColor: theme.palette.background.custom6,
+
+    padding: horizontalcard !== "true" && "10px",
     maxWidth:
       cardFor === "list-view"
         ? "100%"
@@ -112,22 +113,26 @@ export const CardWrapper = styled(Card)(
             : ".7rem",
     borderRadius: "8px",
     height: cardheight ? cardheight : "220px",
+
     border:
       getCurrentModuleType() === ModuleTypes.FOOD &&
       `1px solid ${alpha(theme.palette.moduleTheme.food, 0.1)}`,
 
     "&:hover": {
-      boxShadow: "5px 0px 20px rgba(0, 54, 85, 0.15)",
+      boxShadow: ` 0px 10px 20px 0px ${alpha(
+        theme.palette.neutral[1000],
+        0.1
+      )}`,
       img: {
-        transform: "scale(1.1)",
+        transform: "scale(1.05)",
       },
     },
-    ".MuiTypography-subtitle1, .name": {
-      transition: "all ease 0.5s",
-    },
+    // ".MuiTypography-subtitle1, .name": {
+    //   transition: "all ease 0.5s",
+    // },
     "&:hover .MuiTypography-subtitle1, &:hover .name": {
-      color: theme.palette.primary.main,
-      letterSpacing: "0.02em",
+      //color: theme.palette.primary.main,
+      // letterSpacing: "0.02em",
     },
     [theme.breakpoints.down("sm")]: {
       height:
@@ -138,7 +143,7 @@ export const CardWrapper = styled(Card)(
             ? "100%"
             : cardWidth
               ? cardWidth
-              : "300px"
+              : "95%"
           : "100%",
       margin:
         wishlistcard === "true"
@@ -160,7 +165,12 @@ const CustomCardMedia = styled(CardMedia)(
   ({ theme, horizontalcard, loveItem }) => ({
     position: "relative",
     //overflow: "hidden",
-    padding: loveItem === "true" ? "2px" : "1rem",
+    padding:
+      loveItem === "true"
+        ? "2px"
+        : horizontalcard === "true"
+          ? ".5rem"
+          : "0rem",
     margin: "2px",
     //borderRadius: horizontalcard === "true" ? "0x 10px" : "10px 10px 0 0",
     height: horizontalcard === "true" ? "100%" : "212px",
@@ -176,7 +186,6 @@ const CustomCardMedia = styled(CardMedia)(
     },
     backgroundColor:
       horizontalcard === "true" ? theme.palette.neutral[100] : "none",
-
     [theme.breakpoints.down("sm")]: {
       width: horizontalcard === "true" ? "160px" : "100%",
       height: horizontalcard === "true" ? "135px" : "175px",
@@ -212,6 +221,7 @@ const ProductCard = (props) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const [openModal, setOpenModal] = React.useState(false);
+  const [openLocationAlert, setOpenLocationAlert] = useState(false);
   const { selectedModule } = useSelector((state) => state.utilsData);
   const { configData } = useSelector((state) => state.configData);
   const [isHover, setIsHover] = useState(false);
@@ -360,13 +370,6 @@ const ProductCard = (props) => {
         (item) => item?.store_id === state?.modalData[0]?.store_id
       );
 
-      // getDiscountedAmount(
-      //     state?.modalData[0]?.price,
-      //     state?.modalData[0]?.discount,
-      //     state?.modalData[0]?.discount_type,
-      //     state?.modalData[0]?.store_discount,
-      //     state?.modalData[0]?.quantity
-      // )
       if (isStoreExist) {
         if (!isInCart) {
           const itemObject = {
@@ -416,15 +419,13 @@ const ProductCard = (props) => {
   const addToCart = (e) => {
     if (item?.module_type === "ecommerce") {
       if (item?.variations.length > 0) {
-        router.push(
-          {
-            pathname: "/product/[id]",
-            query: {
-              id: `${item?.slug ? item?.slug : item?.id}`,
-              module_id: `${getModuleId()}`,
-            },
-          }
-        );
+        router.push({
+          pathname: "/product/[id]",
+          query: {
+            id: `${item?.slug ? item?.slug : item?.id}`,
+            module_id: `${getModuleId()}`,
+          },
+        });
       } else {
         e.stopPropagation();
         addToCartHandler();
@@ -447,8 +448,8 @@ const ProductCard = (props) => {
   };
 
   const quickViewHandleClick = (e) => {
-    e.stopPropagation();
-    dispatch({ type: ACTION.setOpenModal, payload: true });
+    // e.stopPropagation();
+    // dispatch({ type: ACTION.setOpenModal, payload: true });
   };
   const handleDisableButton = () => {
     if (getCurrentModuleType() !== "food") {
@@ -511,7 +512,12 @@ const ProductCard = (props) => {
   const handleIncrement = () => {
     const isExisted = getItemFromCartlist();
     const updateQuantity = isInCart?.quantity + 1;
-    const itemObject = getItemDataForAddToCart(isInCart, updateQuantity, getPriceAfterQuantityChange(isInCart, updateQuantity), getGuestId());
+    const itemObject = getItemDataForAddToCart(
+      isInCart,
+      updateQuantity,
+      getPriceAfterQuantityChange(isInCart, updateQuantity),
+      getGuestId()
+    );
     if (isExisted) {
       if (getCurrentModuleType() === "food") {
         if (item?.maximum_cart_quantity) {
@@ -575,7 +581,12 @@ const ProductCard = (props) => {
         onError: onErrorResponse,
       });
     } else {
-      const itemObject = getItemDataForAddToCart(isInCart, updateQuantity, getPriceAfterQuantityChange(isInCart, updateQuantity), getGuestId());
+      const itemObject = getItemDataForAddToCart(
+        isInCart,
+        updateQuantity,
+        getPriceAfterQuantityChange(isInCart, updateQuantity),
+        getGuestId()
+      );
       updateMutate(itemObject, {
         onSuccess: cartUpdateHandleSuccessDecrement,
         onError: onErrorResponse,
@@ -588,7 +599,7 @@ const ProductCard = (props) => {
       <CustomStackFullWidth
         justifyContent="center"
         alignItems="flex-start"
-        sx={{ position: "relative", padding: "13px 10px 13px 13px" }}
+        sx={{ position: "relative", padding: "13px 16px 16px 13px" }}
       >
         {isWishlisted && (
           <Box
@@ -602,35 +613,39 @@ const ProductCard = (props) => {
             <FavoriteIcon sx={{ fontSize: "15px" }} />
           </Box>
         )}
-
-        <Typography
-          variant={horizontalcard === "true" ? "subtitle2" : "h6"}
-          marginBottom="4px"
-          sx={{
-            textAlign: lanDirection === "rtl" && "end",
-            color: (theme) => theme.palette.text.custom,
-            fontSize: { xs: "13px", sm: "inherit" },
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: "2",
-            WebkitBoxOrient: "vertical",
-            height: "36px",
-            mt: "5px",
-            width: "210px",
-            [theme.breakpoints.down("sm")]: {
-              width: "146px",
-            },
-          }}
-          className="name"
-        >
-          {item?.name}
-        </Typography>
-        <Stack mt="5px">
-          <Typography variant={isSmall ? "body3" : "subtitle2"}>
-            {t("start from")}
+        <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+          <Typography
+            variant={horizontalcard === "true" ? "subtitle2" : "h6"}
+            marginBottom="4px"
+            sx={{
+              lineHeight: "45px",
+              textAlign: lanDirection === "rtl" && "end",
+              color: (theme) => theme.palette.text.custom,
+              fontSize: { xs: "13px", sm: "inherit" },
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: "2",
+              WebkitBoxOrient: "vertical",
+              height: "36px",
+              mt: "5px",
+              width: "210px",
+              [theme.breakpoints.down("sm")]: {
+                width: "146px",
+              },
+            }}
+            className="name"
+          >
+            {item?.name}
           </Typography>
-          <Typography variant={isSmall ? "h7" : "h5"}>
+        </PrimaryToolTip>
+        <Stack mt="5px">
+          <Typography fontSize="10px">{t("start from")}</Typography>
+          <Typography
+            fontSize={{ xs: "14px", md: "16px" }}
+            fontWeight="600"
+            color={theme.palette.text.primary}
+          >
             {getAmountWithSign(item?.price)}
           </Typography>
         </Stack>
@@ -640,6 +655,7 @@ const ProductCard = (props) => {
           justifyContent="space-between"
           spacing={2}
           mb="3px"
+          paddingRight="3px"
         >
           <Typography
             mt="4px"
@@ -687,7 +703,9 @@ const ProductCard = (props) => {
         <CustomBoxFullWidth sx={{ mt: "15px" }}>
           <Body2 text={item?.store_name} />
         </CustomBoxFullWidth>
-        <H3 text={item?.name} />
+        <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+          <H3 text={item?.name} />
+        </PrimaryToolTip>
         {item?.unit_type ? (
           <Typography
             sx={{ color: (theme) => theme.palette.customColor.textGray }}
@@ -729,7 +747,7 @@ const ProductCard = (props) => {
       <CustomStackFullWidth
         justifyContent="center"
         alignItems="flex-start"
-        sx={{ position: "relative", padding: "13px 10px 13px 13px" }}
+        sx={{ position: "relative", padding: "13px 16px 16px 13px" }}
       >
         {isWishlisted && (
           <Box
@@ -750,24 +768,26 @@ const ProductCard = (props) => {
           justifyContent="flex-start"
           spacing={0.8}
         >
-          <Typography
-            variant={horizontalcard === "true" ? "subtitle2" : "h6"}
-            marginBottom="4px"
-            sx={{
-              color: (theme) => theme.palette.text.custom,
-              fontSize: { xs: "13px", sm: "inherit" },
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitLineClamp: "2",
-              WebkitBoxOrient: "vertical",
-              lineHeight: "1.2", // Adjust this value to control line height
-              mt: "5px",
-            }}
-            className="name"
-          >
-            {item?.name}
-          </Typography>
+          <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+            <Typography
+              variant={horizontalcard === "true" ? "subtitle2" : "h6"}
+              marginBottom="4px"
+              sx={{
+                color: (theme) => theme.palette.text.custom,
+                fontSize: { xs: "13px", sm: "inherit" },
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: "2",
+                WebkitBoxOrient: "vertical",
+                lineHeight: "1.2", // Adjust this value to control line height
+                mt: "5px",
+              }}
+              className="name"
+            >
+              {item?.name}
+            </Typography>
+          </PrimaryToolTip>
           <FoodVegNonVegFlag veg={item?.veg === 0 ? "false" : "true"} />
         </CustomStackFullWidth>
         <Typography
@@ -818,7 +838,15 @@ const ProductCard = (props) => {
         p="1rem"
       >
         <Body2 text={item?.store_name} />
-        <H3 text={item?.name} />
+        <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+          <Typography
+            className={classes.singleLineEllipsis}
+            fontSize={{ xs: "12px", md: "14px" }}
+            fontWeight="500"
+          >
+            {item?.name}
+          </Typography>
+        </PrimaryToolTip>
         <CustomStackFullWidth
           justifyContent="center"
           alignItems="center"
@@ -841,10 +869,13 @@ const ProductCard = (props) => {
         justifyContent="center"
         alignItems="center"
         spacing={1.5}
-        p="1rem"
+        // p="1rem"
+        p="0 4px"
       >
         <Body2 text={item?.store_name} />
-        <H3 text={item?.name} />
+        <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+          <H3 text={item?.name} />
+        </PrimaryToolTip>
         <CustomStackFullWidth
           justifyContent="center"
           alignItems="center"
@@ -867,9 +898,10 @@ const ProductCard = (props) => {
                 fontSize: { xs: "13px", sm: "18px" },
                 color: alpha(theme.palette.error.deepLight, 0.7),
               }}
-            >{t("Out of Stock")}</Typography>
+            >
+              {t("Out of Stock")}
+            </Typography>
           ) : (
-
             <AmountWithDiscountedAmount item={item} />
           )}
           <CustomStackFullWidth mt="100px" spacing={1}>
@@ -879,10 +911,20 @@ const ProductCard = (props) => {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography fontWeight="bold" lineHeight="28px" variant="body2">
+              <Typography
+                fontSize="11px"
+                fontWeight="bold"
+                lineHeight="16px"
+                variant="body2"
+              >
                 <CustomSpan>{t("Sold")}</CustomSpan> : {sold} {t("items")}
               </Typography>
-              <Typography fontWeight="bold" lineHeight="28px" variant="body2">
+              <Typography
+                fontSize="11px"
+                fontWeight="bold"
+                lineHeight="16px"
+                variant="body2"
+              >
                 <CustomSpan>{t("Available")}</CustomSpan> : {stock} {t("items")}
               </Typography>
             </CustomStackFullWidth>
@@ -900,7 +942,9 @@ const ProductCard = (props) => {
         p="1rem"
       >
         <Body2 text={item?.store_name} />
-        <H3 text={item?.name} />
+        <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+          <H3 text={item?.name} />
+        </PrimaryToolTip>
         <CustomStackFullWidth
           justifyContent="center"
           alignItems="center"
@@ -911,7 +955,6 @@ const ProductCard = (props) => {
           ) : (
             <CustomMultipleRatings rating={4.5} withCount />
           )}
-
           <AmountWithDiscountedAmount item={item} />
         </CustomStackFullWidth>
       </CustomStackFullWidth>
@@ -975,8 +1018,22 @@ const ProductCard = (props) => {
           isWishlisted={isWishlisted}
         />
       ) : (
-        <>{cardFor === "flashSale" ? (
-          <>{stock !== 0 &&
+        <>
+          {cardFor === "flashSale" ? (
+            <>
+              {stock !== 0 && (
+                <ModuleModal
+                  open={state.openModal}
+                  handleModalClose={handleClose}
+                  configData={configData}
+                  productDetailsData={item}
+                  addToWishlistHandler={addToWishlistHandler}
+                  removeFromWishlistHandler={removeFromWishlistHandler}
+                  isWishlisted={isWishlisted}
+                />
+              )}
+            </>
+          ) : (
             <ModuleModal
               open={state.openModal}
               handleModalClose={handleClose}
@@ -986,22 +1043,8 @@ const ProductCard = (props) => {
               removeFromWishlistHandler={removeFromWishlistHandler}
               isWishlisted={isWishlisted}
             />
-          }</>
-        ) : (
-          <ModuleModal
-            open={state.openModal}
-            handleModalClose={handleClose}
-            configData={configData}
-            productDetailsData={item}
-            addToWishlistHandler={addToWishlistHandler}
-            removeFromWishlistHandler={removeFromWishlistHandler}
-            isWishlisted={isWishlisted}
-          />
-        )
-
-        }
+          )}
         </>
-
       )}
       {wishlistcard === "true" && (
         <HeartWrapper onClick={() => setOpenModal(true)} top="5px" right="5px">
@@ -1024,6 +1067,7 @@ const ProductCard = (props) => {
           handleClick={handleClick}
           isLoading={isLoading}
           updateLoading={updateLoading}
+          setOpenLocationAlert={setOpenLocationAlert}
         />
       ) : (
         <CardWrapper
@@ -1076,7 +1120,7 @@ const ProductCard = (props) => {
               {item?.module?.module_type === "food" && (
                 <ProductsUnavailable product={item} />
               )}
-              
+
               <CustomOverLay hover={state.isTransformed} border_radius="10px">
                 <QuickView
                   quickViewHandleClick={quickViewHandleClick}
@@ -1087,6 +1131,8 @@ const ProductCard = (props) => {
                   addToCartHandler={addToCart}
                   showAddtocart={cardFor === "vertical" && !isProductExist}
                   isLoading={isLoading}
+                  openLocationAlert={openLocationAlert}
+                  setOpenLocationAlert={setOpenLocationAlert}
                 />
               </CustomOverLay>
               {cardFor === "vertical" && isProductExist && (
@@ -1137,6 +1183,12 @@ const ProductCard = (props) => {
         onClose={() => setOpenModal(false)}
         onSuccess={() => deleteWishlistItem(item?.id)}
       />
+      <CustomModal
+        openModal={openLocationAlert}
+        handleClose={() => setOpenLocationAlert(false)}
+      >
+        <GetLocationAlert setOpenAlert={setOpenLocationAlert} />
+      </CustomModal>
     </Stack>
   );
 };

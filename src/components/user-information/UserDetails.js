@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Stack } from "@mui/system";
 import CustomImageContainer from "../CustomImageContainer";
 import {
+  alpha,
   IconButton,
   Skeleton,
   Typography,
@@ -15,7 +16,7 @@ import { CustomTypographyEllipsis } from "../../styled-components/CustomTypograp
 import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
 import ProfileTabPopover from "../profile/ProfileTabPopover";
 
-const UserDetails = ({ data, page, deleteUserHandler }) => {
+const UserDetails = ({ data, page, deleteUserHandler,isLoadingDelete,setAccountDeleteStatus,accountDeleteStatus }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const { configData } = useSelector((state) => state.configData);
@@ -40,6 +41,7 @@ const UserDetails = ({ data, page, deleteUserHandler }) => {
             border: "2px solid",
             borderColor: (theme) => theme.palette.neutral[100],
             borderRadius: "50%",
+            backgroundColor: alpha(theme.palette.primary.dark, 0.8),
           }}
         >
           <CustomImageContainer
@@ -84,6 +86,9 @@ const UserDetails = ({ data, page, deleteUserHandler }) => {
         open={openPopover}
         page={page}
         deleteUserHandler={deleteUserHandler}
+        setAccountDeleteStatus={setAccountDeleteStatus}
+        accountDeleteStatus={accountDeleteStatus}
+        isLoadingDelete={isLoadingDelete}
       />
     </>
   );

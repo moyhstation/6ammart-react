@@ -6,7 +6,7 @@ import { ModuleTypes } from "../../helper-functions/moduleTypes";
 export const Search = styled(CustomStackFullWidth)(({ theme, type2 }) => ({
   backgroundColor: theme.palette.neutral[100],
   color: theme.palette.neutral[600],
-  height: "45px",
+  height: "40px",
   border:
     type2 &&
     `1px solid ${alpha(
@@ -15,7 +15,7 @@ export const Search = styled(CustomStackFullWidth)(({ theme, type2 }) => ({
         : theme.palette.primary.main,
       0.4
     )}`,
-  borderRadius: type2 ? "10px" : "5px",
+  borderRadius: "5px",
   // [theme.breakpoints.up("sm")]: {
   //   height: "45px",
   // },
@@ -42,7 +42,7 @@ export const StyledInputBase = styled(InputBase)(
     width: "100%",
 
     "& .MuiInputBase-input": {
-      padding: "13px 17px",
+      padding: "10px 17px",
       transition: theme.transitions.create("width"),
       width: "100%",
     },

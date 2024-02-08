@@ -13,7 +13,6 @@ import Banners from "./Banners";
 import { NoSsr, useMediaQuery, useTheme } from "@mui/material";
 import DiscountBanner from "./DiscountBanner";
 import CookiesConsent from "../CookiesConsent";
-import useGetGuest from "../../api-manage/hooks/react-query/guest/useGetGuest";
 
 const LandingPage = ({ configData, landingPageData }) => {
   const Testimonials = dynamic(() => import("./Testimonials"), {
@@ -54,17 +53,6 @@ const LandingPage = ({ configData, landingPageData }) => {
       setOpen(true);
     }
   };
-  let token = undefined;
-  if (typeof window !== "undefined") {
-    token = localStorage.getItem("token");
-  }
-  const { data: guestData, refetch: guestRefetch, isLoading } = useGetGuest();
-  useEffect(() => {
-    if (!token) {
-      guestRefetch();
-    }
-  }, []);
-  localStorage.setItem("guest_id", guestData?.guest_id);
 
   return (
     <>

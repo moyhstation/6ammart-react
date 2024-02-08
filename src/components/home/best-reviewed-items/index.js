@@ -30,7 +30,7 @@ const BestReviewedItems = (props) => {
   const [reRender, setReRender] = useState(false);
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
-  const isMedium = useMediaQuery(theme.breakpoints.up("sm"));
+  const isMedium = useMediaQuery(theme.breakpoints.down("lg"));
   const SliderRef = useRef(null);
   const {
     data,
@@ -98,7 +98,7 @@ const BestReviewedItems = (props) => {
         cardheight="365px"
         cardFor="vertical"
         cardType="vertical-type"
-        // cardFor="popular items"
+      // cardFor="popular items"
       />
     ));
 
@@ -112,6 +112,14 @@ const BestReviewedItems = (props) => {
     slidesToScroll: 2,
     cssEase: "linear",
     responsive: [
+      {
+        breakpoint: 350,
+        settings: {
+          slidesToShow: 1.2,
+          slidesToScroll: 1,
+          infinite: false,
+        },
+      },
       {
         breakpoint: 450,
         settings: {
@@ -134,18 +142,17 @@ const BestReviewedItems = (props) => {
           slidesToScroll: 1,
         },
       },
-
       {
-        breakpoint: 1200,
+        breakpoint: 1150,
         settings: {
-          slidesToShow: 3.5,
+          slidesToShow: info?.best_reviewed_section_banner ? 2.6 : 2.1,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 1150,
+        breakpoint: 1200,
         settings: {
-          slidesToShow: info?.best_reviewed_section_banner ? 1.6 : 2.1,
+          slidesToShow: 3.5,
           slidesToScroll: 1,
         },
       },
@@ -203,7 +210,7 @@ const BestReviewedItems = (props) => {
       {
         breakpoint: 900,
         settings: {
-          slidesToShow: 1.15,
+          slidesToShow: 1.9,
           slidesPerRow: 1,
           rows: 2,
           slidesToScroll: 1,
@@ -212,7 +219,7 @@ const BestReviewedItems = (props) => {
       {
         breakpoint: 1150,
         settings: {
-          slidesToShow: info?.best_reviewed_section_banner ? 1.6 : 2.1,
+          slidesToShow: 2.1,
           slidesPerRow: 1,
           rows: 2,
           slidesToScroll: 3,
@@ -249,10 +256,10 @@ const BestReviewedItems = (props) => {
                   <Grid
                     container
                     alignItems="center"
-                    spacing={{ xs: 1.3, md: 1.5, lg: 1.5 }}
+                    spacing={{ xs: 1.3, md: 1.2, lg: 1.5 }}
                   >
-                    {info?.best_reviewed_section_banner && (
-                      <Grid item xs={0} sm={3} md={2.5} lg={2.5}>
+                    {(info?.best_reviewed_section_banner && !isSmall) && (
+                      <Grid item xs={0} sm={0} lg={2.5}>
                         <CustomBoxFullWidth
                           sx={{
                             position: "relative",
@@ -263,6 +270,9 @@ const BestReviewedItems = (props) => {
                             },
                             margin: "10px",
                             display: { xs: "none", md: "inherit" },
+                            "&:hover": {
+                              img: { transform: "scale(1.05)" },
+                            },
                           }}
                         >
                           {bannerIsLoading ? (
@@ -286,24 +296,26 @@ const BestReviewedItems = (props) => {
                     <Grid
                       item
                       xs={12}
-                      sm={info?.best_reviewed_section_banner ? 9 : 12}
-                      md={info?.best_reviewed_section_banner ? 9.5 : 12}
+                      sm={12}
+                      lg={info?.best_reviewed_section_banner ? 9.5 : 12}
                     >
-                      <SliderCustom nopadding="true">
-                        <Slider {...foodBestReviewedSliderSettings}>
-                          {bestReviewedItems?.products?.map((item, index) => {
-                            return (
-                              <ProductCard
-                                key={index}
-                                item={item}
-                                cardheight="150px"
-                                cardWidth="95%"
-                                horizontalcard="true"
-                                cardFor="food horizontal card"
-                              />
-                            );
-                          })}
-                        </Slider>
+                      <SliderCustom nopadding="false" paddingBottom="1rem">
+                        <Stack>
+                          <Slider {...foodBestReviewedSliderSettings}>
+                            {bestReviewedItems?.products?.map((item, index) => {
+                              return (
+                                <ProductCard
+                                  key={index}
+                                  item={item}
+                                  cardheight="150px"
+                                  cardWidth="95%"
+                                  horizontalcard="true"
+                                  cardFor="food horizontal card"
+                                />
+                              );
+                            })}
+                          </Slider>
+                        </Stack>
                       </SliderCustom>
                     </Grid>
                   </Grid>
@@ -333,8 +345,8 @@ const BestReviewedItems = (props) => {
                 </Stack>
               </CustomStackFullWidth>
               <Grid container spacing={{ xs: 1, md: 1, lg: 1 }}>
-                {info?.best_reviewed_section_banner && (
-                  <Grid item xs={0} sm={12} md={2.5} lg={2.5}>
+                {(info?.best_reviewed_section_banner && !isSmall) && (
+                  <Grid item xs={0} sm={0} lg={2.5}>
                     <CustomBoxFullWidth
                       sx={{
                         position: "relative",
@@ -345,6 +357,9 @@ const BestReviewedItems = (props) => {
                         },
                         paddingTop: "8px",
                         display: { xs: "none", sm: "inherit" },
+                        "&:hover": {
+                          img: { transform: "scale(1.03)" },
+                        },
                       }}
                     >
                       {bannerIsLoading ? (
@@ -368,64 +383,11 @@ const BestReviewedItems = (props) => {
                 <Grid
                   item
                   xs={12}
-                  sm={info?.best_reviewed_section_banner ? 9 : 12}
-                  md={info?.best_reviewed_section_banner ? 9.5 : 12}
+                  sm={12}
+                  lg={info?.best_reviewed_section_banner ? 9.5 : 12}
                 >
                   <Grid item md={12} container position="relative">
                     <CustomStackFullWidth justifyContent="right" key={reRender}>
-                      {/*{isMedium && filteredData.length > 3 && (*/}
-                      {/*	<LeftArrowStyle top="45%" left={0}>*/}
-                      {/*		<IconButtonGray*/}
-                      {/*			onClick={() => SliderRef.current.slickPrev()}*/}
-                      {/*		>*/}
-                      {/*			{getLanguage() === "rtl" ? (*/}
-                      {/*				<ArrowForwardIosIcon fontSize="small" />*/}
-                      {/*			) : (*/}
-                      {/*				<ArrowBackIosNewIcon fontSize="small" />*/}
-                      {/*			)}*/}
-                      {/*		</IconButtonGray>*/}
-                      {/*	</LeftArrowStyle>*/}
-                      {/*)}*/}
-                      {/*{isSmall && filteredData.length > 2 && (*/}
-                      {/*	<LeftArrowStyle left={0}>*/}
-                      {/*		<IconButtonGray*/}
-                      {/*			onClick={() => SliderRef.current.slickPrev()}*/}
-                      {/*		>*/}
-                      {/*			{getLanguage() === "rtl" ? (*/}
-                      {/*				<ArrowForwardIosIcon fontSize="small" />*/}
-                      {/*			) : (*/}
-                      {/*				<ArrowBackIosNewIcon fontSize="small" />*/}
-                      {/*			)}*/}
-                      {/*		</IconButtonGray>*/}
-                      {/*	</LeftArrowStyle>*/}
-                      {/*)}*/}
-
-                      {/*{isMedium && filteredData.length > 3 && (*/}
-                      {/*	<RightArrowStyle top="45%" right={0}>*/}
-                      {/*		<IconButtonGray*/}
-                      {/*			onClick={() => SliderRef.current.slickNext()}*/}
-                      {/*		>*/}
-                      {/*			{getLanguage() === "rtl" ? (*/}
-                      {/*				<ArrowBackIosNewIcon fontSize="small" />*/}
-                      {/*			) : (*/}
-                      {/*				<ArrowForwardIosIcon fontSize="small" />*/}
-                      {/*			)}*/}
-                      {/*		</IconButtonGray>*/}
-                      {/*	</RightArrowStyle>*/}
-                      {/*)}*/}
-                      {/*{isSmall && filteredData.length > 2 && (*/}
-                      {/*	<RightArrowStyle right={0}>*/}
-                      {/*		<IconButtonGray*/}
-                      {/*			onClick={() => SliderRef.current.slickNext()}*/}
-                      {/*		>*/}
-                      {/*			{getLanguage() === "rtl" ? (*/}
-                      {/*				<ArrowBackIosNewIcon fontSize="small" />*/}
-                      {/*			) : (*/}
-                      {/*				<ArrowForwardIosIcon fontSize="small" />*/}
-                      {/*			)}*/}
-                      {/*		</IconButtonGray>*/}
-                      {/*	</RightArrowStyle>*/}
-                      {/*)}*/}
                       <SliderCustom>
                         <Slider ref={SliderRef} {...bestReviewedSliderSettings}>
                           {/* <Slider ref={SliderRef} {...settings}> */}

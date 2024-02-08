@@ -25,8 +25,8 @@ import DeliveryManInfo from "./DeliveryManInfo";
 import OrderSummery from "./OrderSummery";
 import RefundModal from "./RefundModal";
 import StoreDetails from "./StoreDetails";
-import {useSelector} from "react-redux";
-import {getGuestId} from "../../../../helper-functions/getToken";
+import { useSelector } from "react-redux";
+import { getGuestId } from "../../../../helper-functions/getToken";
 
 const OtherOrder = (props) => {
   const { configData, data, refetch, id, dataIsLoading } = props;
@@ -40,13 +40,14 @@ const OtherOrder = (props) => {
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
   const guestId = getGuestId();
   const { guestUserInfo } = useSelector((state) => state.guestUserInfo);
-  const phone=guestUserInfo?.contact_person_number
+  const phone = guestUserInfo?.contact_person_number
+
   const {
     refetch: refetchTrackOrder,
     data: trackOrderData,
     isLoading: trackDataIsLoading,
     isFetching: trackDataIsFetching,
-  } =  useGetTrackOrderData(id, phone,guestId);
+  } = useGetTrackOrderData(id, phone, guestId);
   useEffect(() => {
     refetchTrackOrder();
   }, []);
@@ -128,7 +129,7 @@ const OtherOrder = (props) => {
                 alignItems="center"
               >
                 <NoDeliveryManImage />
-                <Typography> No delivery man assigned </Typography>
+                <Typography>{t("No delivery man assigned")} </Typography>
               </CustomStackFullWidth>
             )}
           </>
@@ -220,7 +221,7 @@ const OtherOrder = (props) => {
         onClose={() => setOpenModal(false)}
         // reasons={reasonsData?.refund_reasons}
         formSubmit={formSubmitHandler}
-        // refundIsLoading={refundIsLoading}
+      // refundIsLoading={refundIsLoading}
       />
       {sideDrawerOpen && trackOrderData && (
         <TrackParcelOrderDrawer

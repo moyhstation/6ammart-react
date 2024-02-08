@@ -22,8 +22,6 @@ import CustomSlider from "../../search/CustomSlider";
 import { useTheme } from "@emotion/react";
 import CheckboxWithChild from "./CheckboxWithChild";
 import HighToLow from "../../../sort/HighToLow";
-import LoadingButton from "@mui/lab/LoadingButton";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import VegNonVegCheckBox from "../../group-buttons/OutlinedGroupButtons";
 import { getCurrentModuleType } from "../../../helper-functions/getCurrentModuleType";
 import { ModuleTypes } from "../../../helper-functions/moduleTypes";
@@ -280,7 +278,7 @@ const Sidebar = (props) => {
                   backgroundColor: (theme) => theme.palette.neutral[300],
                 }}
                 variant="outlined"
-                value={minMax[0] === 0 ? "" : minMax[0]}
+                value={minMax[0] <= 0 ? "" : minMax[0]}
                 onChange={(e) => {
                   if (e.target.value >= 0) {
                     setMinMax((prevState) => [e.target.value, prevState[1]]);

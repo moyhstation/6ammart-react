@@ -28,13 +28,14 @@ const GoogleMapComponent = ({
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const containerStyle = {
     width: "100%",
+    maxHeight: "50dvh",
     height: isModalExpand
       ? "70vh"
       : height
-        ? height
-        : isSmall
-          ? "250px"
-          : "450px",
+      ? height
+      : isSmall
+      ? "350px"
+      : "350px",
     paddingBottom: "0px",
   };
   const mapRef = useRef(GoogleMap);
@@ -68,7 +69,7 @@ const GoogleMapComponent = ({
   const [centerPosition, setCenterPosition] = useState(center);
 
   const onLoad = useCallback(function callback(map) {
-    setZoom(12);
+    setZoom(17);
     setMap(map);
   }, []);
   useEffect(() => {
@@ -101,7 +102,7 @@ const GoogleMapComponent = ({
     >
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={centerPosition}
+        center={center ?? centerPosition}
         onLoad={onLoad}
         zoom={zoom}
         onUnmount={onUnmount}

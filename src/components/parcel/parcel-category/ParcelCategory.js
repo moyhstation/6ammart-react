@@ -24,9 +24,13 @@ const ParcelCategory = () => {
         marginTop: "30px",
       }}
     >
-      <Stack justifyContent="center">
+      <Stack justifyContent="center" spacing={{ xs: 1, md: 0 }}>
         <H1 text="We Deliver Everything" />
-        <Typography textAlign="center" color={theme.palette.neutral[400]}>
+        <Typography
+          textAlign="center"
+          color={theme.palette.neutral[400]}
+          fontSize={{ xs: "12px", md: "14px" }}
+        >
           {t("What are you wish to send?")}
         </Typography>
       </Stack>

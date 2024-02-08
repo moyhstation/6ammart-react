@@ -65,7 +65,6 @@ const GoogleLoginComp = (props) => {
   };
   const handleCallBackResponse = (res) => {
     const userObj = jwt_decode(res.credential);
-
     setJwtToken(res);
     setUserInfo(userObj);
     mutate(

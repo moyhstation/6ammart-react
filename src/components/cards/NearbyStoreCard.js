@@ -1,5 +1,5 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Typography, alpha, styled, IconButton } from "@mui/material";
+import { alpha, styled, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -14,20 +14,17 @@ import { textWithEllipsis } from "../../styled-components/TextWithEllipsis";
 import CustomImageContainer from "../CustomImageContainer";
 import CustomMultipleRatings from "../CustomMultipleRatings";
 import ClosedNow from "../closed-now";
-import H3 from "../typographies/H3";
 import map from "./assets/map.png";
 import {
-  addWishList,
   addWishListStore,
-  removeWishListItem,
   removeWishListStore,
 } from "../../redux/slices/wishList";
 import toast from "react-hot-toast";
 import { not_logged_in_message } from "../../utils/toasterMessages";
-import { useAddToWishlist } from "../../api-manage/hooks/react-query/wish-list/useAddWishList";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useWishListStoreDelete } from "../../api-manage/hooks/react-query/wish-list/useWishListStoreDelete";
 import { useAddStoreToWishlist } from "../../api-manage/hooks/react-query/wish-list/useAddStoreToWishLists";
+import { PrimaryToolTip } from "./QuickView";
 
 const CustomStyledStack = styled(CustomStackFullWidth)(({ theme }) => ({
   background: theme.palette.neutral[100],
@@ -35,15 +32,15 @@ const CustomStyledStack = styled(CustomStackFullWidth)(({ theme }) => ({
   borderRadius: "10px",
   cursor: "pointer",
   "&:hover img": {
-    transform: "scale(1.1)",
+    transform: "scale(1.04)",
   },
-  ".MuiTypography-subtitle1": {
-    transition: "all ease 0.5s",
-  },
-  "&:hover .MuiTypography-subtitle1": {
-    color: theme.palette.primary.main,
-    letterSpacing: "0.02em",
-  },
+  // ".MuiTypography-subtitle1": {
+  //   transition: "all ease 0.5s",
+  // },
+  // "&:hover .MuiTypography-subtitle1": {
+  //   color: theme.palette.primary.main,
+  //   letterSpacing: "0.02em",
+  // },
 }));
 
 const CustomStyledBox = styled(CustomBoxFullWidth)(({ theme }) => ({
@@ -126,6 +123,7 @@ const NearbyStoreCard = (props) => {
         // lat: currentLocation?.lat,
         // lng: currentLocation?.lng,
         distance: item.distance,
+        store_zone_id: `${item?.zone_id}`,
       },
     });
   };
@@ -225,7 +223,16 @@ const NearbyStoreCard = (props) => {
             )}
           </CustomStackFullWidth>
         </CustomStackFullWidth>
-        <H3 text={item?.name} />
+        <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+          <Typography
+            className={classes.singleLineEllipsis}
+            fontSize={{ xs: "13px", md: "16px" }}
+            fontWeight="500"
+          >
+            {item?.name}
+          </Typography>
+        </PrimaryToolTip>
+        {/*<H3 text={item?.name} />*/}
         <Typography
           textAlign="flex-start"
           className={classes.singleLineEllipsis}

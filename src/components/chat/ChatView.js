@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Box, Stack, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import ChatMessages from "./ChatMessages";
 import ChatMessageAdd from "./ChatMessageAdd";
 import { makeStyles } from "@mui/styles";
@@ -26,6 +26,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   minHeight: "70vh",
   height: "100%",
   justifyContent: "space-between",
+  backgroundColor: theme.palette.background.custom6,
 }));
 export const ScrollToBottom = () => {
   const elementRef = useRef();
@@ -45,6 +46,7 @@ const ChatView = ({
   messageIsLoading,
   handleScroll,
   scrollBottom,
+  receiverType,
 }) => {
   const classes = useStyles();
   return (
@@ -53,6 +55,7 @@ const ChatView = ({
         sx={{
           overflowY: "scroll",
           height: "60vh",
+          backgroundColor: (theme) => theme.palette.background.custom6,
         }}
         onScroll={handleScroll}
         className={classes.root}
@@ -61,6 +64,7 @@ const ChatView = ({
           <ChatMessages
             conversationData={conversationData}
             scrollBottom={scrollBottom}
+            receiverType={receiverType}
           />
         )}
       </Box>

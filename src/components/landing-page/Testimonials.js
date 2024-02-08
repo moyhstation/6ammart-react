@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { styled, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
@@ -59,6 +59,17 @@ const Testimonials = ({ isSmall, landingPageData }) => {
 	const { t } = useTranslation();
 	const theme = useTheme();
 	const { configData } = useSelector((state) => state.configData);
+	const [testimonials, setTestimonials] = useState([]);
+
+	useEffect(() => {
+		// Filter the testimonial_list based on the status property
+		const filteredTestimonials = landingPageData?.testimonial_list?.filter(
+			(item) => item?.status === 1
+		);
+
+		// Set the filtered testimonials in the state
+		setTestimonials(filteredTestimonials);
+	}, [landingPageData]);
 
 	const primary = theme.palette.primary.main;
 	const [onClient, setOnClient] = useState(false);
@@ -70,26 +81,28 @@ const Testimonials = ({ isSmall, landingPageData }) => {
 		activeSlide2: 0,
 	});
 	const setting = {
+		autoplay: true,
 		dots: false,
 		arrow: true,
-		infinite: landingPageData?.testimonial_list.length > 1 ? true : false,
-		slidesToShow: landingPageData?.testimonial_list.length > 2 ? 3 : 1,
+		infinite: testimonials.length > 1 ? true : false,
+		slidesToShow: testimonials.length > 4 ? 3 : 1,
 		focusOnSelect: true,
 		className: "center",
 		centerMode: true,
-		centerPadding: "164px",
-		speed: 1000,
+		centerPadding: "200px",
+		speed: testimonials.length > 4 ? 1000 : 2000,
+		autoplaySpeed: 4000,
 		beforeChange: (current, next) =>
 			setIndexState({ oldSlide: current, activeSlide: next }),
 		afterChange: (current) => setIndexState({ activeSlide2: current }),
-		prevArrow: landingPageData?.testimonial_list.length > 1 && <Prev />,
-		nextArrow: landingPageData?.testimonial_list.length > 1 && <Next />,
+		prevArrow: testimonials.length > 1 && <Prev />,
+		nextArrow: testimonials.length > 1 && <Next />,
 		responsive: [
 			{
 				breakpoint: 1023,
 				settings: {
 					slidesToShow:
-						landingPageData?.testimonial_list.length > 2 ? 3 : 1,
+						testimonials.length > 3 ? 3 : 1,
 					centerPadding: "64px",
 				},
 			},
@@ -97,7 +110,7 @@ const Testimonials = ({ isSmall, landingPageData }) => {
 				breakpoint: 767,
 				settings: {
 					slidesToShow:
-						landingPageData?.testimonial_list.length > 2 ? 3 : 1,
+						testimonials.length > 3 ? 3 : 1,
 					centerPadding: "0",
 				},
 			},
@@ -105,7 +118,7 @@ const Testimonials = ({ isSmall, landingPageData }) => {
 				breakpoint: 600,
 				settings: {
 					slidesToShow:
-						landingPageData?.testimonial_list.length > 2 ? 3 : 1,
+						testimonials.length > 3 ? 3 : 1,
 					initialSlide: 2,
 					centerPadding: "0",
 				},
@@ -115,9 +128,12 @@ const Testimonials = ({ isSmall, landingPageData }) => {
 	const textSliderSettings = {
 		fade: true,
 	};
+	if (!testimonials?.length) {
+		return
+	}
 	return (
 		<>
-			{landingPageData && landingPageData?.testimonial_list?.length > 0 && (
+			{landingPageData && testimonials?.length > 0 && (
 				<CustomContainer>
 					<CustomStackFullWidth
 						py={{ xs: "30px", md: "3.35rem" }}
@@ -126,6 +142,8 @@ const Testimonials = ({ isSmall, landingPageData }) => {
 						<Typography
 							textAlign="center"
 							variant={isSmall ? "h7" : "h4"}
+							fontSize={{ xs: "17px", sm: "24px", md: "30px" }}
+							fontWeight={500}
 						>
 							<DollarSignHighlighter
 								theme={theme}
@@ -148,14 +166,17 @@ const Testimonials = ({ isSmall, landingPageData }) => {
 										ref={(e) => setNav1(e)}
 										{...setting}
 									>
-										{landingPageData?.testimonial_list?.map(
+										{testimonials?.map(
 											(item, i) => (
-												<TestimonialSlideImage
-													img={`${landingPageData?.base_urls?.testimonial_image_url}/${item?.reviewer_image}`}
-													key={i}
-													indexState={indexState}
-													currentIndex={i}
-												/>
+												<>{item?.status === 1 &&
+													<TestimonialSlideImage
+														img={`${landingPageData?.base_urls?.testimonial_image_url}/${item?.reviewer_image}`}
+														key={i}
+														indexState={indexState}
+														currentIndex={i}
+													/>
+												}
+												</>
 											)
 										)}
 									</Slider>
@@ -165,7 +186,7 @@ const Testimonials = ({ isSmall, landingPageData }) => {
 									ref={(e) => setNav2(e)}
 									{...textSliderSettings}
 								>
-									{landingPageData?.testimonial_list.map((item, i) => (
+									{testimonials.map((item, i) => (
 										<TestimonialSlideText {...item} key={i} />
 									))}
 								</Slider>
@@ -190,21 +211,22 @@ export const TestimonialSlideImage = (props) => {
 					width: "100%",
 					maxWidth: "140px",
 					aspectRatio: "1",
-					margin: "0 auto",
+					margin: "2px auto",
 				}}
 			>
 				<Box
 					sx={{
 						position: "absolute",
 						inset: "0",
-						background:
-							currentIndex === indexState?.activeSlide2 && primary,
+						background: currentIndex === indexState?.activeSlide2 && primary,
 						width: "100%",
 						height: "100%",
 						aspectRatio: "1",
 						borderRadius: "50%",
+						overflow: "hidden", // Ensure content inside is not visible outside the circle
 						padding: "5px",
-						transition: "all ease 0.2s",
+						transition: "background-color ease-in-out 0.3s", // Smoother background color transition
+						transform: `scale(${currentIndex === indexState?.activeSlide2 ? 1.01 : 1})`, // Scale effect for smoother transition
 					}}
 				>
 					<CustomImageContainer
@@ -226,20 +248,19 @@ export const TestimonialSlideText = (props) => {
 	const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
 	return (
 		<Box
-			className={`slide-item ${
-				index > activeState
-					? "next-slide"
-					: index == activeState
+			className={`slide-item ${index > activeState
+				? "next-slide"
+				: index == activeState
 					? "active"
 					: "prev-slide"
-			}`}
+				}`}
 			sx={{ marginTop: "30px" }}
 		>
 			<Stack className="content" spacing={3} alignItems="center">
 				{review && (
 					<Typography
 						fontSize={{ xs: "12px", md: "18px" }}
-						fontWeight="500"
+						fontWeight="400"
 						color={theme.palette.primary.main}
 						lineHeight="2"
 						fontStyle="italic"
@@ -260,6 +281,8 @@ export const TestimonialSlideText = (props) => {
 					{designation && (
 						<Typography
 							variant={isSmall ? "body2" : "body1"}
+							fontSize={{ xs: "12px", sm: "14px", md: "16px" }}
+							fontWeight={400}
 							className="designation"
 							color="text.secondary"
 						>

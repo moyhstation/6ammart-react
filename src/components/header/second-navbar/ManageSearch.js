@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 
 //import SearchSuggestionsBottom from "../../search/SearchSuggestionsBottom";
@@ -13,14 +12,22 @@ import { ModuleTypes } from "../../../helper-functions/moduleTypes";
 import { alpha } from "@mui/material";
 import useGetItemOrStore from "../../../api-manage/hooks/react-query/search/useGetItemOrStore";
 import { debounce } from "lodash";
+import jwt from "base-64";
 
-const ManageSearch = ({ zoneid, token, maxwidth, fullWidth,query }) => {
+const ManageSearch = ({ zoneid, token, maxwidth, fullWidth, query, name }) => {
   const router = useRouter();
   const [openSearchSuggestions, setOpenSearchSuggestions] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
   const [onSearchdiv, setOnSearchdiv] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
   const [searchValue, setSearchValue] = useState("");
+  const decodedName = name && jwt.decode(name);
+
+  useEffect(() => {
+    if (query === undefined) {
+      setSearchValue("");
+    }
+  }, [query]);
   const handleKeyPress = (value) => {
     if (value !== "") {
       setOpenSearchSuggestions(false);
@@ -84,7 +91,7 @@ const ManageSearch = ({ zoneid, token, maxwidth, fullWidth,query }) => {
         setOpenSearchSuggestions(true);
       }
     }
-  }, [itemOrStoreSuggestionData?.items,itemOrStoreSuggestionData?.stores]);
+  }, [itemOrStoreSuggestionData?.items, itemOrStoreSuggestionData?.stores]);
   const handleOnFocus = () => {
     if (searchValue === "") {
       setIsEmpty(true);
@@ -102,6 +109,7 @@ const ManageSearch = ({ zoneid, token, maxwidth, fullWidth,query }) => {
         setIsEmpty(true);
       }
     }
+
     // Bind the event listener
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -136,7 +144,7 @@ const ManageSearch = ({ zoneid, token, maxwidth, fullWidth,query }) => {
           <CustomSearch
             label={t("Search foods and restaurants...")}
             handleSearchResult={handleKeyPress}
-            selectedValue={query}
+            selectedValue={decodedName ?? query}
             setIsEmpty={setIsEmpty}
             handleOnFocus={handleOnFocus}
             setSearchValue={setSearchValue}
@@ -148,7 +156,7 @@ const ManageSearch = ({ zoneid, token, maxwidth, fullWidth,query }) => {
         <CustomSearch
           label={t(dynamicLabel())}
           handleSearchResult={handleKeyPress}
-          selectedValue={query}
+          selectedValue={decodedName ?? query}
           setIsEmpty={setIsEmpty}
           handleOnFocus={handleOnFocus}
           setSearchValue={setSearchValue}

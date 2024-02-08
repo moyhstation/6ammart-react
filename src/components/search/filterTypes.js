@@ -12,7 +12,7 @@ export const filterTypeItems = [
     checked: false,
   },
   { label: "Discounted", value: "discounted", checked: false },
-  { label: "From Campaign", value: "from_campaign", checked: false },
+  //{ label: "From Campaign", value: "from_campaign", checked: false },
   {
     label: "Popular",
     value: "popular",
@@ -33,8 +33,8 @@ export const filterTypeItems = [
   {
     label: "",
     value: "test",
-    checked: true
-  }
+    checked: true,
+  },
 ];
 
 export const filterTypeStores = [

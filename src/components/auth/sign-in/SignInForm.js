@@ -4,6 +4,8 @@ import CustomPhoneInput from "../../custom-component/CustomPhoneInput";
 import CustomTextFieldWithFormik from "../../form-fields/CustomTextFieldWithFormik";
 import { t } from "i18next";
 import { getLanguage } from "../../../helper-functions/getLanguage";
+import LockIcon from '@mui/icons-material/Lock';
+import { InputAdornment, alpha, useTheme } from "@mui/material";
 
 const SignInForm = ({
   loginFormik,
@@ -12,7 +14,7 @@ const SignInForm = ({
   passwordHandler,
 }) => {
   const lanDirection = getLanguage() ? getLanguage() : "ltr";
-
+  const theme = useTheme()
   return (
     <CustomStackFullWidth alignItems="center" spacing={{ xs: 2, md: 2 }}>
       <CustomPhoneInput
@@ -25,6 +27,7 @@ const SignInForm = ({
         height="45px"
       />
       <CustomTextFieldWithFormik
+        height="45px"
         required="true"
         type="password"
         label={t("Password")}
@@ -33,6 +36,11 @@ const SignInForm = ({
         fieldProps={loginFormik.getFieldProps("password")}
         onChangeHandler={passwordHandler}
         value={loginFormik.values.password}
+        startIcon={(
+          <InputAdornment position="start">
+            <LockIcon sx={{ color: (loginFormik.touched.password && !loginFormik.errors.password) ? theme.palette.primary.main : alpha(theme.palette.neutral[500], 0.4)}} />
+          </InputAdornment>
+        )}
       />
     </CustomStackFullWidth>
   );

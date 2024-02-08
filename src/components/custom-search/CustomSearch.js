@@ -25,12 +25,11 @@ const CustomSearch = ({
     language_direction = localStorage.getItem("direction");
   }
   useEffect(() => {
-    if (selectedValue){
+    if (selectedValue) {
       setValue(selectedValue);
-    }else {
-      setValue("")
+    } else {
+      setValue("");
     }
-
   }, [selectedValue]);
 
   const handleKeyPress = (e) => {
@@ -77,25 +76,6 @@ const CustomSearch = ({
             language_direction={language_direction}
             // onFocus={() => handleOnFocus?.(value)}
           />
-          {/*<>*/}
-          {/*  {isLoading ? (*/}
-          {/*    <CloseIconWrapper*/}
-          {/*      right={-1}*/}
-          {/*      language_direction={language_direction}*/}
-          {/*    >*/}
-          {/*      <LoadingButton loading variant="text" sx={{ width: "10px" }} />*/}
-          {/*    </CloseIconWrapper>*/}
-          {/*  ) : (*/}
-          {/*    <CloseIconWrapper*/}
-          {/*      onClick={() => handleReset?.()}*/}
-          {/*      language_direction={language_direction}*/}
-          {/*    >*/}
-          {/*      <IconButton>*/}
-          {/*        <CloseIcon fontSize="small" />*/}
-          {/*      </IconButton>*/}
-          {/*    </CloseIconWrapper>*/}
-          {/*  )}*/}
-          {/*</>*/}
         </>
       );
     } else {

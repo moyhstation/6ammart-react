@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { alpha, IconButton, MenuItem, MenuList, Popover } from "@mui/material";
 import { menuData } from "../header/second-navbar/account-popover/menuData";
 import { useSelector } from "react-redux";
@@ -6,6 +6,10 @@ import { t } from "i18next";
 import { Stack, styled } from "@mui/system";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useRouter } from "next/router";
+// import CustomDialogConfirm from "../../../custom-dialog/confirm/CustomDialogConfirm";
+import CustomDialogConfirm from "../custom-dialog/confirm/CustomDialogConfirm";
+import CustomModal from "../modal";
+import DeleteAccount from "../user-information/DeleteAccount";
 
 const StyledMenuItem = styled(MenuItem)(({ theme, page, menu }) => ({
   backgroundColor:
@@ -20,9 +24,23 @@ const StyledMenuItem = styled(MenuItem)(({ theme, page, menu }) => ({
   },
 }));
 const ProfileTabPopover = (props) => {
-  const { deleteUserHandler, anchorEl, onClose, open, page, ...other } = props;
+  const { deleteUserHandler,isLoadingDelete,accountDeleteStatus,setAccountDeleteStatus, anchorEl, onClose, open, page, ...other } = props;
   const { configData } = useSelector((state) => state.configData);
+  const [openModal, setOpenModal] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
   const router = useRouter();
+
+  const handleClose = () => {
+    setDeleteModal(false)
+    setAccountDeleteStatus(true)
+  };
+
+  const handleOpenDeleteModal= ()=>{
+    onClose();
+    setOpenModal(false)
+    setDeleteModal(true)
+  }
+
   const handleClick = (item) => {
     router.push({
       pathname: "/profile",
@@ -90,11 +108,22 @@ const ProfileTabPopover = (props) => {
         <StyledMenuItem
           page={page}
           menu={{ name: "delete" }}
-          onClick={deleteUserHandler}
+          onClick={handleOpenDeleteModal}
         >
           {t("Delete Your Account")}
         </StyledMenuItem>
       </MenuList>
+      <CustomModal
+        openModal={deleteModal}
+        handleClose={handleClose}
+      >
+        <DeleteAccount
+          isLoading={isLoadingDelete}
+          handleClose={handleClose}
+          deleteUserHandler={deleteUserHandler}
+          accountDeleteStatus={accountDeleteStatus}
+        />
+      </CustomModal>
     </Popover>
   );
 };

@@ -3,7 +3,6 @@ import { Box, Stack } from "@mui/system";
 import React from "react";
 import { setSelectedModule } from "../../redux/slices/utils";
 import CustomImageContainer from "../CustomImageContainer";
-import { setFeaturedCategories } from "../../redux/slices/storedData";
 
 const Container = styled(Stack)(({ theme }) => ({
   position: "fixed",

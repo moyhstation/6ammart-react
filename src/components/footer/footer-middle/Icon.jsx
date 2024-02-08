@@ -21,8 +21,8 @@ export const Pinterest = () => (
 );
 export const LinkedIn = () => (
 	<svg
-		width="22"
-		height="22"
+		width="20"
+		height="20"
 		viewBox="0 0 512 512"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
@@ -55,8 +55,8 @@ export const Twitter = () => (
 );
 export const Facebook = () => (
 	<svg
-		width="22"
-		viewBox="0 0 21 20"
+		width="20"
+		viewBox="0 0 20 20"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 	>
@@ -68,8 +68,8 @@ export const Facebook = () => (
 );
 export const Instragram = () => (
 	<svg
-		width="22"
-		viewBox="0 0 21 20"
+		width="20"
+		viewBox="0 0 20 20"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 	>

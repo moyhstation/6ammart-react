@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
 
 import {
@@ -18,17 +18,24 @@ import DollarSignHighlighter from "../../DollarSignHighlighter";
 import down_arrow from "../assets/downarrow.png";
 import HeroLocationForm from "./HeroLocationForm";
 import ModuleSelectionRaw from "./module-selection/ModuleSelectionRaw";
+import DownArrow from "../assets/DownArrow";
 
 const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
   const theme = useTheme();
   const isXSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const currentLanguage = getLanguage();
+  const [currentLocation, setCurrentLocation] = useState(null);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCurrentLocation(window.localStorage.getItem("location"));
+    }
+  }, []);
   const getSearchOrModulesBySelectedModules = () => {
-    if (getCurrentModuleType()) {
+    if (currentLocation) {
       return <ModuleSelectionRaw />;
     } else {
       return (
-        <CustomStackFullWidth mt="45px">
+        <CustomStackFullWidth mt="15px">
           <HeroLocationForm />
         </CustomStackFullWidth>
       );
@@ -36,7 +43,7 @@ const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
   };
   return (
     <CustomStackFullWidth>
-      <CustomStackFullWidth spacing={0.5}>
+      <CustomStackFullWidth spacing={0.4}>
         <Stack
           direction="row"
           alignItems="center"
@@ -47,7 +54,8 @@ const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
           <Typography
             sx={{
               color: (theme) => theme.palette.primary.main,
-              fontSize: isXSmall ? "19px" : "2.30rem",
+              fontSize: isXSmall ? "20px" : "54px",
+              lineHeight: isXSmall ? "24px" : "58px",
               fontWeight: "bold",
             }}
           >
@@ -59,7 +67,8 @@ const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
         </Stack>
         <Typography
           color={alpha(theme.palette.neutral[700], 0.8)}
-          variant={isXSmall ? "body1" : "h4"}
+          fontSize={isXSmall ? "16px" : "35px"}
+          lineHeight={isXSmall ? "22px" : "58px"}
           fontWeight="400"
         >
           <DollarSignHighlighter
@@ -68,7 +77,7 @@ const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
           />
         </Typography>
       </CustomStackFullWidth>
-      <CustomStackFullWidth spacing={2} mt="14px" sx={{ position: "relative" }}>
+      <CustomStackFullWidth flexDirection="row" spacing={2} mt="14px" sx={{ position: "relative" }}>
         <Typography
           sx={{
             fontSize: { xs: "12px", md: "20px" },
@@ -81,27 +90,7 @@ const HeroTitleSection = ({ configData, landingPageData, handleOrderNow }) => {
             text={landingPageData?.header_tag_line}
           />
         </Typography>
-        {!getCurrentModuleType() && (
-          <Box
-            sx={{
-              display: { xs: "none", md: "inherit" },
-              position: "absolute",
-              height: "70px",
-              width: "80px",
-              top: 20,
-              right: -65,
-            }}
-          >
-            <CustomImageContainer
-              src={down_arrow.src}
-              alt={t("Background")}
-              height="100%"
-              width="100%"
-              borderRadius="20px"
-              objectFit="cover"
-            />
-          </Box>
-        )}
+        {(!getCurrentModuleType() && !isXSmall) && (<DownArrow />)}
       </CustomStackFullWidth>
       {!isXSmall && getSearchOrModulesBySelectedModules()}
     </CustomStackFullWidth>

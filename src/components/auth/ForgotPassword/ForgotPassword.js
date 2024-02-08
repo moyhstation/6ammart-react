@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 import {
-  CustomBoxFullWidth,
   CustomPaper,
   FlexContainerCenter,
 } from "../../../styled-components/CustomStyles.style";
@@ -9,6 +8,7 @@ import ForgotPasswordNumberForm from "./ForgotPasswordNumberForm";
 import OtpForm from "./OtpForm";
 import NewPassword from "./NewPassword";
 import { useOtp } from "../../../api-manage/hooks/react-query/forgot-password/useOtp";
+import { onErrorResponse } from "../../../api-manage/api-error-response/ErrorResponses";
 
 const ForgotPassword = () => {
   const [page, setPage] = useState(0);
@@ -31,11 +31,11 @@ const ForgotPassword = () => {
   const pageShow = () => {
     if (page === 0) {
       return (
-         <ForgotPasswordNumberForm
-             goNext={goNext}
-             handleFirstForm={handleFirstForm}
-             data={data}
-         />
+        <ForgotPasswordNumberForm
+          goNext={goNext}
+          handleFirstForm={handleFirstForm}
+          data={data}
+        />
       );
     } else if (page === 1) {
       return (
@@ -65,11 +65,11 @@ const ForgotPassword = () => {
   const { mutate, isLoading } = useOtp(onSuccessHandler);
   const formSubmitHandler = (values) => {
     handleFirstForm(values);
-    mutate(values, { onSuccess: onSuccessHandler });
+    mutate(values, { onSuccess: onSuccessHandler, onError: onErrorResponse });
   };
   return (
     <Box minHeight="50vh">
-      <FlexContainerCenter sx={{marginTop:"1rem"}}>
+      <FlexContainerCenter sx={{ marginTop: "1rem" }}>
         <CustomPaper elevation={5}>{pageShow()}</CustomPaper>
       </FlexContainerCenter>
     </Box>

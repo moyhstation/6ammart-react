@@ -1,5 +1,5 @@
 import { useTheme } from "@emotion/react";
-import { Grid, Skeleton, Typography, useMediaQuery } from "@mui/material";
+import { Grid, Skeleton, Tooltip, Typography, useMediaQuery } from "@mui/material";
 import { Box, Stack, styled } from "@mui/system";
 import { btoa } from "next/dist/compiled/@edge-runtime/primitives/encoding";
 import { useRouter } from "next/router";
@@ -59,7 +59,7 @@ const FoodCategoryCard = (props) => {
                 }
               )}`,
               "&:hover": {
-                transform: "scale(1.1)",
+                transform: "scale(1.05)",
               },
             }}
           >
@@ -86,7 +86,7 @@ const FoodCategoryCard = (props) => {
               "&:hover": {
                 boxShadow: "0px 10px 20px rgba(88, 110, 125, 0.1)",
                 img: {
-                  transform: "scale(1.3)",
+                  transform: "scale(1.05)",
                 },
               },
             }}
@@ -116,24 +116,40 @@ const FoodCategoryCard = (props) => {
               />
             </Box>
           </Box>
-          <Typography
-            sx={{
-              color: (theme) => theme.palette.neutral[900],
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitLineClamp: "1",
-              WebkitBoxOrient: "vertical",
-              transition: "all ease 0.3s",
-              "&:hover": {
-                color: "primary.main",
+          <Tooltip
+            title={name}
+            placement="bottom"
+            arrow
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  bgcolor: (theme) => theme.palette.toolTipColor,
+                  "& .MuiTooltip-arrow": {
+                    color: (theme) => theme.palette.toolTipColor,
+                  },
+                },
               },
             }}
-            fontSize={{ xs: "13px", sm: "14px", md: "16px" }}
-            fontWeight="500"
           >
-            {name}
-          </Typography>
+            <Typography
+              sx={{
+                color: (theme) => theme.palette.neutral[900],
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: "1",
+                WebkitBoxOrient: "vertical",
+                transition: "all ease 0.3s",
+                "&:hover": {
+                  color: "primary.main",
+                },
+              }}
+              fontSize={{ xs: "13px", sm: "14px", md: "16px" }}
+              fontWeight="500"
+            >
+              {name}
+            </Typography>
+          </Tooltip>
         </FeatureImageBox>
       )}
     </Grid>
