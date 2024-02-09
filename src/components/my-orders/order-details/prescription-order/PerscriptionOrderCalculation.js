@@ -5,7 +5,7 @@ import { Stack } from "@mui/system";
 import { CustomStackFullWidth } from "../../../../styled-components/CustomStyles.style";
 import { getAmountWithSign } from "../../../../helper-functions/CardHelpers";
 
-const PrescriptionOrderCalculation = ({ t, data, trackOrderData }) => {
+const PrescriptionOrderCalculation = ({ t, data, trackOrderData, configData }) => {
   return (
     <OrderSummaryCalculationCard spacing={1.5}>
       <Typography fontWeight="500">{t("Summary")}</Typography>
@@ -21,11 +21,12 @@ const PrescriptionOrderCalculation = ({ t, data, trackOrderData }) => {
             {trackOrderData &&
               getAmountWithSign(
                 trackOrderData?.order_amount +
-                  trackOrderData?.store_discount_amount -
-                  trackOrderData?.coupon_discount_amount -
-                  trackOrderData?.total_tax_amount -
-                  trackOrderData?.dm_tips -
-                  trackOrderData?.delivery_charge
+                trackOrderData?.store_discount_amount -
+                trackOrderData?.coupon_discount_amount -
+                trackOrderData?.total_tax_amount -
+                trackOrderData?.dm_tips -
+                trackOrderData?.delivery_charge -
+                trackOrderData?.additional_charge
               )}
           </Typography>
         </CustomStackFullWidth>
@@ -77,6 +78,19 @@ const PrescriptionOrderCalculation = ({ t, data, trackOrderData }) => {
           justifyContent="space-between"
           spacing={2}
         >
+          <Typography>{t("Delivery fee")}</Typography>
+          <Typography>
+            (+){" "}
+            {trackOrderData &&
+              getAmountWithSign(trackOrderData?.delivery_charge)}
+          </Typography>
+        </CustomStackFullWidth>
+        <CustomStackFullWidth
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          spacing={2}
+        >
           <Typography>{t("Deliveryman tips")}</Typography>
           <Typography>
             (+) {trackOrderData && getAmountWithSign(trackOrderData?.dm_tips)}
@@ -88,11 +102,10 @@ const PrescriptionOrderCalculation = ({ t, data, trackOrderData }) => {
           justifyContent="space-between"
           spacing={2}
         >
-          <Typography>{t("Delivery fee")}</Typography>
+          <Typography>{t(configData?.additional_charge_name)}</Typography>
           <Typography>
-            (+){" "}
             {trackOrderData &&
-              getAmountWithSign(trackOrderData?.delivery_charge)}
+              getAmountWithSign(trackOrderData?.additional_charge)}
           </Typography>
         </CustomStackFullWidth>
         <Stack

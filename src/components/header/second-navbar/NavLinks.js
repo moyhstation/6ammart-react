@@ -28,7 +28,7 @@ const NavLinks = ({ zoneid, t, moduleType }) => {
             <NavLinkStyle
               underline="none"
               // language_direction={language_direction}
-              sx={{ cursor: "pointer", fontWeight:'bold' }}
+              sx={{ cursor: "pointer", fontWeight: "bold" }}
             >
               {t("Home")}
             </NavLinkStyle>

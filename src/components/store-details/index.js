@@ -11,8 +11,12 @@ import PopularInTheStore from "./popular";
 import { useRouter } from "next/router";
 import useGetStoreBanners from "../../api-manage/hooks/react-query/store/useGetStoreBanners";
 import StoreCustomMessage from "./StoreCustomMessage";
+import useGetModule from "../../api-manage/hooks/react-query/useGetModule";
+import { useDispatch } from "react-redux";
+import { setSelectedModule } from "../../redux/slices/utils";
 
 const StoreDetails = ({ storeDetails, configData }) => {
+  const dispatch = useDispatch();
   const imageBaseUrl = configData?.base_urls?.store_cover_photo_url;
   const bannerCover = `${imageBaseUrl}/${storeDetails?.cover_photo}`;
   const ownCategories = storeDetails?.category_ids;
@@ -21,22 +25,55 @@ const StoreDetails = ({ storeDetails, configData }) => {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const router = useRouter();
+  let moduleDataInLocalStorage = null;
   const storeShare = {
     moduleId: router.query.module_id,
     moduleType: router.query.module_type,
     storeZoneId: [parseInt(router.query.store_zone_id)],
   };
-  const { data: bannersData, refetch,isLoading } = useGetStoreBanners(storeDetails?.id);
+  const {
+    data: bannersData,
+    refetch,
+    isLoading,
+  } = useGetStoreBanners(storeDetails?.id);
+  const {
+    data: moduleDataFromApi,
+    refetch: refetchModule,
+    isRefetching,
+  } = useGetModule();
+
   useEffect(() => {
-    setRerender((prev) => !prev);
-    refetch();
-  }, [storeDetails?.id]);
+    refetchModule();
+  }, []);
+
+  useEffect(() => {
+    if (moduleDataFromApi) {
+      moduleDataFromApi?.filter((item) => {
+        if (storeShare.moduleId == item.id) {
+          localStorage.setItem("module", JSON.stringify(item));
+          dispatch(setSelectedModule(item));
+        }
+      });
+    }
+  }, [moduleDataFromApi]);
+
+  let zoneid = undefined;
+  if (typeof window !== "undefined") {
+    zoneid = localStorage.getItem("zoneid");
+    if (!zoneid) {
+      localStorage.setItem("zoneid", `[${storeShare?.storeZoneId}]`);
+    }
+  }
 
   const layoutHandler = () => {
     if (isSmall) {
       return (
         <CustomStackFullWidth spacing={3}>
-          {storeDetails?.announcement===1 &&   <StoreCustomMessage storeAnnouncement={storeDetails?.announcement_message}/> }
+          {storeDetails?.announcement === 1 && (
+            <StoreCustomMessage
+              storeAnnouncement={storeDetails?.announcement_message}
+            />
+          )}
           <Top
             bannerCover={bannerCover}
             storeDetails={storeDetails}
@@ -69,7 +106,11 @@ const StoreDetails = ({ storeDetails, configData }) => {
       return (
         <CustomContainer>
           <CustomStackFullWidth spacing={3}>
-            {storeDetails?.announcement===1 &&   <StoreCustomMessage storeAnnouncement={storeDetails?.announcement_message}/> }
+            {storeDetails?.announcement === 1 && (
+              <StoreCustomMessage
+                storeAnnouncement={storeDetails?.announcement_message}
+              />
+            )}
             <Top
               bannerCover={bannerCover}
               storeDetails={storeDetails}
@@ -102,7 +143,6 @@ const StoreDetails = ({ storeDetails, configData }) => {
       sx={{ minHeight: "100vh" }}
       spacing={3}
     >
-
       {layoutHandler()}
       {/*<RecommendItems store_id={storeDetails?.id} />*/}
     </CustomStackFullWidth>

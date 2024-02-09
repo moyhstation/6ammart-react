@@ -61,15 +61,20 @@ const ParcelVideo = () => {
               {data?.banner_type === "video" ? (
                 <CustomVideoPlayer videoUrl={data?.banner_video} />
               ) : (
-                <CustomImageContainer
-                  src={`${data?.promotional_banner_url}/${data?.banner_image}`}
-                  width="615px"
-                  objectfit="contain"
-                  padding={isSmall ? "20px 0px 0px 0px" : "25px 25px 0px 0px"}
-                  borderRadius="10px"
-                  smWidth="100%"
-                  smHeight="100%"
-                />
+                data?.banner_type === "video_content" ? (
+                  <CustomVideoPlayer videoUrl={`${data.banner_video_content_url}/${data?.banner_video_content}`} />
+                ) : (
+                  <CustomImageContainer
+                    src={`${data?.promotional_banner_url}/${data?.banner_image}`}
+                    width="615px"
+                    objectfit="contain"
+                    padding={isSmall ? "20px 0px 0px 0px" : "25px 25px 0px 0px"}
+                    borderRadius="10px"
+                    smWidth="100%"
+                    smHeight="100%"
+                  />
+
+                )
               )}
             </Stack>
           )}

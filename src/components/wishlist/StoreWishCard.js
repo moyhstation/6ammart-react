@@ -47,7 +47,11 @@ const StoreWishCard = ({ data, setSideDrawerOpen }) => {
     router.push(
       {
         pathname: "/store/[id]",
-        query: { id: `${storeIdOrSlug}`, module_id: `${moduleId}` },
+        query: {
+          id: `${storeIdOrSlug}`,
+          module_id: `${moduleId}`,
+          store_zone_id: `${data?.zone_id}`,
+        },
       },
       undefined,
       { shallow: true }

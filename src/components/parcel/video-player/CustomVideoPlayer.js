@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { IconButton } from '@mui/material';
+import { IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { CustomStackFullWidthVideo, PauseButton, PlayButton, PlayButtonWrapper, PlayButtonWrapperInside } from './CustomVideoPlayerStyles.style';
 
 const CustomVideoPlayer = ({ videoUrl }) => {
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const [playing, setPlaying] = useState(false);
   const [showIcon, setShowIcon] = useState(true)
   const [showControls, setShowControls] = useState(false);
@@ -47,21 +49,24 @@ const CustomVideoPlayer = ({ videoUrl }) => {
         onPlay={handlePlayVideo}
         volume={1}
         width="100%"
-        // height="100%"
+      // height="100%"
       // height={!videoUrl.includes("https://youtu.be") && "96%"}
       />
-      <PlayButtonWrapper
-        showControls={showControls}
-        showIcon={showIcon}
-      >
-        <PlayButtonWrapperInside>
-          <IconButton
-            aria-label="play"
-            onClick={togglePlay}>
-            {playing ? <PauseButton /> : <PlayButton />}
-          </IconButton>
-        </PlayButtonWrapperInside>
-      </PlayButtonWrapper>
+      {!isSmall &&
+        <PlayButtonWrapper
+          showControls={showControls}
+          showIcon={showIcon}
+        >
+          <PlayButtonWrapperInside>
+            <IconButton
+              aria-label="play"
+              onClick={togglePlay}>
+              {playing ? <PauseButton /> : <PlayButton />}
+            </IconButton>
+          </PlayButtonWrapperInside>
+        </PlayButtonWrapper>
+
+      }
     </CustomStackFullWidthVideo>
   );
 };

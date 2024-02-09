@@ -140,8 +140,9 @@ const StoresInfoCard = (props) => {
 			)}
 			<Link
 				href={{
-					pathname: "/store/[id]",
+					pathname: "/store/[id]", 
 					query: { id: `${id}`, module_id: `${moduleId}` },
+					store_zone_id: `${data?.zone_id}`
 				}}
 			>
 				<CardWrapper>
