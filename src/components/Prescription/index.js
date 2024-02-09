@@ -7,6 +7,8 @@ import { t } from "i18next";
 import { useRouter } from "next/router";
 import GuestCheckoutModal from "../cards/GuestCheckoutModal";
 import { getToken } from "../../helper-functions/getToken";
+import toast from "react-hot-toast";
+import { not_logged_in_message } from "../../utils/toasterMessages";
 
 const Prescription = ({ storeId }) => {
   const theme = useTheme();
@@ -18,7 +20,7 @@ const Prescription = ({ storeId }) => {
     if (token) {
       handleRoute();
     } else {
-      setOpen(true)
+      toast.error(t(not_logged_in_message))
     }
 
   };
@@ -64,7 +66,13 @@ const Prescription = ({ storeId }) => {
       >
         <ArticleIcon style={{ color: iconColor }} />
       </Stack>
-      {open && <GuestCheckoutModal open={open} setOpen={setOpen} setSideDrawerOpen={setSideDrawerOpen} handleRoute={handleRoute} />}
+      {open && <GuestCheckoutModal
+        open={open}
+        setOpen={setOpen}
+        setSideDrawerOpen={setSideDrawerOpen}
+        handleRoute={handleRoute}
+      />
+      }
     </Stack>
   );
 };

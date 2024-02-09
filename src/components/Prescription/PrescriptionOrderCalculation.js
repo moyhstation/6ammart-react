@@ -1,31 +1,31 @@
-import React, {useEffect} from "react";
-import {CalculationGrid, TotalGrid} from "../checkout/CheckOut.style";
-import {Grid, Stack, Typography, useTheme} from "@mui/material";
+import React, { useEffect } from "react";
+import { CalculationGrid, TotalGrid } from "../checkout/CheckOut.style";
+import { Grid, Stack, Typography, useTheme } from "@mui/material";
 import CustomDivider from "../CustomDivider";
-import {t} from "i18next";
-import {getInfoFromZoneData, handleDistance,} from "../../utils/CustomFunctions";
-import {getAmountWithSign} from "../../helper-functions/CardHelpers";
-import {useDispatch} from "react-redux";
+import { t } from "i18next";
+import { getInfoFromZoneData, handleDistance, } from "../../utils/CustomFunctions";
+import { getAmountWithSign } from "../../helper-functions/CardHelpers";
+import { useDispatch } from "react-redux";
 import useGetVehicleCharge from "../../api-manage/hooks/react-query/order-place/useGetVehicleCharge";
 
 const PrescriptionOrderCalculation = ({
-                                          storeData,
-                                          configData,
-                                          distanceData,
-                                          orderType,
-                                          zoneData,
-                                          origin,
-                                          destination,
-                                          totalOrderAmount,
-                                          deliveryTip
-                                      }) => {
+    storeData,
+    configData,
+    distanceData,
+    orderType,
+    zoneData,
+    origin,
+    destination,
+    totalOrderAmount,
+    deliveryTip
+}) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const tempDistance =
         distanceData?.data?.rows?.[0]?.elements[0]?.distance?.value / 1000;
 
-    const {data: extraCharge, refetch: extraChargeRefetch} =
-        useGetVehicleCharge({tempDistance});
+    const { data: extraCharge, refetch: extraChargeRefetch } =
+        useGetVehicleCharge({ tempDistance });
     useEffect(() => {
         extraChargeRefetch();
     }, [distanceData]);
@@ -111,7 +111,7 @@ const PrescriptionOrderCalculation = ({
             zoneData,
             origin,
             destination
-        ) + Number(deliveryTip)+configData?.additional_charge;
+        ) + Number(deliveryTip) + configData?.additional_charge;
         localStorage.setItem("totalAmount", totalAmount);
         return (
             <Typography color={theme.palette.primary.main}>
@@ -165,7 +165,7 @@ const PrescriptionOrderCalculation = ({
                         )
                     )}
             </Grid>
-            <CustomDivider/>
+            <CustomDivider />
             <TotalGrid container md={12} xs={12} mt="1rem">
                 <Grid item md={8} xs={8} pl=".5rem">
                     <Typography fontWeight="bold" color={theme.palette.primary.main}>

@@ -132,7 +132,7 @@ const ParcelPaymentMethod = (props) => {
                 paidBy={paidBy}
               />
             )}
-            {configData?.customer_wallet_status === 1 &&
+            {configData?.customer_wallet_status === 1 && token &&
               paidBy !== "receiver" &&
               forprescription !== "true" && (
                 <PaymentMethodCard

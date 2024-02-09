@@ -72,10 +72,11 @@ const CampaignBanners = (props) => {
 	  if (banner?.type === "store_wise") {
 		router.push(
 		  {
-			pathname: "/store/[id]",
+			pathname: "/store/[id]", 
 			query: {
 			  id: `${banner?.store?.slug ? banner?.store?.slug : banner?.store?.id}`,
 			  module_id: `${getModuleId()}`,
+			  store_zone_id: `${banner?.store?.zone_id}`,
 			},
 		  },
 		  undefined,
