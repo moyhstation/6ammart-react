@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 export const SaveButton = styled(LoadingButton)(({ theme }) => ({
@@ -11,6 +11,9 @@ export const SaveButton = styled(LoadingButton)(({ theme }) => ({
   },
   [theme.breakpoints.up("md")]: {
     color: "#ffffff",
+  },
+  [theme.breakpoints.down("md")]: {
+    fontSize: "12px",
   },
 }));
 

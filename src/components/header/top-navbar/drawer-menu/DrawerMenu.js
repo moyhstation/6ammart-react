@@ -13,11 +13,11 @@ import { logoutSuccessFull } from "../../../../utils/toasterMessages";
 import { clearWishList } from "../../../../redux/slices/wishList";
 import { setClearCart } from "../../../../redux/slices/cart";
 
-const DrawerMenu = ({ setToggled }) => {
+const DrawerMenu = ({ setToggled, openDrawer, setOpenDrawer }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useDispatch();
-  const [openDrawer, setOpenDrawer] = useState(false);
+  //const [openDrawer, setOpenDrawer] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [isLogoutLoading, setIsLogoutLoading] = useState(false);
   const toggleDrawer = (openDrawer) => (event) => {
@@ -50,7 +50,6 @@ const DrawerMenu = ({ setToggled }) => {
       console.error(err);
     }
   };
-
   return (
     <>
       <IconButton

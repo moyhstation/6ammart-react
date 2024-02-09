@@ -7,18 +7,23 @@ import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import CustomModal from "../modal";
 import CheckoutFailedCard from "./CheckoutFailedCard";
+import { CustomStackFullWidth } from "../../styled-components/CustomStyles.style";
 
 const CheckoutFailed = (props) => {
-  const { configData } = props;
+  const { configData, handleOrderDetailsClose } = props;
   const [openModal, setModalOpen] = useState(false);
   const { t } = useTranslation();
   setTimeout(() => {
     setModalOpen(true);
+    //handleOrderDetailsClose();
   }, 500);
 
   return (
-    <React.Fragment>
-      <CardContent>
+    <CustomStackFullWidth
+      padding={{ xs: "40px 15px", md: "45px 45px 40px" }}
+      alignItems="center"
+    >
+      <CardContent sx={{ p: "10px" }}>
         <Typography
           align="center"
           sx={{ fontSize: 24 }}
@@ -46,9 +51,13 @@ const CheckoutFailed = (props) => {
         setModalOpen={setModalOpen}
         disableAutoFocus={true}
       >
-        <CheckoutFailedCard id={props.id} configData={configData} />
+        <CheckoutFailedCard
+          id={props.id}
+          configData={configData}
+          handleOrderDetailsClose={handleOrderDetailsClose}
+        />
       </CustomModal>
-    </React.Fragment>
+    </CustomStackFullWidth>
   );
 };
 

@@ -27,7 +27,9 @@ const SuggestedSearches = ({ t, data, handleKeyPress, isRefetching }) => {
                   {data?.items?.length > 0 && (
                     <Grid item xs={12}>
                       <CustomStackFullWidth spacing={2}>
-                        <Typography variant="h6">{t("Items")}</Typography>
+                        <Typography fontSize="14px" fontWeight="500">
+                          {t("Items")}
+                        </Typography>
                         {data?.items.map((item, index) => {
                           return (
                             <Stack
@@ -55,7 +57,9 @@ const SuggestedSearches = ({ t, data, handleKeyPress, isRefetching }) => {
                   {data?.stores?.length > 0 && (
                     <Grid item xs={12}>
                       <CustomStackFullWidth spacing={2}>
-                        <Typography variant="h6">{t("Stores")}</Typography>
+                        <Typography fontSize="14px" fontWeight="500">
+                          {t("Stores")}
+                        </Typography>
                         {data?.stores.map((item, index) => {
                           return (
                             <Stack

@@ -41,7 +41,7 @@ const SinglePrescriptionUpload = (props) => {
       >
         <ImageUploaderWithPreview
           type="file"
-          labelText={t("file Upload")}
+          labelText={t("File upload")}
           hintText="Image format - jpg, png, jpeg, gif Image Size - maximum size 2 MB Image Ratio - 1:1"
           file={image}
           onChange={singleFileUploadHandlerForImage}

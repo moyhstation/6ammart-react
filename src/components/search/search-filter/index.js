@@ -1,28 +1,13 @@
-import React, { useEffect, useId } from "react";
-import {
-  Drawer,
-  Skeleton,
-  styled,
-  TextField,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import React, { useEffect } from "react";
+import { Drawer, styled, useMediaQuery } from "@mui/material";
 import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
-import { Scrollbar } from "../../srollbar";
-import CheckboxWithChild from "../../store-details/middle-section/CheckboxWithChild";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import CustomDivider from "../../CustomDivider";
-import CustomSlider from "../CustomSlider";
 import { Box } from "@mui/system";
 import { useTheme } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import MultipleCheckboxWithTitle from "../../multiple-checkbox-with-title";
-import TagsCheckbox from "../../multiple-checkbox-with-title/TagsCheckbox";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetCategories } from "../../../api-manage/hooks/react-query/all-category/all-categorys";
 import { setCategories } from "../../../redux/slices/storedData";
-import { VIEW_ALL_TEXT } from "../../../utils/staticTexts";
 
 const CustomPaperBox = styled(Box)(({ theme }) => ({
   backgroundColor: "paper.default",
@@ -131,6 +116,7 @@ const SearchFilter = (props) => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"), {
     noSsr: true,
   });
+
   const content = (
     <CustomStackFullWidth sx={{ padding: !sideDrawer && "1rem" }} spacing={3}>
       {categories?.length > 0 && (

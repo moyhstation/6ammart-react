@@ -1,12 +1,12 @@
 import { useTheme } from "@emotion/react";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { Router, useRouter } from "next/router";
 import React from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
 import { RouteLinksData } from "../demoLinks";
-import {getModule} from "../../../helper-functions/getLanguage";
+import { getModule } from "../../../helper-functions/getLanguage";
 
 const RouteLinks = (props) => {
   const { token, configData } = props;
@@ -34,17 +34,14 @@ const RouteLinks = (props) => {
       router.push(href, undefined, { shallow: true });
     }
   };
-  // let moduleType;
-  // if(typeof window !== "undefined"){
-  //   moduleType=JSON.parse(window.localStorage.getItem("module"))
-  // }
   const handleClickToRoute = (href) => {
     router.push(href, undefined, { shallow: true });
   };
   const theme = useTheme();
+  const isXsmall = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <CustomStackFullWidth spacing={1}>
+    <CustomStackFullWidth spacing={2} alignItems={{ xs: "start" }}>
       {RouteLinksData.map((item, index) => {
         return (
           <Typography
@@ -52,10 +49,8 @@ const RouteLinks = (props) => {
             onClick={() => handleClick(item.link, item.value)}
             sx={{
               cursor: "pointer",
-              transition: "all ease-out .3s",
               "&:hover": {
                 color: theme.palette.primary.main,
-                letterSpacing: "0.03em",
               },
             }}
           >
@@ -68,25 +63,21 @@ const RouteLinks = (props) => {
         onClick={() => handleClickToRoute("/about-us")}
         sx={{
           cursor: "pointer",
-          transition: "all ease-out .3s",
           "&:hover": {
             color: theme.palette.primary.main,
-            letterSpacing: "0.03em",
           },
         }}
       >
         {t("About Us")}
       </Typography>
-     <Typography
-          onClick={() => handleClickToRoute("/track-order")}
-          sx={{
-            cursor: "pointer",
-            transition: "all ease-out .3s",
-            "&:hover": {
-              color: theme.palette.primary.main,
-              letterSpacing: "0.03em",
-            },
-          }}
+      <Typography
+        onClick={() => handleClickToRoute("/track-order")}
+        sx={{
+          cursor: "pointer",
+          "&:hover": {
+            color: theme.palette.primary.main,
+          },
+        }}
       >
         {t("Track Order")}
       </Typography>

@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import StarIcon from "@mui/icons-material/Star";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
 import { getCurrentModuleType } from "../helper-functions/getCurrentModuleType";
@@ -15,6 +15,7 @@ const CustomRatingBox = (props) => {
     return rating.toFixed(configData?.digit_after_decimal_point);
   };
   const theme = useTheme();
+  // isXsmall = useMediaQuery(theme.breakpoints.down("sm"))
   const getModuleWise = () => {
     switch (getCurrentModuleType()) {
       case ModuleTypes.GROCERY:
@@ -45,7 +46,7 @@ const CustomRatingBox = (props) => {
   };
   return (
     <Stack
-      width="50px"
+      width="52px"
       direction="row"
       alignItems="center"
       justifyContent="center"
@@ -54,18 +55,18 @@ const CustomRatingBox = (props) => {
         color: getModuleWise()?.color,
         backgroundColor: getModuleWise()?.background,
         borderRadius: getModuleWise()?.borderRadius,
-        height: "20px",
+        // paddingInline: "4px",
       }}
     >
       <StarIcon
         sx={{
-          paddingBottom: "3px",
+          paddingBottom: "1px",
           fontSize: IsSmallScreen() ? "12px" : "14px",
           display: "inline-flex",
           height: "unset",
         }}
       />
-      <Typography variant={IsSmallScreen() ? "body3" : "body1"}>
+      <Typography fontSize={{ xs: "10px", md: "13px" }}>
         {getRating()}
       </Typography>
     </Stack>

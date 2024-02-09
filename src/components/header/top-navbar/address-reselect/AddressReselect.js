@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { CustomStackFullWidth } from "../../../../styled-components/CustomStyles.style";
 import AddressReselectPopover from "./AddressReselectPopover";
 
-const AddressReselect = ({ location }) => {
+const AddressReselect = ({ location, setOpenDrawer }) => {
   const theme = useTheme();
   const router = useRouter();
   const [openReselectModal, setOpenReselectModal] = useState(false);
@@ -26,13 +26,13 @@ const AddressReselect = ({ location }) => {
       currentLatLng = JSON.parse(localStorage.getItem("currentLatLng"));
       const location = localStorage.getItem("location");
 
-      setAddress({
-        ...currentLatLng,
-        latitude: currentLatLng?.lat,
-        longitude: currentLatLng?.lng,
-        address: location,
-        address_type: "Selected Address",
-      });
+      // setAddress({
+      //   ...currentLatLng,
+      //   latitude: currentLatLng?.lat,
+      //   longitude: currentLatLng?.lng,
+      //   address: location,
+      //   address_type: "Selected Address1",
+      // });
     }
   }, []);
 
@@ -47,12 +47,13 @@ const AddressReselect = ({ location }) => {
         localStorage.setItem("zoneid", JSON.stringify(address.zone_ids));
         toast.success(t("New delivery address selected."));
         handleClosePopover();
-        window.location.reload();
+        // window.location.reload();
       }
     }
   }, [address]);
   const handleClickToLandingPage = () => {
     setOpenPopover(true);
+    setOpenDrawer(false);
     // if (token) {
     // } else {
     //   toast.error(t("Login required."));

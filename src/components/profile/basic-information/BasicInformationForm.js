@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import {
-  Box,
   Button,
   Grid,
   Stack,
@@ -8,14 +7,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { ButtonBox, SaveButton } from "./Profile.style";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useFormik } from "formik";
 import ValidationSechemaProfile from "./Validation";
 import IconButton from "@mui/material/IconButton";
-import CreateIcon from "@mui/icons-material/Create";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import CustomDialogConfirm from "../../custom-dialog/confirm/CustomDialogConfirm";
 import toast from "react-hot-toast";
 import { useDeleteProfile } from "../../../api-manage/hooks/react-query/profile/useDeleteProfile";
 import { useRouter } from "next/router";
@@ -30,8 +24,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CustomAlert from "../../alert/CustomAlert";
-import AccountInformation from "./AccountInformation";
 import FormSubmitButton from "../FormSubmitButton";
+
 export const BackIconButton = styled(IconButton)(({ theme }) => ({
   padding: "10px",
   borderRadius: "4px",
@@ -44,7 +38,7 @@ export const ResetButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.neutral[400],
   color: theme.palette.neutral[400],
   marginRight: "5px",
-  paddingInline: "40px",
+  paddingInline: "30px",
 }));
 
 export const convertValuesToFormData = (values) => {
@@ -421,13 +415,6 @@ const BasicInformationForm = ({
           </Grid>
         </Grid>
       </form>
-      <CustomDialogConfirm
-        dialogTexts={t("Are you sure you want to delete your account?")}
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        onSuccess={deleteUserHandler}
-        isLoading={isLoadingDelete}
-      />
     </>
   );
 };

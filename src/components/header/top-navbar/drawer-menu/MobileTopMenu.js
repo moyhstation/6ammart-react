@@ -2,24 +2,20 @@ import React, { useEffect } from "react";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { alpha, Typography } from "@mui/material";
+import { alpha } from "@mui/material";
 import Box from "@mui/material/Box";
 import { t } from "i18next";
 import { useRouter } from "next/router";
 import CollapsableMenu from "./CollapsableMenu";
-import Slide from "@mui/material/Slide";
 import useGetLatestStore from "../../../../api-manage/hooks/react-query/store/useGetLatestStore";
 import { useGetCategories } from "../../../../api-manage/hooks/react-query/all-category/all-categorys";
 import useGetPopularStore from "../../../../api-manage/hooks/react-query/store/useGetPopularStore";
-import { CustomChip } from "../../../../styled-components/CustomStyles.style";
 import { useDispatch, useSelector } from "react-redux";
 import { Scrollbar } from "../../../srollbar";
 import ButtonsContainer from "./ButtonsContainer";
 import { getStoresOrRestaurants } from "../../../../helper-functions/getStoresOrRestaurants";
 import { getModuleId } from "../../../../helper-functions/getModuleId";
-import CallToAdmin from "../../../CallToAdmin";
 import { setPopularStores } from "../../../../redux/slices/storedData";
-import { Stack } from "@mui/system";
 import ThemeSwitches from "../ThemeSwitches";
 import CustomLanguage from "../language/CustomLanguage";
 
@@ -43,6 +39,7 @@ const MobileTopMenu = ({
   const { configData, countryCode, language } = useSelector(
     (state) => state.configData
   );
+
   const { data: categoriesData, refetch } = useGetCategories();
   const { data: latestStore, refetch: refetchStore } = useGetLatestStore();
   const type = "all";
@@ -59,7 +56,7 @@ const MobileTopMenu = ({
   const { popularStores } = useSelector((state) => state.storedData);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (popularStores.length === 0) {
+    if (popularStores.length === 0 && getModuleId()) {
       popularRefetch();
     }
   }, []);
@@ -102,25 +99,25 @@ const MobileTopMenu = ({
   const getWishlistCount = () => {
     return wishLists?.item?.length + wishLists?.store?.length;
   };
-
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         width: "auto",
-        height: "100%",
+        height: "90%",
         justifyContent: "space-between",
       }}
       role="presentation"
       onKeyDown={toggleDrawer(false)}
     >
       <Box sx={{ paddingX: "20px" }}>
-        <Scrollbar style={{ maxHeight: "500px" }}>
+        <Scrollbar style={{ maxHeight: "80vh" }}>
           <List component="nav" aria-labelledby="nested-list-subheader">
             <>
               <ListItemButton
                 sx={{
+                  color: (theme) => theme.palette.primary.main,
                   marginTop: "30px",
                   "&:hover": {
                     backgroundColor: (theme) =>
@@ -147,21 +144,25 @@ const MobileTopMenu = ({
                     value={collapsableMenu.latest}
                     setOpenDrawer={setOpenDrawer}
                     toggleDrawers={toggleDrawer}
-                    pathName="/store/popular"
+                    pathName="/store/latest"
                   />
                   <CollapsableMenu
                     value={collapsableMenu.popularStore}
                     setOpenDrawer={setOpenDrawer}
                     toggleDrawers={toggleDrawer}
-                    pathName="/store/latest"
+                    pathName="/store/popular"
                   />
                 </>
               )}
-              <ListItemButton>
+              <ListItemButton
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              >
                 <ListItemText>{t("Theme Mode")}</ListItemText>
                 <ThemeSwitches noText />
               </ListItemButton>
-              <ListItemButton>
+              <ListItemButton
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              >
                 <ListItemText>{t("Language")}</ListItemText>
                 <CustomLanguage
                   countryCode={countryCode}

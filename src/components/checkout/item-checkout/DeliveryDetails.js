@@ -179,29 +179,6 @@ const DeliveryDetails = (props) => {
         storeZoneId={storeData?.zone_id}
         orderType={orderType}
       />
-      {/*{orderType !== "take_away" && (*/}
-
-      {/*)}*/}
-
-      {/*<Popover*/}
-      {/*  open={open}*/}
-      {/*  anchorEl={anchorEl}*/}
-      {/*  onClose={handleClose}*/}
-      {/*  anchorOrigin={{*/}
-      {/*    vertical: "bottom",*/}
-      {/*    horizontal: "left",*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  <RestaurantScheduleTime*/}
-      {/*    storeData={storeData}*/}
-      {/*    handleChange={handleChange}*/}
-      {/*    today={today}*/}
-      {/*    tomorrow={tomorrow}*/}
-      {/*    numberOfDay={numberOfDay}*/}
-      {/*    configData={configData}*/}
-      {/*    setScheduleAt={setScheduleAt}*/}
-      {/*  />*/}
-      {/*</Popover>*/}
     </CustomStackFullWidth>
   );
 };

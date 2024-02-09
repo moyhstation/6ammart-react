@@ -17,23 +17,19 @@ const ButtonContainer = styled(Box)(
       noBackground === "true"
         ? null
         : right === "true"
-        ? `linear-gradient(270deg, ${
-            isRtl === "rtl"
-              ? "rgba(255, 255, 255, 0)"
-              : theme.palette.neutral[100]
-          } 0%, ${
-            isRtl === "rtl"
-              ? theme.palette.neutral[100]
-              : "rgba(75, 86, 107, 0.05) -28.57%, rgba(255, 255, 255, 0) 122.62%"
+          ? `linear-gradient(270deg, ${isRtl === "rtl"
+            ? "rgba(255, 255, 255, 0)"
+            : theme.palette.neutral[100]
+          } 0%, ${isRtl === "rtl"
+            ? theme.palette.neutral[100]
+            : "rgba(75, 86, 107, 0.05) -28.57%, rgba(255, 255, 255, 0) 122.62%"
           } 100%)`
-        : `linear-gradient(${isRtl === "rtl" ? "to left" : "to right"},  ${
-            isRtl === "rtl"
-              ? "rgba(255, 255, 255, 0)"
-              : "rgba(75, 86, 107, 0.05) -28.57%, rgba(255, 255, 255, 0) 122.62%"
-          } 0%, ${
-            isRtl === "rtl"
-              ? theme.palette.neutral[100]
-              : "rgba(255, 255, 255, 0)"
+          : `linear-gradient(${isRtl === "rtl" ? "to left" : "to right"},  ${isRtl === "rtl"
+            ? "rgba(255, 255, 255, 0)"
+            : "rgba(75, 86, 107, 0.05) -28.57%, rgba(255, 255, 255, 0) 122.62%"
+          } 0%, ${isRtl === "rtl"
+            ? theme.palette.neutral[100]
+            : "rgba(255, 255, 255, 0)"
           }  100%)`,
 
     zIndex: 1,
@@ -57,7 +53,8 @@ const PrevWrapper = styled(Box)(({ theme, isdisabled }) => ({
   display: isdisabled ? "none" : "flex",
   alignItems: "center",
   justifyContent: "center",
-  backgroundColor: "rgba(255, 255, 255, 0.8)",
+  // backgroundColor: "rgba(255, 255, 255, 0.8)",
+  backgroundColor: theme.palette.primary.main,
   boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
   height: "35px",
   width: "35px",
@@ -68,7 +65,8 @@ const NextWrapper = styled(Box)(({ theme, isdisabled }) => ({
   zIndex: 1,
   right: 8,
   display: isdisabled ? "none" : "flex",
-  backgroundColor: "rgba(255, 255, 255, 0.8)",
+  // backgroundColor: "rgba(255, 255, 255, 0.8)",
+  backgroundColor: theme.palette.primary.main,
   borderRadius: "50%",
   boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
   alignItems: "center",

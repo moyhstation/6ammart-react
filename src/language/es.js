@@ -298,7 +298,7 @@ export const spain = {
   "Delivery Man Image": "صورة رجل التسليم",
   "Loyalty Points !": "نقاط الولاء !",
   "Search your desired foods ": "ابحث عن الأطعمة التي تريدها ",
-  "file Upload": "تحميل الملف",
+  "File upload": "تحميل الملف",
   "Delivery Man Type": "نوع رجل التوصيل",
   Zone: "منطقة",
   "Identity Type": "نوع الهوية",

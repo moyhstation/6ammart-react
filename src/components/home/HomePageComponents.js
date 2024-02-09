@@ -13,14 +13,15 @@ import SearchResult from "./search";
 import { getCurrentModuleType } from "../../helper-functions/getCurrentModuleType";
 import Grocery from "./module-wise-components/Grocery";
 import Pharmacy from "./module-wise-components/pharmacy/Pharmacy";
-import CustomContainer from "../container";
 import Shop from "./module-wise-components/ecommerce";
 import { ModuleTypes } from "../../helper-functions/moduleTypes";
 import FoodModule from "./module-wise-components/food";
 import Parcel from "./module-wise-components/parcel/Index";
-import useGetGuest from "../../api-manage/hooks/react-query/guest/useGetGuest";
-import useGetAllCartList from "../../api-manage/hooks/react-query/add-cart/useGetAllCartList";
-import { setCartList } from "../../redux/slices/cart";
+import useGetLastOrderWithoutReview from "../../api-manage/hooks/react-query/review/useGetLastOrderWithoutReview";
+import { getToken } from "../../helper-functions/getToken";
+import CustomModal from "../modal";
+import LastOrderReview from "./LastOrderReview";
+import useReviewReminderCancel from "../../api-manage/hooks/react-query/review/useReviewReminderCancel";
 
 export const HomeComponentsWrapper = styled(Stack)(({ theme }) => ({
   width: "100%",
@@ -29,13 +30,32 @@ export const HomeComponentsWrapper = styled(Stack)(({ theme }) => ({
 
 const HomePageComponents = ({ configData }) => {
   const [wishListsData, setWishListsData] = useState();
+  const [orderId, setOrderId] = useState(null);
+  const [open, setOpen] = useState(false);
   const { modules } = useSelector((state) => state.storedData);
   const matches = useMediaQuery("(max-width:1180px)");
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
   const router = useRouter();
-  const { search } = router.query
+  const { search } = router.query;
   const dispatch = useDispatch();
+
+  const reviewReminder = (res) => {
+    if (res?.order_id) {
+      setOrderId(res?.order_id);
+      setOpen(true);
+    }
+  };
+  const reviewReminderCancel = (res) => {
+    setOpen(false);
+  };
+  const { refetch: lastReviewRefetch, data } =
+    useGetLastOrderWithoutReview(reviewReminder);
+
+  const { refetch: cancelReviewRefetch } = useReviewReminderCancel(
+    reviewReminderCancel,
+    orderId
+  );
   let zoneid = undefined;
   if (typeof window !== "undefined") {
     zoneid = localStorage.getItem("zoneid");
@@ -62,6 +82,11 @@ const HomePageComponents = ({ configData }) => {
   const getModule = () => {
     return JSON.parse(window.localStorage.getItem("module"));
   };
+  useEffect(() => {
+    if (getToken()) {
+      lastReviewRefetch();
+    }
+  }, []);
 
   const getModuleWiseComponents = () => {
     switch (getCurrentModuleType()) {
@@ -78,6 +103,16 @@ const HomePageComponents = ({ configData }) => {
     }
   };
 
+  const handleClose = () => {
+    if (orderId) {
+      cancelReviewRefetch();
+    }
+  };
+  const handleRateButtonClick = () => {
+    router.push(`/rate-and-review/${orderId}`, undefined, {
+      shallow: true,
+    });
+  };
   return (
     <PushNotificationLayout>
       <CustomStackFullWidth>
@@ -92,7 +127,12 @@ const HomePageComponents = ({ configData }) => {
               height: "100%",
             }}
           >
-            <SearchWithTitle zoneid={zoneid} token={token} query={router.query.search} />
+            <SearchWithTitle
+              zoneid={zoneid}
+              token={token}
+              query={router.query.search}
+              name={router.query.name}
+            />
           </CustomStackFullWidth>
         </CustomStackFullWidth>
         {/*SEARCH ARE HAPPENING hERE*/}
@@ -100,12 +140,24 @@ const HomePageComponents = ({ configData }) => {
           <SearchResult
             key={router.query.id}
             searchValue={router.query.search}
+            name={router.query.name}
+            isSearch={router.query.fromSearch}
+            fromAllCategories={router.query.from}
             configData={configData}
           />
         ) : (
           <Box width="100%">{getModuleWiseComponents()}</Box>
         )}
       </CustomStackFullWidth>
+      {open && (
+        <CustomModal openModal={open} handleClose={handleClose}>
+          <LastOrderReview
+            handleClose={handleClose}
+            handleRateButtonClick={handleRateButtonClick}
+            productImage={data?.images}
+          />
+        </CustomModal>
+      )}
     </PushNotificationLayout>
   );
 };

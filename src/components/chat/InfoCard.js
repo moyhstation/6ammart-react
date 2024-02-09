@@ -1,25 +1,20 @@
 import React, { useEffect } from "react";
-import { Avatar, Badge, Stack, styled, Typography } from "@mui/material";
+import { alpha, Avatar, Badge, Stack, styled, Typography } from "@mui/material";
 import { CustomStackFullWidth } from "../../styled-components/CustomStyles.style";
 
 // import {
 //   FormatedDateWithTime,
 //   getDateFormat,
 // } from "../../utils/customFunctions";
-import { useQuery } from "react-query";
 // import { ProfileApi } from "../../hooks/react-query/config/profileApi";
 import { useSelector } from "react-redux";
 import { useTheme } from "@mui/material/styles";
-import { t } from "i18next";
-import {
-  FormatedDateWithTime,
-  onlyTimeFormat,
-} from "../../utils/CustomFunctions";
+import { onlyTimeFormat } from "../../utils/CustomFunctions";
 import useGetUserInfo from "../../api-manage/hooks/react-query/user/useGetUserInfo";
 import { CustomTypographyEllipsis } from "../../styled-components/CustomTypographies.style";
 // import adminImage from "../../../public/static/food.png";
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
+export const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     backgroundColor: "#44b700",
     color: "#44b700",
@@ -57,6 +52,7 @@ const InfoCard = ({
   currentId,
   selectedId,
   last_message,
+  adminImage,
 }) => {
   const theme = useTheme();
   const { configData } = useSelector((state) => state.configData);
@@ -67,15 +63,18 @@ const InfoCard = ({
     }
     if (userList.receiver_type === "delivery_man") {
       return configData?.base_urls?.delivery_man_image_url;
-    } else configData?.base_urls?.business_logo_url;
+    }
+    if (userList?.receiver_type === "admin") {
+      return configData?.base_urls?.business_logo_url;
+    }
   };
 
   const { data, refetch, isLoading } = useGetUserInfo();
   useEffect(() => {
     refetch();
   }, []);
-
-  const userImage = userList?.receiver?.image;
+  const userImage =
+    userList.receiver_type === "admin" ? adminImage : userList?.receiver?.image;
   const isSender = data?.userinfo?.id === userList.last_message.sender_id;
   const isRead = !isLoading && !isSender && unRead > 0;
   const language_direction = localStorage.getItem("direction");
@@ -85,10 +84,16 @@ const InfoCard = ({
       spacing={2}
       alignItems="center"
       padding="10px 15px 10px 10px"
+      sx={{
+        background:
+          selectedId === currentId && alpha(theme.palette.primary.main, 0.2),
+        borderRadius: "5px",
+      }}
     >
       <StyledBadge
         overlap="circular"
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+
         //variant="dot"
       >
         <Avatar
@@ -119,7 +124,10 @@ const InfoCard = ({
           <CustomTypographyEllipsis
             sx={{
               maxWidth: "130px",
-              color: (theme) => theme.palette.neutral[400],
+              color:
+                unRead > 0
+                  ? theme.palette.neutral[1000]
+                  : theme.palette.neutral[400],
               textTransform: "capitalize ",
             }}
             fontSize={isRead > 0 ? "15px" : "12px"}

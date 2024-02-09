@@ -1,5 +1,5 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Grid, alpha, styled } from "@mui/material";
+import { alpha, Grid, styled, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -21,10 +21,10 @@ import { not_logged_in_message } from "../../utils/toasterMessages";
 import CustomImageContainer from "../CustomImageContainer";
 import CustomRatingBox from "../CustomRatingBox";
 import Body2 from "../typographies/Body2";
-import H4 from "../typographies/H4";
 import { CustomOverLay } from "./Card.style";
-import QuickView from "./QuickView";
+import QuickView, { PrimaryToolTip } from "./QuickView";
 import { t } from "i18next";
+import { textWithEllipsis } from "../../styled-components/TextWithEllipsis";
 
 const FavoriteWrapper = styled(Box)(({ theme }) => ({
   color: theme.palette.primary.main,
@@ -37,7 +37,7 @@ const FavoriteWrapper = styled(Box)(({ theme }) => ({
   justifyContent: "center",
 }));
 const Wrapper = styled(CustomStackFullWidth)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.background.custom6,
   padding: "10px",
   border: `1px solid ${alpha(theme.palette.neutral[400], 0.2)}`,
   borderRadius: "10px",
@@ -48,10 +48,10 @@ const Wrapper = styled(CustomStackFullWidth)(({ theme }) => ({
   },
   "&:hover": {
     transform: "scale(1.03)",
-    img: { transform: "scale(1.1)" },
+    img: { transform: "scale(1.05)" },
     ".MuiTypography-subtitle2": {
       color: theme.palette.primary.main,
-      letterSpacing: "0.02em",
+      // letterSpacing: "0.02em",
     },
   },
 }));
@@ -67,11 +67,13 @@ const ImageWrapper = styled(CustomBoxFullWidth)(({ theme }) => ({
 }));
 
 const timeAndDeliveryTypeHandler = (item) => {
-  const time = item?.delivery_time !== null ? item?.delivery_time : ""
-  const free_delivery = item?.free_delivery === true ?  `. ${t("Free Delivery")}` : "";
-  return time+free_delivery;
+  const time = item?.delivery_time !== null ? item?.delivery_time : "";
+  const free_delivery =
+    item?.free_delivery === true ? `. ${t("Free Delivery")}` : "";
+  return time + free_delivery;
 };
 const StoreCard = (props) => {
+  const classes = textWithEllipsis();
   const { item, imageUrl } = props;
   const [isHover, setIsHover] = useState(false);
   const { wishLists } = useSelector((state) => state.wishList);
@@ -182,7 +184,16 @@ const StoreCard = (props) => {
       <CustomBoxFullWidth>
         <Grid container>
           <Grid item xs={9.5}>
-            <H4 text={item?.name} />
+            <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+              <Typography
+                className={classes.singleLineEllipsis}
+                fontSize={{ xs: "12px", md: "14px" }}
+                fontWeight="500"
+              >
+                {item?.name}
+              </Typography>
+            </PrimaryToolTip>
+            {/*<H4 text={item?.name} />*/}
           </Grid>
           <Grid item xs={2.5}>
             <CustomRatingBox rating={item?.avg_rating} />

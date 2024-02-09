@@ -8,8 +8,8 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import couponsBG from "../assets/coupons_bg.png";
 import useGetCoupons from "../../../api-manage/hooks/react-query/useGetCoupons";
-import toast from "react-hot-toast";
 import { getAmountWithSign } from "../../../helper-functions/CardHelpers";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 
 const CustomBox = styled(Box)(({ theme }) => ({
   background: alpha(theme.palette.primary.main, 0.3),
@@ -28,24 +28,45 @@ const settings = {
   slidesToShow: 1,
   slidesToScroll: 1,
 };
-
+export const BootstrapTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: alpha(theme.palette.primary.main, 0.1),
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.toolTipColor,
+    color: theme.palette.whiteContainer.main,
+    paddingTop: "5px",
+    paddingLeft: "20px",
+    paddingBottom: "5px",
+    paddingRight: "20px",
+    fontSize: "16px",
+  },
+}));
 const CouponBox = ({ item }) => {
   const { t } = useTranslation();
   const [copy, setCopy] = useState(null);
+  const [copied, setCopied] = useState(false);
   const handleCopy = (coupon_code) => {
     setCopy(coupon_code);
     navigator.clipboard
       .writeText(coupon_code)
       .then(() => {
-        toast(() => (
-          <span>
-            {t("Code")}
-            <b style={{ marginLeft: "4px", marginRight: "4px" }}>
-              {coupon_code}
-            </b>
-            {t("has been copied")}
-          </span>
-        ));
+        setCopied(true);
+        // toast.success(() => (
+        //   <span>
+        //     {t("Code")}
+        //     <b style={{ marginLeft: "4px", marginRight: "4px" }}>
+        //       {coupon_code}
+        //     </b>
+        //     {t("has been copied")}
+        //   </span>
+        // ));
+        const timer = setTimeout(() => {
+          setCopied(false);
+        }, 1000);
+        return () => clearTimeout(timer);
       })
       .catch((error) => {
         console.error("Failed to copy code:", error);
@@ -87,15 +108,25 @@ const CouponBox = ({ item }) => {
             }}
           >{`${min} ${getAmountWithSign(item?.min_purchase)}`}</Typography>
         </Typography>
-        <CustomBox onClick={() => handleCopy(item?.code)}>
-          <Typography
-            color="whiteContainer.main"
-            fontWeight="bold"
-            variant="body2"
+        <BootstrapTooltip
+          placement="top"
+          title={copy ? t("Copied") : t("Copy")}
+        >
+          <CustomBox
+            onClick={() => handleCopy(item?.code)}
+            onMouseEnter={() => copy && setCopy(false)}
           >
-            {t("Use Code : ")} {item?.code}
-          </Typography>
-        </CustomBox>
+            <Typography
+              color="whiteContainer.main"
+              fontWeight="bold"
+              variant="body2"
+            >
+              {copied
+                ? t("Code") + item?.code + t("has been copied")
+                : t("Use Code : ") + item?.code}
+            </Typography>
+          </CustomBox>
+        </BootstrapTooltip>
       </CustomStackFullWidth>
     </Box>
   );
@@ -144,7 +175,7 @@ const Coupons = (props) => {
           }}
         >
           <Slider {...settings}>
-            {data.map((item, index) => {
+            {data?.map((item, index) => {
               return <CouponBox key={index} item={item} />;
             })}
           </Slider>

@@ -8,7 +8,7 @@ export const StyledFooterBackground = styled(Box)(
 		width: "100%",
 		backgroundColor: theme.palette.background.custom4,
 		borderRadius:'20px 20px 0 0',
-		marginTop:'-20px',
+		marginTop:'-16px',
 		[theme.breakpoints.down("md")]: {
 			marginBottom: nobottommargin === "true" ? "none" : "70px",
 		},
@@ -19,6 +19,9 @@ export const StyledFooterTop = styled(CustomStackFullWidth)(({ theme }) => ({
 	backgroundColor:
 		getCurrentModuleType() === ModuleTypes?.FOOD
 			? alpha(theme.palette.moduleTheme.food, 0.051)
-			: alpha(theme.palette.primary.main, 0.051),
+			: alpha(theme.palette.primary.main, 0.1),
 	width: "100%",
+	[theme.breakpoints.down("md")]: {
+		paddingBottom:"20px"
+	},
 }));

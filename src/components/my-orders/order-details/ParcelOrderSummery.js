@@ -266,7 +266,7 @@ const ParcelOrderSummery = ({ data, trackOrderData, configData, refetchTrackOrde
                 textTransform="capitalize"
                 textAlign="left"
               >
-                {t("summary")}
+                {t("Summary")}
               </Typography>
               {(data?.delivery_charge !== null || data?.delivery_charge !== 0) &&
                 <CustomStackFullWidth

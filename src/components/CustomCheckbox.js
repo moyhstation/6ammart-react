@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import { Checkbox, FormControlLabel, Typography } from "@mui/material";
+import { FormControlLabel, Typography } from "@mui/material";
 import { StyleCheckBox } from "./group-buttons/OutlinedGroupButtons";
 import { useTheme } from "@emotion/react";
-import {getModule} from "../helper-functions/getLanguage";
+import { getModule } from "../helper-functions/getLanguage";
 
 const CustomCheckbox = (props) => {
   const { item, checkHandler, isChecked, selectedId } = props;
@@ -25,7 +24,6 @@ const CustomCheckbox = (props) => {
     });
   };
 
-
   return (
     <FormControlLabel
       ref={checkboxRef}
@@ -40,7 +38,7 @@ const CustomCheckbox = (props) => {
         />
       }
       label={
-        <Typography color={theme.palette.neutral[1000]}>
+        <Typography color={theme.palette.text.primary} fontSize="13px">
           {item?.name}
         </Typography>
       }

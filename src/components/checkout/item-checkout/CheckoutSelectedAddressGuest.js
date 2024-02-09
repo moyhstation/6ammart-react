@@ -4,7 +4,10 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Stack,
+  Tooltip,
   Typography,
+  Zoom,
   useTheme,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -104,9 +107,18 @@ const CheckoutSelectedAddressGuest = ({
                 justifyContent="center"
                 gap="5px"
               >
-                <ErrorOutlineOutlinedIcon
-                  sx={{ color: theme.palette.error.light }}
-                />
+                <Stack sx={{ cursor: "pointer" }}>
+                  <Tooltip
+                    arrow
+                    placement="top"
+                    TransitionComponent={Zoom}
+                    title={t("Please enter your contact info")}
+                  >
+                    <ErrorOutlineOutlinedIcon
+                      sx={{ color: theme.palette.error.light }}
+                    />
+                  </Tooltip>
+                </Stack>
                 <Typography sx={{ color: theme.palette.error.light }}>
                   {t("No Contact Info Added")}
                 </Typography>
@@ -132,7 +144,7 @@ const CheckoutSelectedAddressGuest = ({
           {orderType !== "take_away" && (
             <>
               <PlaceIcon sx={{ color: theme.palette.primary.main }} />
-              <Typography>{guestUserInfo?guestUserInfo?.address:address?.address}</Typography>
+              <Typography>{guestUserInfo ? guestUserInfo?.address : address?.address}</Typography>
             </>
           )}
         </CustomStackFullWidth>

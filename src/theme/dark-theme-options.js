@@ -11,7 +11,7 @@ const neutral = {
   700: "#f0f2f4",
   800: "#1F2937",
   900: "#111827",
-  1000: "#F3F4F6",
+  1000: "#FFFFFF",
   1100: "#D6D6D6",
 };
 const moduleTheme = {
@@ -31,7 +31,7 @@ const background = {
   footer1: "#9f9f9f1a",
   footer2: "#9f9f9f1a",
   custom5: "#282829",
-  custom6: "#282829",
+  custom6: "rgba(255, 255, 255, 0.05)",
 };
 const horizontalCardBG = neutral[900];
 const divider = "#2D3748";
@@ -121,7 +121,7 @@ const whiteContainer = {
 const pink = {
   main: "#FF6D76",
 };
-
+const toolTipColor = "#88908C";
 const paperBoxShadow = "#E5EAF1";
 export const darkThemeOptions = {
   components: {
@@ -250,6 +250,7 @@ export const darkThemeOptions = {
     moduleTheme,
     roundStackOne,
     roundStackTwo,
+    toolTipColor,
   },
   shadows: [
     "none",

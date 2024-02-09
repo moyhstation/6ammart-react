@@ -118,6 +118,7 @@ const AddNewAddress = (props) => {
         payload: geoCodeResults?.results[0]?.formatted_address,
       });
     }
+
   }, [geoCodeResults, state.location]);
   const { data: zoneData } = useGetZoneId(state.location, state.zoneIdEnabled);
   useEffect(() => {

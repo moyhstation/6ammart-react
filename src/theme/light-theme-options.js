@@ -10,7 +10,7 @@ const neutral = {
   700: "#374151",
   800: "#1F2937",
   900: "#111827",
-  1000: "#000000",
+  1000: "#212E28",
   1100: "#D6D6D6",
 };
 
@@ -32,7 +32,7 @@ const divider = "#E6E8F0";
 const primary = {
   main: "#039D55",
   deep: "#288258",
-  light: "#55e8a0",
+  light: "#EBFDF2",
   dark: "#1c6641",
   semiLight: "#E4FFF3",
   contrastText: "#FFFFFF",
@@ -127,6 +127,7 @@ const foodCardColor = "#FFF6EF";
 const paperBoxShadow = "#E5EAF1";
 const roundStackOne = "rgba(255, 255, 255, 0.04)";
 const roundStackTwo = "rgba(255, 255, 255, 0.06)";
+const toolTipColor = neutral[1000];
 
 export const lightThemeOptions = {
   components: {
@@ -255,6 +256,7 @@ export const lightThemeOptions = {
     moduleTheme,
     roundStackOne,
     roundStackTwo,
+    toolTipColor,
   },
   shadows: [
     "none",

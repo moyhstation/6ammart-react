@@ -89,7 +89,7 @@ const MobileMenus = (props) => {
   const { t } = useTranslation();
   const deliveryTypes = [
     { label: "All", value: "all" },
-    { label: "Home", value: "home" },
+    { label: "Delivery", value: "home" },
     {
       label: "Takeaway",
       value: "takeaway",

@@ -1,7 +1,6 @@
 import React from "react";
 import { CustomStackFullWidth } from "../../styled-components/CustomStyles.style";
 import { useFormik } from "formik";
-import ValidationSchemaForAddAddress from "./add-new-address/ValidationSchemaForAddAddress";
 import { Grid } from "@mui/material";
 import CustomTextFieldWithFormik from "../form-fields/CustomTextFieldWithFormik";
 import { t } from "i18next";
@@ -9,7 +8,7 @@ import CustomPhoneInput from "../custom-component/CustomPhoneInput";
 import { getLanguage } from "../../helper-functions/getLanguage";
 import { setGuestUserInfo } from "../../redux/slices/guestUserInfo";
 
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FormSubmitButton from "../profile/FormSubmitButton";
 
 const GuestUserInforForm = ({
@@ -22,9 +21,15 @@ const GuestUserInforForm = ({
   const dispatch = useDispatch();
   const addAddressFormik = useFormik({
     initialValues: {
-      contact_person_name: guestUserInfo?guestUserInfo?.contact_person_name:"",
-      contact_person_number: guestUserInfo?guestUserInfo?.contact_person_number:"",
-      contact_person_email: guestUserInfo?guestUserInfo?.contact_person_email:""
+      contact_person_name: guestUserInfo
+        ? guestUserInfo?.contact_person_name
+        : "",
+      contact_person_number: guestUserInfo
+        ? guestUserInfo?.contact_person_number
+        : "",
+      contact_person_email: guestUserInfo
+        ? guestUserInfo?.contact_person_email
+        : "",
     },
     onSubmit: async (values, helpers) => {
       try {
@@ -50,7 +55,12 @@ const GuestUserInforForm = ({
     addAddressFormik.setFieldValue("contact_person_email", "");
   };
   return (
-    <CustomStackFullWidth p="2rem" minHeight="300px" alignItems="center" justifyContent="center">
+    <CustomStackFullWidth
+      p="2rem"
+      minHeight="300px"
+      alignItems="center"
+      justifyContent="center"
+    >
       <form noValidate onSubmit={addAddressFormik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={12}>
@@ -79,15 +89,13 @@ const GuestUserInforForm = ({
           </Grid>
           <Grid item xs={12} md={12}>
             <CustomTextFieldWithFormik
-                required="true"
-                type="text"
-                label={t("Contact Person Email")}
-                value={addAddressFormik.values.contact_person_email}
-                onHandleChange={emailHandler}
-
-                touched={addAddressFormik.touched.contact_person_email}
-                errors={addAddressFormik.errors.contact_person_email}
-
+              required="true"
+              type="text"
+              label={t("Contact Person Email")}
+              value={addAddressFormik.values.contact_person_email}
+              onChangeHandler={emailHandler}
+              touched={addAddressFormik.touched.contact_person_email}
+              errors={addAddressFormik.errors.contact_person_email}
             />
           </Grid>
           <Grid item xs={12} md={12} align="end">

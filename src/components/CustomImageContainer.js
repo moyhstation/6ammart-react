@@ -20,7 +20,7 @@ const CustomImageContainer = ({
   smMaxWidth,
   smWidth,
   aspectRatio,
-  padding
+  padding,
 }) => {
   const [imageFile, setState] = useState(null);
   useEffect(() => {

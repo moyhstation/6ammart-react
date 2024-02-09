@@ -1,20 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { alpha, useTheme } from "@mui/material";
-import React, { useEffect } from "react";
+import {alpha, useTheme} from "@mui/material";
+import React, {useEffect} from "react";
 import Slider from "react-slick";
 import usePopularProductsInStore from "../../../api-manage/hooks/react-query/product-details/usePopularProductsInStore";
-import { getCurrentModuleType } from "../../../helper-functions/getCurrentModuleType";
-import { ModuleTypes } from "../../../helper-functions/moduleTypes";
-import {
-  CustomBoxFullWidth,
-  CustomStackFullWidth,
-  SliderCustom,
-} from "../../../styled-components/CustomStyles.style";
-import SpecialCard from "../../cards/SpecialCard";
+import {getCurrentModuleType} from "../../../helper-functions/getCurrentModuleType";
+import {ModuleTypes} from "../../../helper-functions/moduleTypes";
+import {CustomBoxFullWidth, CustomStackFullWidth, SliderCustom,} from "../../../styled-components/CustomStyles.style";
 import H1 from "../../typographies/H1";
-import { settings } from "./settings";
+import {settings} from "./settings";
 import ProductCard from "../../cards/ProductCard";
-import useGetCommonConditionStore from "../../../api-manage/hooks/react-query/common-conditions/useGetCommonConditionStore";
+import useGetCommonConditionStore
+  from "../../../api-manage/hooks/react-query/common-conditions/useGetCommonConditionStore";
 
 const PopularInTheStore = ({ id, storeShare }) => {
   const theme = useTheme();
@@ -30,7 +26,7 @@ const PopularInTheStore = ({ id, storeShare }) => {
           };
         case ModuleTypes.PHARMACY:
           return {
-            bgColor: alpha(theme.palette.info.custom1, 0.2),
+            bgColor: alpha(theme.palette.info.custom1, 0.1),
             title: "Common Conditions!",
           };
         case ModuleTypes.ECOMMERCE:
@@ -83,7 +79,7 @@ const PopularInTheStore = ({ id, storeShare }) => {
     ...storeShare,
     offset,
     limit,
-  })
+  });
 
   useEffect(() => {
     refetchCommonCondition();
@@ -94,15 +90,14 @@ const PopularInTheStore = ({ id, storeShare }) => {
   }, []);
   return (
     <CustomBoxFullWidth>
-      {
-        getCurrentModuleType() === "pharmacy" ? (
-          <>
-            {commonConditionitems?.products?.length > 0 && ( 
-              <SliderCustom
+      {getCurrentModuleType() === "pharmacy" ? (
+        <>
+          {commonConditionitems?.products?.length > 0 && (
+            <SliderCustom
               nopadding="true"
               sx={{
                 backgroundColor: getBG()?.bgColor,
-                padding: "20px",
+                padding: "20px 20px 20px 20px",
                 borderRadius: "4px",
                 marginTop: "12px",
                 "& .slick-slide": {
@@ -116,23 +111,27 @@ const PopularInTheStore = ({ id, storeShare }) => {
                   <Slider {...settings}>
                     {commonConditionitems?.products?.map((item, index) => {
                       return (
-                        <ProductCard key={index} item={item} specialCard="true" />
+                        <ProductCard
+                          key={index}
+                          item={item}
+                          specialCard="true"
+                        />
                       );
                     })}
                   </Slider>
                 )}
               </CustomStackFullWidth>
             </SliderCustom>
-            )}
-          </>
-        ) : (
-          <>
-            {data?.length > 0 && ( 
-              <SliderCustom
+          )}
+        </>
+      ) : (
+        <>
+          {data?.length > 0 && (
+            <SliderCustom
               nopadding="true"
               sx={{
                 backgroundColor: getBG()?.bgColor,
-                padding: "20px",
+                padding: "20px 20px 8px 20px",
                 borderRadius: "4px",
                 marginTop: "12px",
                 "& .slick-slide": {
@@ -146,17 +145,20 @@ const PopularInTheStore = ({ id, storeShare }) => {
                   <Slider {...settings}>
                     {data?.map((item, index) => {
                       return (
-                        <ProductCard key={index} item={item} specialCard="true" />
+                        <ProductCard
+                          key={index}
+                          item={item}
+                          specialCard="true"
+                        />
                       );
                     })}
                   </Slider>
                 )}
               </CustomStackFullWidth>
             </SliderCustom>
-            )}
-          </>
-        )
-      }
+          )}
+        </>
+      )}
     </CustomBoxFullWidth>
   );
 };

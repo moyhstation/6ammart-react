@@ -20,7 +20,7 @@ import { useGetOrderCancelReason } from "../../api-manage/hooks/react-query/orde
 import { GoogleApi } from "../../api-manage/hooks/react-query/googleApi";
 import { getGuestId } from "../../helper-functions/getToken";
 
-const CheckoutFailedCard = ({ id }) => {
+const CheckoutFailedCard = ({ id, handleOrderDetailsClose }) => {
   const [openModal, setOpenModal] = useState(false);
   const [cancelReason, setCancelReason] = useState(null);
   const { t } = useTranslation();
@@ -63,6 +63,7 @@ const CheckoutFailedCard = ({ id }) => {
 
   const handleCancelSuccess = () => {
     dispatch(setClearCart());
+    handleOrderDetailsClose();
     cancelMutate(
       { ...formData, reason: "Order payment canceled" },
       {
@@ -78,6 +79,7 @@ const CheckoutFailedCard = ({ id }) => {
   };
 
   const handleOnSuccess = () => {
+    handleOrderDetailsClose();
     paymentMethodUpdateMutation(formData, {
       onSuccess: handleSuccess,
       onError: onErrorResponse,
@@ -91,6 +93,7 @@ const CheckoutFailedCard = ({ id }) => {
         alignItems="center"
         justifyContent="center"
         spacing={2}
+        p="1rem"
       >
         <SwitchAccessShortcutIcon
           sx={{

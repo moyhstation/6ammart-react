@@ -1,12 +1,14 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 
-export const WrapperCurrentLocationPick = styled(Stack)(({ theme }) => ({
-  position: "absolute",
-  right: 30,
-  bottom: 40,
-}));
+export const WrapperCurrentLocationPick = styled(Stack)(
+  ({ theme, isXSmall }) => ({
+    position: "absolute",
+    right: isXSmall ? 16 : 30,
+    bottom: isXSmall ? 20 : 40,
+  })
+);
 export const CustomBoxWrapper = styled(Box)(({ theme, expand }) => ({
   outline: "none",
   position: "absolute",
@@ -17,9 +19,9 @@ export const CustomBoxWrapper = styled(Box)(({ theme, expand }) => ({
   boxShadow: 24,
   padding: "10px",
   width:
-      expand === "false"
-          ? "90%"
-          : "100%" /* Add a width that changes based on screen size */,
+    expand === "false"
+      ? "90%"
+      : "100%" /* Add a width that changes based on screen size */,
   height: expand === "true" && "100%",
   maxWidth: expand === "false" && "845px",
   minWidth: expand === "false" && "100px",
@@ -29,7 +31,7 @@ export const CustomBoxWrapper = styled(Box)(({ theme, expand }) => ({
     maxWidth: expand === "false" && "500px",
   },
   [theme.breakpoints.down("sm")]: {
-    maxWidth: expand === "false" && "80%",
+    maxWidth: expand === "false" && "90%",
   },
 }));
 export const LocationView = styled(Stack)(({ theme }) => ({

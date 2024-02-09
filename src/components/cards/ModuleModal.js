@@ -36,7 +36,7 @@ const ModuleModal = (props) => {
                   zIndex: "99",
                   position: "absolute",
                   top: -20,
-                  right: -25,
+                  right: "-2.5%",
                   backgroundColor: (theme) => theme.palette.neutral[100],
                   borderRadius: "50%",
                   [theme.breakpoints.down("md")]: {

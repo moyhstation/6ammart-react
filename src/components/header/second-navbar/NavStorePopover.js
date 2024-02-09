@@ -51,7 +51,7 @@ const NavStorePopover = () => {
       )}
 
       <CustomStackFullWidth sx={{ padding: "2.5rem" }}>
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item md={basicCampaigns?.length > 0 ? 3 : 6}>
             <NavPopularStore />
           </Grid>

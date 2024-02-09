@@ -1,16 +1,15 @@
 import React from "react";
-import { Button, Popover, styled, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import { CustomStackFullWidth } from "../styled-components/CustomStyles.style";
+import { Button, Popover, Stack, styled, Typography } from "@mui/material";
 import CustomImageContainer from "../components/CustomImageContainer";
 import sort from "./assets/sort.png";
 import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
 const Wrapper = styled(Button)(({ theme, border }) => ({
   border: border === "true" && `1px solid ${theme.palette.neutral[400]}`,
   borderRadius: "5px",
-  width: "100%",
+  padding: "7px 16px",
   // padding: "15px",
 }));
 const HighToLow = ({ handleSortBy, sortBy }) => {
@@ -33,7 +32,7 @@ const HighToLow = ({ handleSortBy, sortBy }) => {
   const id = open ? "simple-popover" : undefined;
   const getContent = (type, showArrow) => {
     return (
-      <CustomStackFullWidth
+      <Stack
         direction="row"
         alignItems="center"
         justifyContent="center"
@@ -68,7 +67,7 @@ const HighToLow = ({ handleSortBy, sortBy }) => {
             )}
           </>
         )}
-      </CustomStackFullWidth>
+      </Stack>
     );
   };
 

@@ -25,6 +25,7 @@ export const ChatSidebarDesktop = styled(Drawer)({
     position: "relative",
     width: "349px",
     height: "100%",
+    borderRight: "none !important",
   },
 });
 export const ChatSidebarMobile = styled(Drawer)({
@@ -33,7 +34,6 @@ export const ChatSidebarMobile = styled(Drawer)({
   minHeight: "70vh",
   "& .MuiDrawer-paper": {
     height: "calc(100% - 59px)",
-
     maxWidth: "100%",
     top: 55,
     width: "100%",

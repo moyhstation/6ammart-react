@@ -20,7 +20,7 @@ const Wrapper = styled(CustomBoxFullWidth)(({ theme, hover }) => ({
   "&:hover": {
     // transform: "scale(1.03)",
     img: {
-      transform: "scale(1.1)rotate(4deg)",
+      transform: "scale(1.05)",
     },
   },
 }));

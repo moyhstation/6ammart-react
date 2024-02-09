@@ -32,24 +32,24 @@ const AddressSelectionList = (props) => {
     setSelectedAddress,
     renderOnNavbar,
   } = props;
-
   return (
     <>
-      <CustomList>
+      <Stack gap="15px">
         {data &&
           allAddress?.length > 0 &&
-          allAddress?.map((item, index) => (
+          data?.addresses?.map((item, index) => (
             <Stack key={item.id}>
               <CustomListItem
                 border={
-                  item.id === address?.id &&
-                  `1px solid ${theme.palette.primary.main}`
+                  item.id === address?.id ?
+                    `1px solid ${theme.palette.primary.main}` :
+                    `1px solid ${theme.palette.neutral[200]}`
                 }
                 onClick={() => handleLatLng(item)}
                 alignItems="flex-start"
                 selected={item.id === address?.id}
                 cursor="pointer"
-                // className="selected"
+              // className="selected"
               >
                 <CustomStackFullWidth direction="row" alignItems="flex-start">
                   <Radio
@@ -95,7 +95,7 @@ const AddressSelectionList = (props) => {
           />
         )}
         {/*{!data && <CustomCheckOutShimmer />}*/}
-      </CustomList>
+      </Stack>
     </>
   );
 };

@@ -7,7 +7,6 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useTranslation } from "react-i18next";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -45,15 +44,14 @@ const Filter = (props) => {
       value[0] = priceRange?.[0]?.min_price;
     }
     let newData = filterData.map((item, index) =>
-      index === filterData.length - 2
-        ? { ...item, price: value, checked:false }
+      index === filterData.length - 3
+        ? { ...item, price: value, checked: true }
         : item
     );
     setMinMax(value);
     setFilterData(newData);
     // handleDataByFilter?.(newData);
   };
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -134,27 +132,27 @@ const Filter = (props) => {
                 <Grid item xs={6}>
                   {filterData?.length > 0 &&
                     secondHalf?.map((item, index) => {
-                      if(item?.value==="test"){
-                        return  null
-                      }else {
+                      if (item?.value === "test") {
+                        return null;
+                      } else {
                         return (
-                            <FormControlLabel
-                                sx={{
-                                  "& .MuiFormControlLabel-label": {
-                                    fontSize: "13px",
-                                    fontWeight: item?.checked && "420",
-                                  },
-                                }}
-                                key={index}
-                                control={
-                                  <Checkbox
-                                      checked={item?.checked}
-                                      onChange={(e) => handleCheckbox(item, e)}
-                                      name={item?.label}
-                                  />
-                                }
-                                label={item?.label}
-                            />
+                          <FormControlLabel
+                            sx={{
+                              "& .MuiFormControlLabel-label": {
+                                fontSize: "13px",
+                                fontWeight: item?.checked && "420",
+                              },
+                            }}
+                            key={index}
+                            control={
+                              <Checkbox
+                                checked={item?.checked}
+                                onChange={(e) => handleCheckbox(item, e)}
+                                name={item?.label}
+                              />
+                            }
+                            label={item?.label}
+                          />
                         );
                       }
                     })}

@@ -1,8 +1,11 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import {
-  Grid, Skeleton,
+  alpha,
+  Grid,
+  Skeleton,
   styled,
+  Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
@@ -27,7 +30,6 @@ import {
 import {
   CustomBoxFullWidth,
   CustomStackFullWidth,
-  SliderCustom,
 } from "../../styled-components/CustomStyles.style";
 import { not_logged_in_message } from "../../utils/toasterMessages";
 import ClosedNowScheduleWise from "../closed-now/ClosedNowScheduleWise";
@@ -47,6 +49,7 @@ const ContentWrapper = styled(CustomBoxFullWidth)(({ theme }) => ({
 
 const ImageWrapper = styled(Box)(({ theme, smallScreen }) => ({
   position: "relative",
+  maxWidth: "100px",
   width: "100%",
   height: "100px",
   [theme.breakpoints.down("lg")]: {
@@ -101,9 +104,11 @@ const Top = (props) => {
     configData,
     logo,
     storeShare,
-    bannersData,isLoading
+    bannersData,
+    isLoading,
   } = props;
 
+  // const {configData} = useSelector(state=> state.configData)
   const [state, dispatch] = useReducer(reducer, initialState);
   const theme = useTheme();
   const dispatchRedux = useDispatch();
@@ -220,10 +225,9 @@ const Top = (props) => {
     }
   };
   const handleBannerClick = (link) => {
-    if(link){
+    if (link) {
       router.push(link);
     }
-
   };
 
   const content = () => {
@@ -251,7 +255,6 @@ const Top = (props) => {
                         height="122px"
                         objectFit="cover"
                         borderRadius="10px"
-
                       />
                     </Stack>
                   );
@@ -333,11 +336,18 @@ const Top = (props) => {
                           >
                             <StyledRating
                               name="read-only"
-                              value={storeDetails?.avg_rating}
+                              value={
+                                storeDetails?.avg_rating
+                                  ? storeDetails.avg_rating
+                                  : 5
+                              }
                               readOnly
                               size="small"
+                              hasRating="true"
                             />
-                            <Typography>{`(${storeDetails?.rating_count})`}</Typography>
+                            {storeDetails?.rating_count !== 0 ? (
+                              <Typography>{`(${storeDetails?.rating_count})`}</Typography>
+                            ) : null}
                           </Stack>
                           <Typography
                             sx={{
@@ -346,19 +356,28 @@ const Top = (props) => {
                           >
                             |
                           </Typography>
-                          <Typography
-                            textDecoration="underline"
-                            fontWeight="700"
-                            lineHeight="16.15px"
-                            sx={{
-                              fontSize: {
-                                xs: "10px",
-                                sm: "14px",
-                              },
-                            }}
-                          >
-                            {storeDetails?.rating_count} {t("Reviews")}
-                          </Typography>
+                          {storeDetails?.rating_count !== 0 ? (
+                            <Typography
+                              textDecoration="underline"
+                              fontWeight="700"
+                              lineHeight="16.15px"
+                              sx={{
+                                fontSize: {
+                                  xs: "10px",
+                                  sm: "14px",
+                                },
+                              }}
+                            >
+                              {storeDetails?.rating_count} {t("Reviews")}
+                            </Typography>
+                          ) : (
+                            <Typography
+                              fontSize={{ xs: "11px", md: "13.5px" }}
+                              sx={{ textDecoration: "underLine" }}
+                            >
+                              {t("No reviews yet")}
+                            </Typography>
+                          )}
                         </Stack>
                         <Typography
                           textDecoration="underline"
@@ -403,7 +422,9 @@ const Top = (props) => {
                       },
                     }}
                   >
-                    {storeDetails?.positive_rating}
+                    {storeDetails?.positive_rating.toFixed(
+                      configData?.digit_after_decimal_point
+                    )}
                   </Typography>
                   <Stack direction="row" alignItems="center" spacing={0.3}>
                     <Typography
@@ -492,8 +513,8 @@ const Top = (props) => {
                     padding: "10px 25px",
                   }}
                 >
-                  <Grid container spacing={3}>
-                    <Grid item xs={3} sx={{ mt: "22px", mb: "30px" }}>
+                  <Grid container spacing={1}>
+                    <Grid item xs={3} md={2.5} sx={{ mt: "22px", mb: "30px" }}>
                       <ImageWrapper>
                         <CustomImageContainer
                           src={logo}
@@ -509,15 +530,14 @@ const Top = (props) => {
                         />
                       </ImageWrapper>
                     </Grid>
-                    <Grid item xs={7}>
+                    <Grid item xs={7} md={7.5} alignSelf="center">
                       <CustomStackFullWidth spacing={1}>
                         <H1 text={storeDetails?.name} textAlign="flex-start" />
                         <Link
-                          href={`/review/${
-                            storeDetails?.id
-                              ? storeDetails?.id
-                              : storeDetails?.slug
-                          }`}
+                          href={`/review/${storeDetails?.id
+                            ? storeDetails?.id
+                            : storeDetails?.slug
+                            }`}
                         >
                           <Stack
                             direction="row"
@@ -531,13 +551,30 @@ const Top = (props) => {
                               spacing={0.4}
                             >
                               <StyledRating
-                                sx={{ color: "whiteContainer.main" }}
+                                sx={{
+                                  color:
+                                    storeDetails?.avg_rating === 0
+                                      ? alpha(
+                                        theme.palette.whiteContainer.main,
+                                        0.6
+                                      )
+                                      : "warning.dark",
+                                }}
                                 name="read-only"
-                                value={storeDetails?.avg_rating}
+                                value={
+                                  storeDetails?.avg_rating
+                                    ? storeDetails?.avg_rating
+                                    : 5
+                                }
                                 readOnly
                                 size="small"
+                                hasRating={
+                                  storeDetails?.avg_rating === 0 ? true : false
+                                }
                               />
-                              <Typography>{`(${storeDetails?.rating_count})`}</Typography>
+                              {storeDetails?.rating_count !== 0 ? (
+                                <Typography>{`(${storeDetails?.rating_count})`}</Typography>
+                              ) : null}
                             </Stack>
                             <Typography
                               sx={{
@@ -546,14 +583,28 @@ const Top = (props) => {
                             >
                               |
                             </Typography>
-                            <Typography
-                              fontSize="14px"
-                              textDecoration="underline"
-                              fontWeight="700"
-                              lineHeight="16.15px"
-                            >
-                              {storeDetails?.rating_count} Reviews
-                            </Typography>
+                            {storeDetails?.rating_count !== 0 ? (
+                              <Typography
+                                fontSize="14px"
+                                sx={{ textDecoration: "underLine" }}
+                                fontWeight="700"
+                                lineHeight="16.15px"
+                                component="span"
+                              >
+                                {storeDetails?.rating_count}
+                                <Typography
+                                  component="span"
+                                  fontSize="13px"
+                                  fontWeight="400"
+                                >
+                                  {t(" Reviews")}
+                                </Typography>
+                              </Typography>
+                            ) : (
+                              <Typography fontSize="13.5px">
+                                {t("No reviews yet")}
+                              </Typography>
+                            )}
                           </Stack>
                         </Link>
                         <Typography
@@ -568,16 +619,28 @@ const Top = (props) => {
                     </Grid>
                     <Grid item xs={2} align="right">
                       {!isInWishList(storeDetails?.id) && (
-                        <RoundedIconButton onClick={addToFavorite}>
-                          <FavoriteBorderIcon color="primary" />
-                        </RoundedIconButton>
+                        <Tooltip
+                          title={"Add to wishlist"}
+                          arrow
+                          placement={"bottom"}
+                        >
+                          <RoundedIconButton onClick={addToFavorite}>
+                            <FavoriteBorderIcon color="primary" />
+                          </RoundedIconButton>
+                        </Tooltip>
                       )}
                       {isInWishList(storeDetails?.id) && (
-                        <RoundedIconButton
-                          onClick={() => deleteWishlistStore(storeDetails?.id)}
+                        <Tooltip
+                          title={"Remove from wishlist"}
+                          arrow
+                          placement={"bottom"}
                         >
-                          <FavoriteIcon color="primary" />
-                        </RoundedIconButton>
+                          <RoundedIconButton
+                            onClick={() => deleteWishlistStore(storeDetails?.id)}
+                          >
+                            <FavoriteIcon color="primary" />
+                          </RoundedIconButton>
+                        </Tooltip>
                       )}
                     </Grid>
                   </Grid>
@@ -610,7 +673,7 @@ const Top = (props) => {
                         },
                       }}
                     >
-                      {storeDetails?.positive_rating}%
+                      {storeDetails?.positive_rating.toFixed(0)}%
                     </Typography>
                     <Stack direction="row" alignItems="center" spacing={0.3}>
                       <Typography>{t("Positive Review")}</Typography>
@@ -651,38 +714,45 @@ const Top = (props) => {
             </ContentBox>
           </ContentWrapper>
           <Stack width="50%">
-            {!isLoading ?(
-                <>{bannersData?.length ? (
-                <Slider {...settings}>
-                  {bannersData?.map((banner) => {
-                    return (
+            {!isLoading ? (
+              <>
+                {bannersData?.length ? (
+                  <Slider {...settings}>
+                    {bannersData?.map((banner) => {
+                      return (
                         <Stack
-                            key={banner?.id}
-                            onClick={() => handleBannerClick(banner?.default_link)}
-                            sx={{ cursor: "pointer", width: "100%",borderRadius:"10px" }}
+                          key={banner?.id}
+                          onClick={() =>
+                            handleBannerClick(banner?.default_link)
+                          }
+                          sx={{
+                            cursor: "pointer",
+                            width: "100%",
+                            borderRadius: "10px",
+                          }}
                         >
                           <CustomImageContainer
-                              src={`${configData?.base_urls?.banner_image_url}/${banner?.image}`}
-                              width="100%"
-                              height="251px"
-                              objectFit="cover"
+                            src={`${configData?.base_urls?.banner_image_url}/${banner?.image}`}
+                            width="100%"
+                            height="251px"
+                            objectFit="cover"
                           />
                         </Stack>
-                    );
-                  })}
-                </Slider>
-            ) : (
-                <CustomImageContainer
+                      );
+                    })}
+                  </Slider>
+                ) : (
+                  <CustomImageContainer
                     src={bannerCover}
                     width="100%"
                     height="250px"
                     objectFit="cover"
-                />
-            )}</>):(
-              <Skeleton width="100%" height="100%" variant="rectangular"/>
+                  />
+                )}
+              </>
+            ) : (
+              <Skeleton width="100%" height="100%" variant="rectangular" />
             )}
-
-
           </Stack>
         </CustomStackFullWidth>
       );

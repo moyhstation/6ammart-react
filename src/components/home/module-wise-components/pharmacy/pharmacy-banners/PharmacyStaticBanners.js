@@ -83,25 +83,6 @@ const DataCard = ({ title, image, buttonText, pink }) => {
 const PharmacyStaticBanners = (props) => {
   const router = useRouter();
   const { configData } = useSelector((state) => state.configData);
-  const settings = {
-    dots: false,
-    infinite: false,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 800,
-    autoplaySpeed: 4000,
-    cssEase: "linear",
-    responsive: [
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1.03,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
 
   const { data, refetch, isLoading } = useGetBasicCampaigns();
   useEffect(() => {
@@ -117,61 +98,84 @@ const PharmacyStaticBanners = (props) => {
       { shallow: true }
     );
   };
+  const settings = {
+    dots: false,
+    infinite: data?.length > 2 && true,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 800,
+    autoplaySpeed: 4000,
+    cssEase: "linear",
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1.1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
   return (
-    <CustomStackFullWidth
-      sx={{
-        mt: "30px",
-        "& .slick-list": {
-          marginRight: { xs: "-10px", sm: "-20px" },
-        },
-        "& .slick-slide": {
-          paddingRight: { xs: "10px", sm: "20px" },
-        },
-      }}
-    >
-      {isLoading ? (
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Slider {...settings}>
-              {[...Array(2)].map((index) => {
-                return (
-                  <BannersWrapper key={index}>
-                    <Skeleton
-                      variant="rectangle"
-                      // width="100%"
-                      height="100%"
-                    />
-                  </BannersWrapper>
-                );
-              })}
-            </Slider>
-          </Grid>
-        </Grid>
-      ) : (
-        <SliderCustom>
-          <Slider {...settings}>
-            {data?.length > 0 &&
-              data?.map((item, index) => {
-                return (
-                  <BannersWrapper
-                    key={index}
-                    onClick={() => handleBannerClick(item)}
-                  >
-                    <CustomImageContainer
-                      src={`${configData?.base_urls?.campaign_image_url}/${item?.image}`}
-                      alt={item?.title}
-                      height="100%"
-                      width="100%"
-                      objectfit="cover"
-                      borderRadius="10px"
-                    />
-                  </BannersWrapper>
-                );
-              })}
-          </Slider>
-        </SliderCustom>
+    <>
+      {data?.length > 0 && (
+        <CustomStackFullWidth
+          sx={{
+            mt: "30px",
+            "& .slick-list": {
+              marginRight: { xs: "-10px", sm: "-20px" },
+            },
+            "& .slick-slide": {
+              paddingRight: { xs: "10px", sm: "20px" },
+            },
+          }}
+        >
+          {isLoading ? (
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Slider {...settings}>
+                  {[...Array(2)].map((index) => {
+                    return (
+                      <BannersWrapper key={index}>
+                        <Skeleton
+                          variant="rectangle"
+                          // width="100%"
+                          height="100%"
+                        />
+                      </BannersWrapper>
+                    );
+                  })}
+                </Slider>
+              </Grid>
+            </Grid>
+          ) : (
+            <SliderCustom>
+              <Slider {...settings}>
+                {data?.length > 0 &&
+                  data?.map((item, index) => {
+                    return (
+                      <BannersWrapper
+                        key={index}
+                        onClick={() => handleBannerClick(item)}
+                      >
+                        <CustomImageContainer
+                          src={`${configData?.base_urls?.campaign_image_url}/${item?.image}`}
+                          alt={item?.title}
+                          height="100%"
+                          width="100%"
+                          objectfit="cover"
+                          borderRadius="10px"
+                        />
+                      </BannersWrapper>
+                    );
+                  })}
+              </Slider>
+            </SliderCustom>
+          )}
+        </CustomStackFullWidth>
       )}
-    </CustomStackFullWidth>
+    </>
   );
 };
 

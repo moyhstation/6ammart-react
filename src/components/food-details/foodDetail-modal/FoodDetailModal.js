@@ -849,15 +849,17 @@ const FoodDetailModal = ({
   };
 
   const handleRouteToStore = () => {
-    router.push({
-      pathname: `/store/[id]`,
-      query: {
-        id: modalData[0]?.store_id,
-        module_id: `${modalData[0]?.module_id}`,
-        module_type: getCurrentModuleType(),
-        store_zone_id: `${modalData[0].zone_id}`,
-      },
-    });
+    if (router.pathname !== `/store/[id]`) {
+      router.push({
+        pathname: `/store/[id]`,
+        query: {
+          id: modalData[0]?.store_id,
+          module_id: `${modalData[0]?.module_id}`,
+          module_type: getCurrentModuleType(),
+          store_zone_id: `${modalData[0].zone_id}`,
+        },
+      });
+    }
   };
 
   return (

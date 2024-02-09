@@ -1,10 +1,7 @@
 import MainApi from "../../../MainApi";
 import { latest_items_api } from "../../../ApiRoutes";
-import { useInfiniteQuery, useQuery } from "react-query";
-import {
-  onErrorResponse,
-  onSingleErrorResponse,
-} from "../../../api-error-response/ErrorResponses";
+import { useInfiniteQuery } from "react-query";
+import { onSingleErrorResponse } from "../../../api-error-response/ErrorResponses";
 import { getCurrentModuleType } from "../../../../helper-functions/getCurrentModuleType";
 import axios from "axios";
 
@@ -62,18 +59,22 @@ const getData = async (pageParams) => {
 };
 
 export default function useGetStoresCategoriesItem(pageParams, handleSuccess) {
-  return useInfiniteQuery("stores-categories-item", () => getData(pageParams), {
-    // enabled: false,
-    // onSuccess: handleSuccess,
-    // onError: onErrorResponse,
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage = allPages.length + 1;
-      return lastPage?.products?.length > 0 ? nextPage : undefined;
-    },
-    getPreviousPageParam: (firstPage, allPages) => firstPage.prevCursor,
-    retry: 3,
-    enabled: false,
-    onError: onSingleErrorResponse,
-    cacheTime: "0",
-  });
+  return useInfiniteQuery(
+    ["stores-categories-item", pageParams.offset],
+    () => getData(pageParams),
+    {
+      // enabled: false,
+      // onSuccess: handleSuccess,
+      // onError: onErrorResponse,
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages.length + 1;
+        return lastPage?.products?.length > 0 ? nextPage : undefined;
+      },
+      getPreviousPageParam: (firstPage, allPages) => firstPage.prevCursor,
+      retry: 3,
+      enabled: false,
+      onError: onSingleErrorResponse,
+      cacheTime: "0",
+    }
+  );
 }

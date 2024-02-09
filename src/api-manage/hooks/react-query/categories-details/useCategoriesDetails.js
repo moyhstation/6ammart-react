@@ -1,15 +1,7 @@
 import MainApi from "../../../MainApi";
-import {
-  categories_details_api,
-  data_limit,
-  my_orders_api,
-  popular_items,
-} from "../../../ApiRoutes";
-import { useInfiniteQuery, useQuery } from "react-query";
-import {
-  onErrorResponse,
-  onSingleErrorResponse,
-} from "../../../api-error-response/ErrorResponses";
+import { categories_details_api } from "../../../ApiRoutes";
+import { useInfiniteQuery } from "react-query";
+import { onErrorResponse } from "../../../api-error-response/ErrorResponses";
 
 const getData = async (pageParams) => {
   const {
@@ -31,7 +23,11 @@ const getData = async (pageParams) => {
 
 export default function useGetCategories(pageParams) {
   return useInfiniteQuery(
-    "categories-details",
+    [
+      "categories-details",
+      pageParams.selectedCategoriesIds,
+      pageParams.currentTab,
+    ],
     ({ pageParam = 1 }) => getData({ ...pageParams, pageParam }),
     {
       getNextPageParam: (lastPage, allPages) => {

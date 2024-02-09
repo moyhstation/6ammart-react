@@ -39,7 +39,7 @@ const PayButton = styled(Button)(({ theme, value, paymentMethod }) => ({
       : theme.palette.neutral[1000],
   background: value === paymentMethod && theme.palette.primary.main,
   "&:hover": {
-    color: theme.palette.neutral[1000],
+    // color: theme.palette.neutral[1000],
     background: value === paymentMethod && theme.palette.primary.main,
   },
 }));

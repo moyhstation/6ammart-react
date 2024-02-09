@@ -16,7 +16,7 @@ const Wrapper = styled(CustomBoxFullWidth)(({ theme }) => ({
 }));
 
 const ImageWrapper = styled(CustomStackFullWidth)(({ theme }) => ({
-	position: "relative",
+	// position: "relative",
 	opacity: 0.1,
 	display: "flex",
 	alignItems: "center",
@@ -25,7 +25,8 @@ const ImageWrapper = styled(CustomStackFullWidth)(({ theme }) => ({
 		width: "420px",
 	},
 	[theme.breakpoints.down("sm")]: {
-		width: "350px",
+		width: "100%",
+		height:"100%"
 	},
 }));
 const SmallerScreen = (props) => {
@@ -46,7 +47,7 @@ const SmallerScreen = (props) => {
 			container
 			justifyContent="center"
 			alignItems="center"
-			paddingY="2rem"
+			// paddingY="2rem"
 			spacing={2}
 		>
 			<Grid item xs={12}>
@@ -70,13 +71,13 @@ const SmallerScreen = (props) => {
 						spacing={3}
 					>
 						<CustomStackFullWidth spacing={1}>
-							<Typography variant="h4" color="primary.main">
+							<Typography variant="h4" fontSize="16px" fontWeight={800} color="primary.deep">
 								<DollarSignHighlighter
 									theme={theme}
 									text={landingPageData?.business_title}
 								/>
 							</Typography>
-							<Typography variant="h4" color="primary.main">
+							<Typography variant="h4" fontSize="14px" fontWeight={700} color="primary.main">
 								<DollarSignHighlighter
 									theme={theme}
 									text={landingPageData?.business_sub_title}

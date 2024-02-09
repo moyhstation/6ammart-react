@@ -1,12 +1,12 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PlaceIcon from "@mui/icons-material/Place";
 import {
+  alpha,
   Button,
   Card,
   Grid,
-  Typography,
-  alpha,
   styled,
+  Typography,
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
@@ -25,20 +25,17 @@ import {
   addWishListStore,
   removeWishListStore,
 } from "../../redux/slices/wishList";
-import {
-  CustomBoxFullWidth,
-  CustomStackFullWidth,
-} from "../../styled-components/CustomStyles.style";
+import { CustomBoxFullWidth } from "../../styled-components/CustomStyles.style";
 import { textWithEllipsis } from "../../styled-components/TextWithEllipsis";
 import { IsSmallScreen } from "../../utils/CommonValues";
 import { not_logged_in_message } from "../../utils/toasterMessages";
 import CustomImageContainer from "../CustomImageContainer";
 import CustomRatingBox from "../CustomRatingBox";
-import H4 from "../typographies/H4";
 import { CustomOverLay } from "./Card.style";
-import QuickView from "./QuickView";
+import QuickView, { PrimaryToolTip } from "./QuickView";
+import ProductMoreView from "../home/visit-again/ProductMoreView";
 
-const getModuleWiseData = () => {
+export const getModuleWiseData = () => {
   switch (getCurrentModuleType()) {
     case ModuleTypes.GROCERY:
       return {
@@ -74,27 +71,29 @@ const getModuleWiseData = () => {
       };
   }
 };
-const ImageWrapper = styled(Box)(({ theme, margin_left, is_border }) => ({
-  position: "relative",
-  height: "30px",
-  width: "30px",
-  marginLeft: margin_left === "true" ? "-5px" : "0px",
-  border:
-    is_border === "true"
-      ? `1px solid ${theme.palette.background.default}`
-      : "none",
-  [theme.breakpoints.down("sm")]: {
-    height: "21px",
-    width: "21px",
-  },
-}));
+export const ImageWrapperMore = styled(Box)(
+  ({ theme, margin_left, is_border, width, height }) => ({
+    position: "relative",
+    height: height ?? "30px",
+    width: width ?? "30px",
+    marginLeft: margin_left === "true" ? "-5px" : "0px",
+    border:
+      is_border === "true"
+        ? `1px solid ${theme.palette.background.default}`
+        : "none",
+    [theme.breakpoints.down("sm")]: {
+      height: "21px",
+      width: "21px",
+    },
+  })
+);
 const KmShowing = ({ distance }) => {
   const { t } = useTranslation();
 
   return (
     <Stack
       sx={{
-        background: "rgba(255, 255, 255, 0.8)",
+        background: "rgba(255, 255, 255, 0.9)",
         borderRadius: "0px 5px 5px 0px",
         p: "5px",
         color: "primary.main",
@@ -133,8 +132,8 @@ const VisitAgainCard = (props) => {
   let visitedThisStoresProducts =
     visitedStoresProducts?.length > 0
       ? visitedStoresProducts?.filter(
-        (childItem) => childItem?.store_id === item?.id
-      )
+          (childItem) => childItem?.store_id === item?.id
+        )
       : [];
   useEffect(() => {
     wishlistItemExistHandler();
@@ -145,11 +144,13 @@ const VisitAgainCard = (props) => {
       query: {
         id: `${item?.slug ? item?.slug : item?.id}`,
         module_id: `${item?.module_id}`,
+        module_type: getCurrentModuleType(),
+        store_zone_id: `${item?.zone_id}`,
       },
     });
   };
   const quickViewHandleClick = (e) => {
-    handleClick()
+    handleClick();
   };
   const imageUrl = `${configData?.base_urls?.store_cover_photo_url}/${item?.cover_photo}`;
 
@@ -201,6 +202,7 @@ const VisitAgainCard = (props) => {
   return (
     <Card
       sx={{
+        background: theme.palette.neutral[100],
         padding: "10px",
         width: { xs: "220px", md: "280px" },
         cursor: "pointer",
@@ -237,7 +239,7 @@ const VisitAgainCard = (props) => {
           borderRadius="10px"
         />
         {getCurrentModuleType() !== ModuleTypes.FOOD && (
-          <Box sx={{ position: "absolute", bottom: 12, left: 0 }}>
+          <Box sx={{ position: "absolute", bottom: 12, left: 0, zIndex: 2 }}>
             <KmShowing distance={item?.distance} />
           </Box>
         )}
@@ -274,7 +276,19 @@ const VisitAgainCard = (props) => {
       <CustomBoxFullWidth sx={{ mt: "10px" }}>
         <Grid container spacing={1.5}>
           <Grid item xs={8.5} md={9}>
-            <H4 text={item?.name} />
+            <PrimaryToolTip text={item?.name} placement="bottom" arrow="false">
+              <Typography
+                className={classes.singleLineEllipsis}
+                fontSize={{ xs: "12px", md: "14px" }}
+                fontWeight="500"
+              >
+                {item?.name}
+              </Typography>
+            </PrimaryToolTip>
+            {/*<PrimaryToolTip text={item?.name} placement="bottom" arrow="false">*/}
+            {/*  <H4 text={item?.name} />*/}
+            {/*</PrimaryToolTip>*/}
+
             <Typography
               color="text.secondary"
               className={classes.multiLineEllipsis}
@@ -292,67 +306,7 @@ const VisitAgainCard = (props) => {
       <CustomBoxFullWidth sx={{ mt: "15px" }}>
         <Grid container spacing={1} alignItems="center" justifyContent="center">
           <Grid item xs={7}>
-            {visitedThisStoresProducts?.length > 0 && (
-              <CustomStackFullWidth
-                direction="row"
-                flexWrap="wrap"
-                gap={getModuleWiseData?.()?.smallImageGap}
-              >
-                {visitedThisStoresProducts.map((item, index) => {
-                  if (index < 3) {
-                    return (
-                      <ImageWrapper
-                        key={index}
-                        margin_left={
-                          getModuleWiseData?.()?.smallImageMarginLeft === "true"
-                            ? index !== 0
-                              ? "true"
-                              : "false"
-                            : "false"
-                        }
-                        is_border={getModuleWiseData?.()?.border}
-                      >
-                        <CustomImageContainer
-                          src={`${configData?.base_urls?.item_image_url}/${item?.image}`}
-                          alt={item?.name}
-                          height="100%"
-                          width="100%"
-                          obejctfit="contained"
-                          borderRadius={
-                            getModuleWiseData?.()?.borderRadiusSmallImage
-                          }
-                        />
-                      </ImageWrapper>
-                    );
-                  }
-                })}
-                {visitedThisStoresProducts?.length > 4 && (
-                  <Box
-                    sx={{
-                      marginLeft:
-                        getModuleWiseData?.()?.smallImageMarginLeft === "true"
-                          ? "-5px"
-                          : "0px",
-                      height: { xs: "21px", sm: "30px" },
-                      width: { xs: "21px", sm: "30px" },
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius:
-                        getModuleWiseData?.()?.borderRadiusSmallImage,
-                      fontSize: "10px",
-                      fontWeight: "700",
-                      // paddingLeft: "3px",
-                      color: "whiteContainer.main",
-                      backgroundColor: (theme) =>
-                        alpha(theme.palette.neutral[600], 0.4),
-                    }}
-                  >
-                    2+
-                  </Box>
-                )}
-              </CustomStackFullWidth>
-            )}
+            <ProductMoreView products={visitedThisStoresProducts} />
           </Grid>
           <Grid item xs={5} align="right">
             <Button

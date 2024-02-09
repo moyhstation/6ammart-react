@@ -82,7 +82,7 @@ export const CustomButtonPrimary = styled(Button)(
       maxWidth: fullwidth === "true" ? "100%" : "131px",
     },
     [theme.breakpoints.down("sm")]: {
-      fontSize: "9px",
+      fontSize: "12px",
     },
   })
 );

@@ -1,7 +1,6 @@
 import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import CustomContainer from "../../../container";
-import pharmacyReviewedImage from "../../assets/pharmacy_reviewed_image.png";
 import Banners from "../../banners";
 import BestReviewedItems from "../../best-reviewed-items";
 import FeaturedCategories from "../../featured-categories";
@@ -11,16 +10,28 @@ import VisitAgain from "../../visit-again";
 import FeaturedStores from "./featured-stores";
 import PharmacyStaticBanners from "./pharmacy-banners/PharmacyStaticBanners";
 import CommonConditions from "./common-conditions";
-import RedirectBanner from "./pharmacy-banners/RedirectBanner";
 import useGetOtherBanners from "../../../../api-manage/hooks/react-query/useGetOtherBanners";
+import OrderDetailsModal from "../../../order-details-modal/OrderDetailsModal";
+import { useSelector } from "react-redux";
+import { getToken } from "../../../../helper-functions/getToken";
+import { getCurrentModuleId } from "../../../../helper-functions/getCurrentModuleType";
 
 const menus = ["All", "New", "Baby Care", "Womans Care", "Mens"];
 
 const Pharmacy = ({ configData }) => {
+  const token = getToken();
+  const { orderDetailsModalOpen } = useSelector((state) => state.utilsData);
   const { data, refetch, isLoading } = useGetOtherBanners();
   useEffect(() => {
     refetch();
-  }, [])
+  }, []);
+  const visitedStores = localStorage.getItem("visitedStores")
+    ? JSON.parse(localStorage.getItem("visitedStores"))?.length > 0
+      ? JSON.parse(localStorage.getItem("visitedStores"))?.filter(
+          (item) => item?.module_id === getCurrentModuleId()
+        )
+      : []
+    : [];
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} sx={{ marginTop: "10px" }}>
@@ -35,9 +46,10 @@ const Pharmacy = ({ configData }) => {
       </Grid>
       <Grid item xs={12}>
         <CustomContainer>
-          <VisitAgain configData={configData} />
+          <VisitAgain configData={configData} visitedStores={visitedStores} />
         </CustomContainer>
       </Grid>
+
       <Grid item xs={12}>
         <CustomContainer>
           <BestReviewedItems
@@ -86,6 +98,9 @@ const Pharmacy = ({ configData }) => {
           <Stores />
         </CustomContainer>
       </Grid>
+      {orderDetailsModalOpen && !token && (
+        <OrderDetailsModal orderDetailsModalOpen={orderDetailsModalOpen} />
+      )}
     </Grid>
   );
 };

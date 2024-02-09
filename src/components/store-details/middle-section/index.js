@@ -145,7 +145,7 @@ const MiddleSection = (props) => {
   const imageBaseUrl = configData?.base_urls?.item_image_url;
   const router = useRouter();
   const { id } = router.query;
-  const storeId = id;
+  const storeId = storeDetails?.id;
   const limit = 12;
   const { ref, inView } = useInView();
   const [offset, setOffset] = useState(1);
@@ -477,7 +477,6 @@ const MiddleSection = (props) => {
   const handleOpenSerach = () => {
     setOpen(!open);
   };
-
   return (
     <CustomBoxFullWidth>
       {moduleId && (
@@ -640,24 +639,41 @@ const MiddleSection = (props) => {
           >
             {isLoading && handleShimmerProducts()}
             <Grid item xs={12} container spacing={2}>
-              {state.data &&
-                state.data?.products?.length > 0 &&
-                getCategoryWiseProduct(state.data?.products)?.map(
-                  (item, index) => {
-                    return (
-                      <Grid item key={index} xs={6} sm={4} md={3} lg={3}>
-                        <ProductCard
-                          key={item?.id}
-                          item={item}
-                          cardheight="365px"
-                          cardFor="vertical"
-                          cardType="vertical-type"
-                          // cardFor="popular items"
-                        />
-                      </Grid>
-                    );
-                  }
-                )}
+              {isFetchingNextPage || isRefetching || isRefetchingSearch ? (
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    paddingBlockEnd: "30px",
+                    paddingBlockStart: "30px",
+                  }}
+                >
+                  <Stack sx={{ minHeight: "40vh", marginTop: "2rem" }}>
+                    <DotSpin />
+                  </Stack>
+                </Grid>
+              ) : (
+                <>
+                  {state.data &&
+                    state.data?.products?.length > 0 &&
+                    getCategoryWiseProduct(state.data?.products)?.map(
+                      (item, index) => {
+                        return (
+                          <Grid item key={index} xs={6} sm={4} md={3} lg={3}>
+                            <ProductCard
+                              key={item?.id}
+                              item={item}
+                              cardheight="365px"
+                              cardFor="vertical"
+                              cardType="vertical-type"
+                              // cardFor="popular items"
+                            />
+                          </Grid>
+                        );
+                      }
+                    )}
+                </>
+              )}
               {state.data?.products?.length === 0 && !isRefetching && (
                 <Stack width="100%" paddingTop={{ xs: "0px", md: "30px" }}>
                   <CustomEmptyResult
@@ -669,20 +685,7 @@ const MiddleSection = (props) => {
                 </Stack>
               )}
             </Grid>
-            {(isFetchingNextPage || isRefetching || isRefetchingSearch) && (
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  paddingBlockEnd: "30px",
-                  paddingBlockStart: "30px",
-                }}
-              >
-                <Stack sx={{ minHeight: "40vh", marginTop: "2rem" }}>
-                  <DotSpin />
-                </Stack>
-              </Grid>
-            )}
+
             {(hasNextPage || hasNextPageSearch) && (
               <Grid item xs={12} sx={{ marginBottom: "2rem" }}>
                 <CustomBoxFullWidth

@@ -175,9 +175,15 @@ const TransactionHistory = (props) => {
                               src={yellowCoin.src}
                               width="16"
                               height="16"
+                              alt="image"
                             />
                           ) : (
-                            <Image src={greenCoin.src} width="16" height="16" />
+                            <Image
+                              src={greenCoin.src}
+                              width="16"
+                              height="16"
+                              alt="image"
+                            />
                           )}
                           {item?.transaction_type === "add_fund" ? (
                             <Typography
@@ -217,7 +223,9 @@ const TransactionHistory = (props) => {
                               : item?.credit
                             : getAmountWithSign(
                                 item?.transaction_type === "point_to_wallet" ||
-                                  item?.transaction_type === "partial_payment"
+                                  item?.transaction_type ===
+                                    "partial_payment" ||
+                                  item?.transaction_type === "order_place"
                                   ? item?.debit
                                   : item?.credit + item?.admin_bonus
                               )}

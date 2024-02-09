@@ -59,7 +59,6 @@ const OrderCalculation = (props) => {
       destination,
       extraCharge
     );
-
     setDeliveryFee(orderType === "delivery" ? 0 : price);
     if (price === 0) {
       return <Typography>{t("Free")}</Typography>;

@@ -1,20 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   CustomBoxFullWidth,
-  CustomPaperBigCard,
-  CustomStack,
   CustomStackFullWidth,
 } from "../../styled-components/CustomStyles.style";
 import { styled } from "@mui/system";
-import { alpha, Grid, Paper, Typography, useMediaQuery } from "@mui/material";
+import { alpha, Grid, Paper, Tooltip, Typography, useMediaQuery } from "@mui/material";
 import { CustomButtonPrimary } from "../../styled-components/CustomButtons.style";
 import { useTranslation } from "react-i18next";
 import CustomImageContainer from "../CustomImageContainer";
-import maintainance from "../../../public/static/maintenance.png";
-import SmsIcon from "@mui/icons-material/Sms";
 import { getAmountWithSign } from "../../helper-functions/CardHelpers";
-import storeImage from "./assets/dummy_store.png";
 import CustomRatings from "../search/CustomRatings";
 import { useTheme } from "@emotion/react";
 import { RoundedIconButton } from "./product-details-section/ProductsThumbnailsSettings";
@@ -32,6 +26,8 @@ import { useAddStoreToWishlist } from "../../api-manage/hooks/react-query/wish-l
 import { getModuleId } from "../../helper-functions/getModuleId";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { PrimaryToolTip } from "../cards/QuickView";
+
 const CustomWrapper = styled(Paper)(({ theme }) => ({
   padding: "20px",
   borderRadius: "5px",
@@ -106,7 +102,7 @@ const StoreDetails = ({ storeDetails, storeImageBaseUrl }) => {
     <CustomWrapper>
       <Grid container spacing={2.5}>
         <Grid item xs={12} container>
-          <Grid item xs={10}>
+          <Grid item xs={10} alignSelf="center">
             <CustomStackFullWidth
               direction="raw"
               alignItems="center"
@@ -154,24 +150,28 @@ const StoreDetails = ({ storeDetails, storeImageBaseUrl }) => {
           </Grid>
           <Grid item xs={2}>
             {!isInWishList(storeDetails?.id) && (
-              <RoundedIconButton
-                sx={{
-                  filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.05))",
-                }}
-                onClick={addToFavorite}
-              >
-                <FavoriteBorderIcon color="primary" size="small" />
-              </RoundedIconButton>
+              <Tooltip text="Add to cart">
+                <RoundedIconButton
+                  sx={{
+                    filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.05))",
+                  }}
+                  onClick={addToFavorite}
+                >
+                  <FavoriteBorderIcon color="primary" size="small" />
+                </RoundedIconButton>
+              </Tooltip>
             )}
             {isInWishList(storeDetails?.id) && (
-              <RoundedIconButton
-                onClick={() => deleteWishlistStore(storeDetails?.id)}
-                sx={{
-                  filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.05))",
-                }}
-              >
-                <FavoriteIcon color="primary" size="small" />
-              </RoundedIconButton>
+              <Tooltip text="Add to cart">
+                <RoundedIconButton
+                  onClick={() => deleteWishlistStore(storeDetails?.id)}
+                  sx={{
+                    filter: "drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.05))",
+                  }}
+                >
+                  <FavoriteIcon color="primary" size="small" />
+                </RoundedIconButton>
+              </Tooltip>
             )}
           </Grid>
         </Grid>

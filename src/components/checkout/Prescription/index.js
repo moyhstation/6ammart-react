@@ -3,8 +3,7 @@ import { Grid, Typography, useMediaQuery } from "@mui/material";
 import DeliveryDetails from "../item-checkout/DeliveryDetails";
 import { Stack } from "@mui/system";
 import useGetStoreDetails from "../../../api-manage/hooks/react-query/store/useGetStoreDetails";
-import { useSelector } from "react-redux";
-import PaymentMethod from "../PaymentMethod";
+import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQuery } from "react-query";
 import { GoogleApi } from "../../../api-manage/hooks/react-query/googleApi";
 import PlaceOrder from "../item-checkout/PlaceOrder";
@@ -30,11 +29,13 @@ import CheckoutStepper from "../item-checkout/CheckoutStepper";
 import AddPaymentMethod from "../item-checkout/AddPaymentMethod";
 import useGetMostTrips from "../../../api-manage/hooks/react-query/useGetMostTrips";
 import { useTheme } from "@emotion/react";
-import {getGuestId, getToken} from "../../../helper-functions/getToken";
+import { getGuestId, getToken } from "../../../helper-functions/getToken";
+import { setOrderDetailsModal } from "../../../redux/slices/offlinePaymentData";
 
 const PrescriptionCheckout = ({ storeId }) => {
   const router = useRouter();
   const theme = useTheme();
+  const dispatch = useDispatch();
   const matches = useMediaQuery("(max-width:1180px)");
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
   const [orderType, setOrderType] = useState("delivery");
@@ -49,7 +50,7 @@ const PrescriptionCheckout = ({ storeId }) => {
   const { configData } = useSelector((state) => state.configData);
   const { data: storeData, refetch } = useGetStoreDetails(storeId);
   const { guestUserInfo } = useSelector((state) => state.guestUserInfo);
-  const guestId=getGuestId()
+  const guestId = getGuestId();
 
   useEffect(() => {
     refetch();
@@ -118,7 +119,7 @@ const PrescriptionCheckout = ({ storeId }) => {
       dm_tips: deliveryTip,
       unavailable_item_note,
       delivery_instruction,
-      guest_id:guestId,
+      guest_id: guestId,
       contact_person_name: guestUserInfo?.contact_person_name,
       contact_person_number: guestUserInfo?.contact_person_number,
     };
@@ -130,21 +131,26 @@ const PrescriptionCheckout = ({ storeId }) => {
         toast.success(res?.data?.message);
         if (!getToken()) {
           router.push(
-              {
-                pathname: "/order",
-                query: { order_id: res?.data?.order_id },
-              },
-              undefined,
-              { shallow: true }
+            {
+              pathname: "/home",
+              query: { order_id: res?.data?.order_id },
+            },
+            undefined,
+            { shallow: true }
           );
         } else {
+          dispatch(setOrderDetailsModal(true));
           router.push(
-              {
-                pathname: "/profile",
-                query: { orderId: res?.data?.order_id, page: "my-orders", from: "checkout" },
+            {
+              pathname: "/profile",
+              query: {
+                orderId: res?.data?.order_id,
+                page: "my-orders",
+                from: "checkout",
               },
-              undefined,
-              { shallow: true }
+            },
+            undefined,
+            { shallow: true }
           );
         }
       }

@@ -1,7 +1,7 @@
 import {
   Grid,
-  Typography,
   styled,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -19,16 +19,16 @@ import CustomImageContainer from "../CustomImageContainer";
 import DollarSignHighlighter from "../DollarSignHighlighter";
 import CustomContainer from "../container";
 import Subtitle1 from "../typographies/Subtitle1";
-import deliveryMan from "./assets/delivery-man.png";
-import seller from "./assets/seller.png";
+import deliveryMan from "./assets/delivery-man.svg";
+import seller from "./assets/seller.svg";
 
 const ImageContainer = styled(Box)(({ theme }) => ({
   position: "relative",
-  width: "140px",
-  height: "130px",
+  width: "175px",
+  height: "175px",
   [theme.breakpoints.down("md")]: {
-    width: "100px",
-    height: "90px",
+    width: "110px",
+    height: "110px",
   },
   [theme.breakpoints.down("sm")]: {
     width: "95px",
@@ -45,12 +45,18 @@ const TopText = ({ data }) => {
     <CustomStackFullWidth
       alignItems="center"
       justifyContent="center"
-      spacing={1}
+    // spacing={1}
     >
-      <Typography textAlign="center" variant={isSmall ? "h7" : "h4"}>
+      <Typography textAlign="center" variant={isSmall ? "h7" : "h4"} lineHeight={{ xs: "31px", sm: "45px", md: "57px" }}>
         <DollarSignHighlighter theme={theme} text={data?.earning_title} />
       </Typography>
-      <Subtitle1 text={data?.earning_sub_title || ""} />
+      <Typography
+        textAlign="center"
+        fontSize={{ xs: "12px", sm: "16px", md: "18px" }}
+        lineHeight={{ xs: "15px", sm: "24px", md: "39px" }}
+        sx={{ color: "text.secondary", width: "70%" }}>
+        {t(data?.earning_sub_title)}
+      </Typography>
     </CustomStackFullWidth>
   );
 };
@@ -72,20 +78,20 @@ const Card = ({
   return (
     <CustomBoxFullWidth
       sx={{
-        padding: { xs: ".5rem", sm: "2.5rem" },
+        padding: { xs: "15px 10px", sm: "25px 40px", md: "30px" },
         borderRadius: "10px",
         height: "100%",
         background: (theme) => theme.palette.background.default,
         boxShadow: "0px 23px 40px rgba(3, 157, 85, 0.05)",
         "&:hover": {
           img: {
-            transform: "scale(1.1)",
+            transform: "scale(1.04)",
           },
         },
       }}
     >
-      <Grid container spacing={3} alignItems="center" justifyContent="center">
-        <Grid item xs={3.5}>
+      <Grid container spacing={{ xs: 0, sm: .5, md: 2 }} alignItems="center" justifyContent="center">
+        <Grid item xs={4} md={4}>
           <ImageContainer>
             <CustomImageContainer
               height="100%"
@@ -96,13 +102,13 @@ const Card = ({
             />
           </ImageContainer>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={5} md={5.5}>
           <Stack alignItems="flex-start" justifyContent="flex-start">
             <Typography
               textAlign="flex-start"
               fontWeight="700"
-              lineHeight="20px"
-              sx={{ fontSize: { xs: "14px", md: "22px" } }}
+              lineHeight={{ xs: "18px", sm: "24px", md: "33px" }}
+              fontSize={{ xs: "14px", sm: "18px", md: "26px" }}
             >
               <DollarSignHighlighter
                 theme={theme}
@@ -122,7 +128,7 @@ const Card = ({
             </Typography>
           </Stack>
         </Grid>
-        <Grid item xs={3.5} align="center">
+        <Grid item xs={3} md={2.5} align="end">
           {buttonText && redirectLink && (
             <CustomButtonPrimary onClick={redirectHandler}>
               <Typography
@@ -143,7 +149,7 @@ const Card = ({
 const CenterCards = ({ data, isSmall }) => {
   return (
     <CustomStackFullWidth
-      direction={{ xs: "column", sm: "row" }}
+      direction={{ xs: "column", md: "row" }}
       spacing={{ xs: 3, md: 4 }}
       justifyContent="space-between"
       alignItems="stretch"

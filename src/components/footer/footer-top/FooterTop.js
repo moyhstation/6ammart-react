@@ -31,10 +31,10 @@ const FooterTop = (props) => {
 						justifyContent="center"
 						sx={{ height: "100%" }}
 					>
-						<Grid item xs={8} sm={6} md={4} position="relative">
+						<Grid item xs={8} sm={6} md={3} position="relative">
 							<Box sx={{
-									mt:'-65px', textAlign:{xs:'center', md:'left'}, ml:{md:'-30px'}, position:{sm:'absolute', bottom:'10px'}
-								}}>
+								mt: '-65px', textAlign: { xs: 'center', md: 'left' }, ml: { md: '-30px' }, position: { sm: 'absolute', bottom: '10px' }
+							}}>
 								<SubscribeImage />
 							</Box>
 						</Grid>
@@ -42,21 +42,21 @@ const FooterTop = (props) => {
 							item
 							xs={12}
 							sm={6}
-							md={8}
+							md={9}
 							container
 							alignItems="center"
 							justifyContent="center"
 							sx={{
-								py:3,
-								pl:{lg:2},
-								pb:{lg:4}
+								py: 3,
+								pl: { lg: 2 },
+								pb: { lg: 4 }
 							}}
 						>
 							<Grid
 								item
 								xs={12}
 								sm={12}
-								md={6}
+								md={5}
 								align={isSmall ? "center" : "left"}
 							>
 								<Stack
@@ -67,11 +67,12 @@ const FooterTop = (props) => {
 									p="10px"
 									pt={0}
 								>
-									<Typography variant="h4">
+									<Typography fontWeight={700} fontSize={{ xs: "1rem", md: "2.25rem" }}>
 										{landingPageData?.fixed_newsletter_title}
 									</Typography>
 									<Typography
 										variant="h7"
+										fontSize={{xs:"12px", md:"14px"}}
 										fontWeight="400"
 										sx={{
 											color: (theme) =>
@@ -82,10 +83,10 @@ const FooterTop = (props) => {
 									</Typography>
 								</Stack>
 							</Grid>
-							<Grid item xs={12} sm={12} md={6}>
-								<Box sx={{ml:{md:3}}}>
+							<Grid item xs={12} sm={12} md={7}>
+								<Stack alignItems="end" justifyContent="flex-end" sx={{ ml: { md: 6 } }}>
 									<Subscribe />
-								</Box>
+								</Stack>
 							</Grid>
 						</Grid>
 					</Grid>

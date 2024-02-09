@@ -95,7 +95,7 @@ const TransactionHistoryMobile = ({
                       : (theme) => theme.palette.primary.main
                   }
                   fontWeight="500"
-                  fontSize="12px"
+                  fontSize="14px"
                 >
                   {page === "loyalty"
                     ? item?.transaction_type === "point_to_wallet"
@@ -107,7 +107,7 @@ const TransactionHistoryMobile = ({
                           : item?.credit + item?.admin_bonus
                       )}
                 </Typography>
-                <Typography fontSize="11px" color={theme.palette.neutral[400]}>
+                <Typography fontSize="13px" color={theme.palette.neutral[400]}>
                   {item?.created_at}
                 </Typography>
               </Stack>
@@ -119,12 +119,12 @@ const TransactionHistoryMobile = ({
                     {getAmountWithSign(item?.admin_bonus)})
                   </Typography>
                 ) : (
-                  <Typography fontSize="12px">
+                  <Typography fontSize="13px">
                     {t(item?.transaction_type).replaceAll("_", " ")}
                   </Typography>
                 )}
                 <Typography
-                  fontSize="10px"
+                  fontSize="12px"
                   color={
                     item?.transaction_type === "order_place"
                       ? theme.palette.error.main

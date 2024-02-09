@@ -75,6 +75,11 @@ import {
 
 import CustomImageContainer from "../../CustomImageContainer";
 import thunderstorm from "../assets/thunderstorm.svg";
+import { setGuestUserOrderId } from "../../../redux/slices/guestUserInfo";
+import {
+  setOrderDetailsModalOpen,
+  setOrderInformation,
+} from "../../../redux/slices/utils";
 
 const ItemCheckout = (props) => {
   const { configData, router, page, cartList, campaignItemList, totalAmount } =
@@ -109,9 +114,7 @@ const ItemCheckout = (props) => {
   const [state, customDispatch] = useReducer(scheduleReducer, INITIAL_STATE);
   const { profileInfo } = useSelector((state) => state.profileInfo);
   const { guestUserInfo } = useSelector((state) => state.guestUserInfo);
-  const { offlineInfoStep, offlinePaymentInfo } = useSelector(
-    (state) => state.offlinePayment
-  );
+  const { offlinePaymentInfo } = useSelector((state) => state.offlinePayment);
   const token = getToken();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -473,6 +476,9 @@ const ItemCheckout = (props) => {
           let carts = handleProductList(productList, totalQty);
           const handleSuccessSecond = (response) => {
             if (response?.data) {
+              if (token) {
+                dispatch(setOrderDetailsModal(true));
+              }
               if (paymentMethod === "digital_payment") {
                 toast.success(response?.data?.message);
                 const newBaseUrl = baseUrl;
@@ -519,9 +525,22 @@ const ItemCheckout = (props) => {
         let carts = handleProductList(productList, totalQty);
         const handleSuccess = (response) => {
           if (response?.data) {
-            toast.success(response?.data?.message, {
-              id: paymentMethod,
-            });
+            if (token) {
+              dispatch(setOrderDetailsModal(true));
+            } else {
+              dispatch(setGuestUserOrderId(response?.data?.order_id));
+              dispatch(setOrderInformation(response?.data));
+              dispatch(setOrderDetailsModalOpen(true));
+            }
+            if (
+              paymentMethod === "cash_on_delivery" ||
+              paymentMethod === "offline_payment" ||
+              paymentMethod === "wallet"
+            ) {
+              toast.success(response?.data?.message, {
+                id: paymentMethod,
+              });
+            }
             if (
               paymentMethod !== "cash_on_delivery" &&
               paymentMethod !== "offline_payment"
@@ -530,7 +549,7 @@ const ItemCheckout = (props) => {
               const page = "my-orders";
               const callBackUrl = token
                 ? `${window.location.origin}/profile?page=${page}`
-                : `${window.location.origin}/order`;
+                : `${window.location.origin}/home`;
               const url = `${baseUrl}/payment-mobile?order_id=${
                 response?.data?.order_id
               }&customer_id=${
@@ -541,10 +560,12 @@ const ItemCheckout = (props) => {
               Router.push(url, undefined, { shallow: true });
             } else if (paymentMethod === "offline_payment") {
               setOrderId(response?.data?.order_id);
+              dispatch(setOrderInformation(response?.data));
               setOrderSuccess(true);
               setOfflineCheck(true);
             } else {
               setOrderId(response?.data?.order_id);
+              dispatch(setOrderInformation(response?.data));
               setOrderSuccess(true);
             }
           }
@@ -650,22 +671,24 @@ const ItemCheckout = (props) => {
     }
     localStorage.setItem("totalAmount", totalAmount);
     if (!token) {
-      Router.push(
-        {
-          pathname: "/order",
-          query: { order_id: orderId },
-        },
-        undefined,
-        { shallow: true }
-      );
+      Router.push("/home");
+      // Router.push(
+      //   {
+      //     pathname: "/order",
+      //     query: { order_id: orderId },
+      //   },
+      //   undefined,
+      //   { shallow: true }
+      // );
     } else {
+      // dispatch(setOrderDetailsModal(true));
       Router.push(
         {
           pathname: "/profile",
           query: { orderId: orderId, page: "my-orders", from: "checkout" },
         },
         undefined,
-        { shallow: true }
+        { shallow: false }
       );
     }
   };

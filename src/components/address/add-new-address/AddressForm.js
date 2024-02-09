@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { Grid, Skeleton, Stack, Typography } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { useFormik } from "formik";
 import CustomTextFieldWithFormik from "../../form-fields/CustomTextFieldWithFormik";
-import { useTranslation } from "react-i18next";
 
 import CustomPhoneInput from "../../custom-component/CustomPhoneInput";
 import ValidationSchemaForAddAddress from "./ValidationSchemaForAddAddress";
@@ -17,7 +16,7 @@ import useUpdatedAddress from "../../../api-manage/hooks/react-query/address/use
 import { useDispatch, useSelector } from "react-redux";
 import { setGuestUserInfo } from "../../../redux/slices/guestUserInfo";
 import { setOpenAddressModal } from "../../../redux/slices/addAddress";
-import {t} from "i18next";
+import { t } from "i18next";
 
 const AddressForm = ({
   configData,
@@ -31,9 +30,9 @@ const AddressForm = ({
   isRefetcing,
   atModal,
   addressType,
-  editAddress,setAddAddress
+  editAddress,
+  setAddAddress,
 }) => {
-  const { t } = useTranslation();
   const typeData = [
     {
       label: t("Home"),
@@ -58,7 +57,11 @@ const AddressForm = ({
 
   const addAddressFormik = useFormik({
     initialValues: {
-      contact_person_email: "",
+      contact_person_email: token
+        ? ""
+        : guestUserInfo
+        ? guestUserInfo.contact_person_email
+        : "",
       address: "",
       address_type: token
         ? addressType
@@ -95,7 +98,7 @@ const AddressForm = ({
         : "",
       latitude: lat,
       longitude: lng,
-      road: "",
+      road: token ? "" : guestUserInfo ? guestUserInfo.road : "",
       house: token
         ? editAddress
           ? editAddress?.house
@@ -113,7 +116,6 @@ const AddressForm = ({
     },
     validationSchema: ValidationSchemaForAddAddress(),
     onSubmit: async (values, helpers) => {
-
       try {
         let newData = {
           ...values,
@@ -140,7 +142,7 @@ const AddressForm = ({
             } else {
               toast.success(response?.message);
               refetch?.();
-              setAddAddress(false)
+              setAddAddress(false);
             }
 
             // if (response?.data) {
@@ -153,7 +155,7 @@ const AddressForm = ({
       } else {
         mutate(values, {
           onSuccess: (response) => {
-            if(response){
+            if (response) {
               if (atModal === "true") {
                 toast.success(response?.message);
                 popoverClose?.();
@@ -161,7 +163,7 @@ const AddressForm = ({
               } else {
                 toast.success(response?.message);
                 refetch?.();
-                setAddAddress(false)
+                setAddAddress(false);
               }
             }
 
@@ -174,7 +176,6 @@ const AddressForm = ({
         });
       }
     } else {
-
       dispatch(setGuestUserInfo(values));
       dispatch(setOpenAddressModal(false));
     }
@@ -269,73 +270,80 @@ const AddressForm = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <CustomTextFieldWithFormik
-
-                label={t("Email")}
-                touched={addAddressFormik.touched.contact_person_email}
-                errors={addAddressFormik.errors.contact_person_email}
-                fieldProps={addAddressFormik.getFieldProps("contact_person_email")}
-                onChangeHandler={emailHandler}
-                value={addAddressFormik.values.contact_person_email}
+              label={t("Email")}
+              touched={addAddressFormik.touched.contact_person_email}
+              errors={addAddressFormik.errors.contact_person_email}
+              fieldProps={addAddressFormik.getFieldProps(
+                "contact_person_email"
+              )}
+              onChangeHandler={emailHandler}
+              value={addAddressFormik.values.contact_person_email}
             />
           </Grid>
 
           <Grid item xs={12} md={6}>
             <CustomTextFieldWithFormik
-                type="text"
-                label={t("House")}
-                touched={addAddressFormik.touched.house}
-                errors={addAddressFormik.errors.house}
-                fieldProps={addAddressFormik.getFieldProps("house")}
-                onChangeHandler={houseHandler}
-                value={addAddressFormik.values.house}
+              type="text"
+              label={t("House")}
+              touched={addAddressFormik.touched.house}
+              errors={addAddressFormik.errors.house}
+              fieldProps={addAddressFormik.getFieldProps("house")}
+              onChangeHandler={houseHandler}
+              value={addAddressFormik.values.house}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <CustomTextFieldWithFormik
-                type="text"
-                label={t("Floor")}
-                touched={addAddressFormik.touched.floor}
-                errors={addAddressFormik.errors.floor}
-                fieldProps={addAddressFormik.getFieldProps("floor")}
-                onChangeHandler={floorHandler}
-                value={addAddressFormik.values.floor}
+              type="text"
+              label={t("Floor")}
+              touched={addAddressFormik.touched.floor}
+              errors={addAddressFormik.errors.floor}
+              fieldProps={addAddressFormik.getFieldProps("floor")}
+              onChangeHandler={floorHandler}
+              value={addAddressFormik.values.floor}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <CustomTextFieldWithFormik
-                type="text"
-                label={t("Road")}
-                touched={addAddressFormik.touched.road}
-                errors={addAddressFormik.errors.road}
-                fieldProps={addAddressFormik.getFieldProps("road")}
-                onChangeHandler={roadHandler}
-                value={addAddressFormik.values.road}
+              type="text"
+              label={t("Road")}
+              touched={addAddressFormik.touched.road}
+              errors={addAddressFormik.errors.road}
+              fieldProps={addAddressFormik.getFieldProps("road")}
+              onChangeHandler={roadHandler}
+              value={addAddressFormik.values.road}
             />
           </Grid>
           <Grid item xs={12} md={12}>
             <CustomTextFieldWithFormik
-
-                type="text"
-                label={t("Additional Information")}
-                touched={addAddressFormik.touched.additional_information}
-                errors={addAddressFormik.errors.additional_information}
-                fieldProps={addAddressFormik.getFieldProps(
-                    "additional_information"
-                )}
-                onChangeHandler={additionalHandler}
-                value={addAddressFormik.values.additional_information}
-                height="60px"
+              type="text"
+              label={t("Additional Information")}
+              touched={addAddressFormik.touched.additional_information}
+              errors={addAddressFormik.errors.additional_information}
+              fieldProps={addAddressFormik.getFieldProps(
+                "additional_information"
+              )}
+              onChangeHandler={additionalHandler}
+              value={addAddressFormik.values.additional_information}
+              height="60px"
             />
           </Grid>
 
-          <Grid item xs={12} md={12} align="end">
+          <Grid item xs={12} sm={12} md={12} align="end">
             <FormSubmitButton
               handleReset={handleReset}
-              isLoading={editAddress && editAddress?.address_type ? isUpdateLoading : isLoading}
+              isLoading={
+                editAddress && editAddress?.address_type
+                  ? isUpdateLoading
+                  : isLoading
+              }
               reset={t("Reset")}
+              margin="8px"
               submit={
                 token
-                  ?(editAddress && editAddress?.address_type)?t("Update Address"): t("Add Address")
+                  ? editAddress && editAddress?.address_type
+                    ? t("Update Address")
+                    : t("Add Address")
                   : guestUserInfo
                   ? t("Update Address")
                   : t("Add Address")

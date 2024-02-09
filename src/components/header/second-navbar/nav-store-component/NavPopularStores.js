@@ -81,6 +81,11 @@ const NavPopularStore = () => {
                         fontWeight: "400",
                         cursor: "pointer",
                         transition: "all ease 0.5s",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: "1",
+                        WebkitBoxOrient: "vertical",
                         "&:hover": {
                           letterSpacing: "0.02em",
                           color: (theme) => theme.palette.primary.main,

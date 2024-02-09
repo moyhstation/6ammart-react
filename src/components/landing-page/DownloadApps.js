@@ -14,18 +14,17 @@ const DownloadApps = ({ theme, isSmall, landingPageData }) => {
     <CustomStackFullWidth
       alignItems={isSmall ? "center" : "flex-start"}
       justifyContent="center"
+      gap={{xs:"10px", sm:"15px"}}
     >
-      <Typography textAlign="flex-start" variant={isSmall ? "h7" : "h5"}>
+      <Typography textAlign="flex-start" fontSize={isSmall ? "14px" : "26px"} fontWeight={600}>
         <DollarSignHighlighter
           theme={theme}
           text={landingPageData?.download_user_app_title}
         />
       </Typography>
       <Typography
-        variant={isSmall ? "body3" : "body1"}
         textAlign="flex-start"
-        lineHeight={isSmall ? "17px" : "38px"}
-        sx={{ mt: "10px" }}
+        fontSize={isSmall ? "12px" : "18px"}
       >
         <DollarSignHighlighter
           theme={theme}

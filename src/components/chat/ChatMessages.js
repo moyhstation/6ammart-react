@@ -2,16 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import ChatMessage from "./ChatMessage";
 //import CustomModal from '../custom-modal/CustomModal'
-import CustomImageContainer from "../CustomImageContainer";
-import { CustomStackFullWidth } from "../../styled-components/CustomStyles.style";
-import { IconButton, Stack } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { ScrollToBottom } from "./ChatView";
 import CustomModal from "../modal";
 import ImagePreviewOnModal from "./ImagePreviewOnModal";
 //import ImagePreviewOnModal from "../image-preview-on-modal";
 
-const ChatMessages = ({ conversationData, scrollBottom }) => {
+const ChatMessages = ({ conversationData, scrollBottom, receiverType }) => {
   const [messagesData, setMessagesData] = useState([]);
   const [isMessage, setIsMessage] = useState(false);
   const [conversationDetails, setConversationDetails] = useState();
@@ -54,6 +50,7 @@ const ChatMessages = ({ conversationData, scrollBottom }) => {
               conversationData={conversationDetails}
               image={JSON.parse(item?.file)}
               handleImageOnClick={handleImageOnClick}
+              receiverType={receiverType}
             />
           ))
           .reverse()}

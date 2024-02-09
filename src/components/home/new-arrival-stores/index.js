@@ -39,7 +39,7 @@ const ImageWrapper = styled(Box)(({ theme }) => ({
   "&:hover": {
     boxShadow: "5px 0px 20px rgba(0, 54, 85, 0.15)",
     img: {
-      transform: "scale(1.1)rotate(5deg)",
+      transform: "scale(1.04)",
     },
   },
   [theme.breakpoints.down("md")]: {
@@ -65,7 +65,7 @@ const SliderWrapper = styled(CustomBoxFullWidth)(({ theme }) => ({
 
 const menus = ["Popular", "Top Rated", "New"];
 const NewArrivalStores = () => {
-  const { data, refetch, isFetching, isLoading  } = useGetNewArrivalStores({
+  const { data, refetch, isFetching, isLoading } = useGetNewArrivalStores({
     type: "all",
   });
   const [selectedMenuIndex, setSelectedMenuIndex] = useState(0);
@@ -133,21 +133,25 @@ const NewArrivalStores = () => {
         },
       }}
     >
-        {isLoading ? 
-                <Slider {...settings}>
-                  {[...Array(6)].map((item, index) => {
-                    return <SpecialOfferCardShimmer key={index} width={290}/>;
-                  })}
-                </Slider>
-               : 
+      {isLoading ? (
+        <Slider {...settings}>
+          {[...Array(6)].map((item, index) => {
+            return <SpecialOfferCardShimmer key={index} width={290} />;
+          })}
+        </Slider>
+      ) : (
         <Slider {...settings} ref={slider}>
           {storeData?.map((item, index) => {
             return (
-              <NearbyStoreCard key={index} configData={configData} item={item} />
+              <NearbyStoreCard
+                key={index}
+                configData={configData}
+                item={item}
+              />
             );
           })}
         </Slider>
-      }
+      )}
     </SliderWrapper>
   );
 
@@ -196,6 +200,7 @@ const NewArrivalStores = () => {
                               sx={{
                                 borderRadius: "50%",
                                 overflow: "hidden",
+                                width: "100%",
                               }}
                             >
                               <CustomImageContainer

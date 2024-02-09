@@ -12,7 +12,10 @@ import { getCurrentModuleType } from "../../../helper-functions/getCurrentModule
 import { getModuleId } from "../../../helper-functions/getModuleId";
 import { ModuleTypes } from "../../../helper-functions/moduleTypes";
 import { setBanners } from "../../../redux/slices/storedData";
-import { CustomStackFullWidth } from "../../../styled-components/CustomStyles.style";
+import {
+  CustomStackFullWidth,
+  SliderCustom,
+} from "../../../styled-components/CustomStyles.style";
 import CustomImageContainer from "../../CustomImageContainer";
 import FoodDetailModal from "../../food-details/foodDetail-modal/FoodDetailModal";
 
@@ -25,7 +28,7 @@ export const BannersWrapper = styled(Box)(({ theme }) => ({
   overflow: "hidden",
   "&:hover": {
     img: {
-      transform: "scale(1.1)",
+      transform: "scale(1.04)",
     },
   },
 
@@ -102,6 +105,7 @@ const Banners = (props) => {
                 banner?.store?.slug ? banner?.store?.slug : banner?.store?.id
               }`,
               module_id: `${getModuleId()}`,
+              store_zone_id: `${banner?.store.zone_id}`,
             },
           },
           undefined,
@@ -142,7 +146,7 @@ const Banners = (props) => {
         if (bannersData.length > 1) {
           return 2;
         } else {
-          return 1;
+          return 2;
         }
       case ModuleTypes.PHARMACY:
         if (bannersData.length === 1) {
@@ -171,7 +175,7 @@ const Banners = (props) => {
 
   const settings = {
     dots: false,
-    infinite: true,
+    infinite: bannersData.length > 2 && true,
     slidesToShow: getModuleWiseBanners(),
     slidesToScroll: 1,
     autoplay: true,
@@ -182,7 +186,7 @@ const Banners = (props) => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 1.03,
+          slidesToShow: 1.1,
           slidesToScroll: 1,
         },
       },
@@ -220,30 +224,32 @@ const Banners = (props) => {
             </Grid>
           </Grid>
         ) : (
-          <Slider {...settings}>
-            {bannersData.length > 0 &&
-              bannersData?.map((item, index) => {
-                return (
-                  <BannersWrapper
-                    key={index}
-                    onClick={() => handleBannerClick(item)}
-                  >
-                    <CustomImageContainer
-                      src={`${
-                        item?.isCampaign
-                          ? configData?.base_urls?.campaign_image_url
-                          : configData?.base_urls?.banner_image_url
-                      }/${item?.image}`}
-                      alt={item?.title}
-                      height="100%"
-                      width="100%"
-                      objectfit="cover"
-                      borderRadius="10px"
-                    />
-                  </BannersWrapper>
-                );
-              })}
-          </Slider>
+          <SliderCustom>
+            <Slider {...settings}>
+              {bannersData?.length > 0 &&
+                bannersData?.map((item, index) => {
+                  return (
+                    <BannersWrapper
+                      key={index}
+                      onClick={() => handleBannerClick(item)}
+                    >
+                      <CustomImageContainer
+                        src={`${
+                          item?.isCampaign
+                            ? configData?.base_urls?.campaign_image_url
+                            : configData?.base_urls?.banner_image_url
+                        }/${item?.image}`}
+                        alt={item?.title}
+                        height="100%"
+                        width="100%"
+                        objectfit="cover"
+                        borderRadius="10px"
+                      />
+                    </BannersWrapper>
+                  );
+                })}
+            </Slider>
+          </SliderCustom>
         )}
       </CustomStackFullWidth>
       {openModal && foodBanner && (

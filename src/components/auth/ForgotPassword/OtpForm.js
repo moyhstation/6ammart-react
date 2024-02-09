@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { Box, Stack, Typography, TextField } from "@mui/material";
+import React from "react";
+import { Stack, Typography } from "@mui/material";
 import {
   CustomPaperBigCard,
   CustomStackFullWidth,
@@ -7,7 +7,6 @@ import {
 } from "../../../styled-components/CustomStyles.style";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import * as Yup from "yup";
@@ -65,6 +64,7 @@ const OtpForm = ({ data, formSubmitHandler, isLoading }) => {
             />
 
             <LoadingButton
+              disabled={!otpFormik.values.reset_token}
               type="submit"
               fullWidth
               variant="contained"

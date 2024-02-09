@@ -65,7 +65,7 @@ const Subscribe = () => {
         value={emailAddress}
         type="email"
         name="email"
-        placeholder={t("Your Email Address")}
+        placeholder={t("Your Email")}
         onChange={(e) => setEmailAddress(e.target.value)}
       />
       <LoadingButton

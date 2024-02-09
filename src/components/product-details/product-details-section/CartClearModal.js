@@ -1,11 +1,4 @@
-import {
-  Button,
-  Grid,
-  Modal,
-  Paper,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Button, Grid, Paper, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 
 import { styled, useTheme } from "@mui/material/styles";
@@ -21,13 +14,11 @@ import { setClearCart } from "../../../redux/slices/cart";
 import {
   cart_clear_description,
   cart_clear_header,
-  cart_clear_messages,
   cart_clear_success_message,
 } from "../../../utils/toasterMessages";
 import toast from "react-hot-toast";
 import useDeleteAllCartItem from "../../../api-manage/hooks/react-query/add-cart/useDeleteAllCartItem";
 import { onErrorResponse } from "../../../api-manage/api-error-response/ErrorResponses";
-import { getToken } from "../../../helper-functions/getToken";
 
 const CustomStyledBox = styled(Paper)(({ theme }) => ({
   padding: "1.5rem",
@@ -77,24 +68,35 @@ const CartClearModal = ({ handleClose, dispatchRedux }) => {
               {t(cart_clear_description)}
             </Typography>
           </Grid>
-          <Grid item xs={6} md={6} align="center">
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={handleClose}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              {t("Cancel")}
-            </Button>
-          </Grid>
-          <Grid item xs={6} md={6} align="center">
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => handleClearCart()}
-            >
-              {isXSmall ? t("Clear") : t("Clear Cart")}
-            </Button>
+          <Grid
+            item
+            xs={12}
+            md={12}
+            align="center"
+            container
+            spacing={1}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Grid item xs={6} md={4} align="center">
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={handleClose}
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              >
+                {t("Cancel")}
+              </Button>
+            </Grid>
+            <Grid item xs={6} md={4} align="center">
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => handleClearCart()}
+              >
+                {isXSmall ? t("Clear") : t("Clear Cart")}
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </CustomStyledBox>

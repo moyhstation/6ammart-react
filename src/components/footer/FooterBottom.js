@@ -1,20 +1,23 @@
 import React from "react";
 import { CustomStackFullWidth } from "../../styled-components/CustomStyles.style";
-import { Typography, alpha } from "@mui/material";
+import { Typography, alpha, useMediaQuery } from "@mui/material";
 import { getCurrentModuleType } from "../../helper-functions/getCurrentModuleType";
 import { ModuleTypes } from "../../helper-functions/moduleTypes";
 import { useTheme } from "@emotion/react";
 import { Box, Stack } from "@mui/system";
 import { t } from "i18next";
 import CustomContainer from "../container";
-import Router from "next/router";
+import { useRouter } from "next/router";
+import FooterBottomItems from "./FooterBottomItems";
 
 const FooterBottom = (props) => {
+  const router = useRouter()
   const handleClickToRoute = (href) => {
-    Router.push(href, undefined, { shallow: true });
+    router.push(href, undefined, { shallow: true });
   };
   const { configData } = props;
   const theme = useTheme();
+  const isXSmall = useMediaQuery(theme.breakpoints.down("sm"))
   return (
     <Box
       sx={{
@@ -43,90 +46,16 @@ const FooterBottom = (props) => {
       >
         <CustomContainer>
           <CustomStackFullWidth
-            direction={{ xs: "column", md: "row" }}
-            justifyContent={{ xs: "center", md: "space-between" }}
-            alignItems={{ xs: "center", md: "flex-start" }}
+            direction={{ xs: "column", sm: "row", md: "row" }}
+            justifyContent={{ xs: "center", sm: "space-between", md: "space-between" }}
+            alignItems="center"
           >
-            <Typography marginBottom={{ xs: "16px", md: "0px" }}>
+            <Typography width="100%" textAlign={{ xs: "center", md: "start" }}>
               {configData?.footer_text}
             </Typography>
-            <Stack
-              direction={{ xs: "column", md: "row" }}
-              spacing={{ xs: 2, md: 3 }}
-              alignItems={{ xs: "center" }}
-            >
-              <Typography
-                onClick={() => handleClickToRoute("/terms-and-conditions")}
-                sx={{
-                  cursor: "pointer",
-                  transition: "all ease-out .3s",
-                  "&:hover": {
-                    color: theme.palette.primary.main,
-                    letterSpacing: "0.03em",
-                  },
-                }}
-              >
-                {t("Terms & Conditions")}
-              </Typography>
-              <Typography
-                onClick={() => handleClickToRoute("/privacy-policy")}
-                sx={{
-                  cursor: "pointer",
-                  transition: "all ease-out .3s",
-                  "&:hover": {
-                    color: theme.palette.primary.main,
-                    letterSpacing: "0.03em",
-                  },
-                }}
-              >
-                {t("Privacy Policy")}
-              </Typography>
-              {configData?.refund_policy !== 0 && (
-                <Typography
-                  onClick={() => handleClickToRoute("/refund-policy")}
-                  sx={{
-                    cursor: "pointer",
-                    transition: "all ease-out .3s",
-                    "&:hover": {
-                      color: theme.palette.primary.main,
-                      letterSpacing: "0.03em",
-                    },
-                  }}
-                >
-                  {t("Refund Policy")}
-                </Typography>
-              )}
-              {configData?.cancelation_policy !== 0 && (
-                <Typography
-                  onClick={() => handleClickToRoute("/cancellation-policy")}
-                  sx={{
-                    cursor: "pointer",
-                    transition: "all ease-out .3s",
-                    "&:hover": {
-                      color: theme.palette.primary.main,
-                      letterSpacing: "0.03em",
-                    },
-                  }}
-                >
-                  {t("Cancellation Policy")}
-                </Typography>
-              )}
-              {configData?.shipping_policy !== 0 && (
-                <Typography
-                  onClick={() => handleClickToRoute("/shipping-policy")}
-                  sx={{
-                    cursor: "pointer",
-                    transition: "all ease-out .3s",
-                    "&:hover": {
-                      color: theme.palette.primary.main,
-                      letterSpacing: "0.03em",
-                    },
-                  }}
-                >
-                  {t("Shipping Policy")}
-                </Typography>
-              )}
-            </Stack>
+            <>
+              {!isXSmall && <FooterBottomItems handleClickToRoute={handleClickToRoute} configData={configData} />}
+            </>
           </CustomStackFullWidth>
         </CustomContainer>
       </CustomStackFullWidth>

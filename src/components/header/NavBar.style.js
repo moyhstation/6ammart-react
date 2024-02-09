@@ -201,9 +201,12 @@ export const ButtonContainer = styled("div")(({ theme }) => ({
 export const CustomDrawer = styled(Drawer)(({ theme, router }) => ({
   "& .MuiDrawer-paper": {
     top: "56px",
-    width: "80%",
-    height: "80vh",
+    maxWidth: "320px",
+    width: "96vw",
+    height: "calc(100dvh-56px)",
+    //bottom: "-56px",
     transition: "transform 0.3s ease-in-out",
+    zIndex: "1200",
 
     // marginLeft: router.pathname === "/" && "24px",
     // marginRight: router.pathname === "/" && "24px",
@@ -220,10 +223,14 @@ export const CustomBottomNavigationAction = styled(BottomNavigationAction)(
     fontSize: "10px !important",
     padding: "0px 0px",
     "& .MuiBottomNavigationAction-label": {
-      fontSize: "11px !important" /* Adjust the font size here */,
+      fontSize: "12px !important" /* Adjust the font size here */,
     },
     "&.Mui-selected": {
       color: theme.palette.primary.main,
+    },
+    "& .MuiSvgIcon-root": {
+      width: "20px",
+      fontSize: "1.2rem !important",
     },
     // "& .MuiBottomNavigationAction-label": {
     //   overflow: "hidden",

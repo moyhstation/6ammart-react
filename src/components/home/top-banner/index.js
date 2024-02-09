@@ -57,7 +57,10 @@ const TopBanner = () => {
   return (
     <CustomBoxFullWidth
       sx={{
-        height: { xs: "160px", sm: "270px" },
+        height: {
+          xs: moduleType === "parcel" ? "250px" : "160px",
+          sm: "270px",
+        },
         backgroundColor: getBGColor(),
         position: "relative",
       }}

@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import IconButton from "@mui/material/IconButton";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { Tooltip } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import toast from "react-hot-toast";
+import CopyCodeIcon from "../referral-code/svg/CopyCodeIcon";
 
 const CustomCopyWithTooltip = (props) => {
-  const { t, value } = props;
+  const { t, value, forModal } = props;
   const [copy, setCopy] = useState(false);
   const handleCopy = (coupon_code) => {
     navigator.clipboard
@@ -28,14 +29,20 @@ const CustomCopyWithTooltip = (props) => {
       });
   };
   return (
-    <Tooltip placement="top" title={copy ? t("Copied") : t("Copy")}>
-      <IconButton
-        onMouseEnter={() => copy && setCopy(false)}
-        onClick={() => handleCopy(value)}
-        sx={{ p: { xs: "0px", sm: "5px" }, m: { xs: "0px", sm: "5px" } }}
-      >
-        <ContentCopyIcon color="primary.main" style={{ fontSize: 20 }} />
-      </IconButton>
+    <Tooltip arrow placement="top" title={copy ? t("Copied") : t("Copy")}>
+      {forModal ? (
+        <Button variant="contained" onMouseEnter={() => copy && setCopy(false)}
+          onClick={() => handleCopy(value)}>Copy</Button>
+      ) : (
+
+        <IconButton
+          onMouseEnter={() => copy && setCopy(false)}
+          onClick={() => handleCopy(value)}
+          sx={{ p: { xs: "0px", sm: "5px" }, m: { xs: "0px", sm: "5px" } }}
+        >
+          <CopyCodeIcon />
+        </IconButton>
+      )}
     </Tooltip>
   );
 };

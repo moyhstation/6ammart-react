@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Stack } from "@mui/system";
 import { styled, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const CustomTypography = styled(Typography)(({ theme, active }) => ({
   fontSize: "20px",
@@ -19,7 +20,6 @@ const ActiveIndicator = styled(Box)(({ theme, active }) => ({
 }));
 const TabsTypeTwo = (props) => {
   const { tabs, currentTab, setCurrentTab } = props;
-  const { t } = useTranslation();
   return (
     <Stack direction="row" alignItems="center" spacing={5}>
       {tabs?.length > 0 &&

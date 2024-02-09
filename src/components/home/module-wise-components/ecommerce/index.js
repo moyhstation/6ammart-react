@@ -1,8 +1,6 @@
 import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import CustomContainer from "../../../container";
-import pharmacyReviewedImage from "../../assets/grocery_reviewed_image.png";
-import Banners from "../../banners";
 import BestReviewedItems from "../../best-reviewed-items";
 import FeaturedCategories from "../../featured-categories";
 import PopularItemsNearby from "../../popular-items-nearby";
@@ -15,20 +13,31 @@ import FeaturedCategoriesWithFilter from "./FeaturedCategoriesWithFilter";
 import NewArrivals from "./NewArrivals";
 import { IsSmallScreen } from "../../../../utils/CommonValues";
 import VisitAgain from "../../visit-again";
-import DiscountedProductRedirectBanner from "../../DiscountedProductRedirectBanner";
 import LoveItem from "../../love-item";
 import SinglePoster from "./SinglePoster";
 import useGetOtherBanners from "../../../../api-manage/hooks/react-query/useGetOtherBanners";
 import PharmacyStaticBanners from "../pharmacy/pharmacy-banners/PharmacyStaticBanners";
+import OrderDetailsModal from "../../../order-details-modal/OrderDetailsModal";
+import { useSelector } from "react-redux";
+import { getToken } from "../../../../helper-functions/getToken";
+import { getCurrentModuleId } from "../../../../helper-functions/getCurrentModuleType";
 
 const Shop = (props) => {
   const { configData } = props;
   const menus = ["All", "Beauty", "Bread & Juice", "Drinks", "Milks"];
+  const { orderDetailsModalOpen } = useSelector((state) => state.utilsData);
+  const token = getToken();
   const { data, refetch, isLoading } = useGetOtherBanners();
   useEffect(() => {
     refetch();
   }, []);
-
+  const visitedStores = localStorage.getItem("visitedStores")
+    ? JSON.parse(localStorage.getItem("visitedStores"))?.length > 0
+      ? JSON.parse(localStorage.getItem("visitedStores"))?.filter(
+          (item) => item?.module_id === getCurrentModuleId()
+        )
+      : []
+    : [];
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} sx={{ marginTop: { xs: "-10px", sm: "10px" } }}>
@@ -44,10 +53,10 @@ const Shop = (props) => {
       </Grid>
       <Grid item xs={12}>
         {IsSmallScreen() ? (
-          <VisitAgain configData={configData} />
+          <VisitAgain configData={configData} visitedStores={visitedStores} />
         ) : (
           <CustomContainer>
-            <VisitAgain configData={configData} />
+            <VisitAgain configData={configData} visitedStores={visitedStores} />
           </CustomContainer>
         )}
       </Grid>
@@ -137,6 +146,9 @@ const Shop = (props) => {
           <Stores />
         </CustomContainer>
       </Grid>
+      {orderDetailsModalOpen && !token && (
+        <OrderDetailsModal orderDetailsModalOpen={orderDetailsModalOpen} />
+      )}
     </Grid>
   );
 };
