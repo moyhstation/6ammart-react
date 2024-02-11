@@ -13,6 +13,7 @@ import Banners from "./Banners";
 import { NoSsr, useMediaQuery, useTheme } from "@mui/material";
 import DiscountBanner from "./DiscountBanner";
 import CookiesConsent from "../CookiesConsent";
+import WhatsAppWidget from "../WhatsAppWidget";
 
 const LandingPage = ({ configData, landingPageData }) => {
   const Testimonials = dynamic(() => import("./Testimonials"), {
@@ -62,6 +63,7 @@ const LandingPage = ({ configData, landingPageData }) => {
           landingPageData={landingPageData}
           handleOrderNow={handleOrderNow}
         />
+        <WhatsAppWidget />
         <ComponentOne
           landingPageData={landingPageData}
           configData={configData}

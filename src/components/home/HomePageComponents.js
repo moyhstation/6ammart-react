@@ -22,6 +22,7 @@ import { getToken } from "../../helper-functions/getToken";
 import CustomModal from "../modal";
 import LastOrderReview from "./LastOrderReview";
 import useReviewReminderCancel from "../../api-manage/hooks/react-query/review/useReviewReminderCancel";
+import WhatsAppWidget from "../WhatsAppWidget";
 
 export const HomeComponentsWrapper = styled(Stack)(({ theme }) => ({
   width: "100%",
@@ -117,6 +118,7 @@ const HomePageComponents = ({ configData }) => {
     <PushNotificationLayout>
       <CustomStackFullWidth>
         <CustomStackFullWidth sx={{ position: "relative" }}>
+          <WhatsAppWidget />
           <TopBanner />
           <CustomStackFullWidth
             alignItems="center"
