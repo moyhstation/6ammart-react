@@ -204,7 +204,7 @@ const SignIn = ({ configData }) => {
     const newValues = { ...values, guest_id: guestId };
     mutate(newValues, {
       onSuccess: async (response) => {
-        //setDefaultLanguage();
+        setDefaultLanguage();
         if (configData?.customer_verification) {
           if (Number.parseInt(response?.is_phone_verified) === 1) {
             await handleTokenAfterSignUp(response);

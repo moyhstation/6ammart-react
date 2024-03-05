@@ -1,6 +1,6 @@
 export const setDefaultLanguage = () => {
-  const lan = "en";
-  const country = "US";
+  const lan = "ar";
+  const country = "SA";
   localStorage.setItem("language-setting", JSON.stringify(lan));
   localStorage.setItem("country", JSON.stringify(country));
 };
