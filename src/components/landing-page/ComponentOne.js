@@ -101,7 +101,7 @@ const ComponentOne = ({ landingPageData, configData, handleOrderNow }) => {
                     alignItems="flex-start"
                     justifyContent="flex-start"
                   >
-                    <CustomButton onClick={handleButtonClick}>
+                    <CustomButton onClick={handleOrderNow}>
                       <Typography
                         variant={IsSmallScreen() ? "body2" : "body1"}
                         sx={{
