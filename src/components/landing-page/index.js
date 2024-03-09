@@ -82,8 +82,8 @@ const LandingPage = ({ configData, landingPageData }) => {
           landingPageData?.earning_seller_sub_title ||
           landingPageData?.earning_dm_title ||
           landingPageData?.earning_dm_sub_title) && (
-          <Registration data={landingPageData} isSmall={isSmall} />
-        )}
+            <Registration data={landingPageData} isSmall={isSmall} />
+          )}
         {landingPageData?.fixed_promotional_banner && (
           <DiscountBanner
             bannerImage={`${landingPageData?.base_urls?.promotional_banner_url}/${landingPageData?.fixed_promotional_banner}`}
@@ -93,11 +93,11 @@ const LandingPage = ({ configData, landingPageData }) => {
         {(landingPageData?.business_title ||
           landingPageData?.business_sub_title ||
           landingPageData?.business_image) && (
-          <AppDownloadSection
-            configData={configData}
-            landingPageData={landingPageData}
-          />
-        )}
+            <AppDownloadSection
+              configData={configData}
+              landingPageData={landingPageData}
+            />
+          )}
         {landingPageData?.testimonial_list?.length > 0 && (
           <Testimonials landingPageData={landingPageData} isSmall={isSmall} />
         )}
