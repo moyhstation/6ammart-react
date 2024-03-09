@@ -9,7 +9,6 @@ import { createTheme } from "../src/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import { RTL } from "../src/components/rtl";
 import { Toaster } from "react-hot-toast";
-
 import {
   SettingsConsumer,
   SettingsProvider,
@@ -21,6 +20,8 @@ import nProgress from "nprogress";
 import Router, { useRouter } from "next/router";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
+import { initGTM } from "../utils/gtm";
+import { useEffect } from "react";
 
 Router.events.on("routeChangeStart", nProgress.start);
 Router.events.on("routeChangeError", nProgress.done);
@@ -34,7 +35,9 @@ function MyApp(props) {
   const router = useRouter();
   //storing persisted data
   const persist = persistStore(store);
-
+  useEffect(() => {
+    initGTM();
+  }, []);
   return (
     <>
       <CacheProvider value={emotionCache}>

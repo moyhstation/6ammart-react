@@ -26,6 +26,7 @@ import Head from "next/head";
 import { useTranslation } from "react-i18next";
 import { PersistGate } from "redux-persist/integration/react";
 import { useEffect } from "react";
+import { initGTM } from "../src/utils/gtm";
 
 Router.events.on("routeChangeStart", nProgress.start);
 Router.events.on("routeChangeError", nProgress.done);
@@ -59,6 +60,8 @@ function MyApp(props) {
       localStorage.clear(); // Clear local storage
       localStorage.setItem("appVersion", currentVersion); // Update stored version
     }
+
+    initGTM();
   }, []);
   return (
     <>
