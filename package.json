@@ -47,6 +47,7 @@
     "react-dom": "18.2.0",
     "react-facebook-login": "^4.1.1",
     "react-geolocated": "^4.0.3",
+    "react-gtm-module": "^2.0.11",
     "react-hot-toast": "^2.4.0",
     "react-i18next": "^12.1.1",
     "react-image-magnifiers": "^1.4.0",
