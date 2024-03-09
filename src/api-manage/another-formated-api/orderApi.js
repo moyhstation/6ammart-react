@@ -1,7 +1,14 @@
 import MainApi from "../MainApi";
+import TagManager from 'react-gtm-module';
 
 export const OrderApi = {
   placeOrder: (formData) => {
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'place_order',
+        orderDetails: formData
+      },
+    });
     return MainApi.post("/api/v1/customer/order/place", formData);
   },
   prescriptionPlaceOrder: (orderData) => {
@@ -29,10 +36,10 @@ export const OrderApi = {
       formData.append("order_attachment[]", prescriptionImages);
     });
     formData.append("order_note", order_note);
-    formData.append("guest_id",guest_id)
-    formData.append("contact_person_number",contact_person_number)
-    formData.append("contact_person_name",contact_person_name)
-    formData.append("dm_tips",dm_tips)
+    formData.append("guest_id", guest_id)
+    formData.append("contact_person_number", contact_person_number)
+    formData.append("contact_person_name", contact_person_name)
+    formData.append("dm_tips", dm_tips)
 
     return MainApi.post("/api/v1/customer/order/prescription/place", formData);
   },
