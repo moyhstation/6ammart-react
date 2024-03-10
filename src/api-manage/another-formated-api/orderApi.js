@@ -3,13 +3,14 @@ import TagManager from 'react-gtm-module';
 
 export const OrderApi = {
   placeOrder: (formData) => {
+    const data = MainApi.post("/api/v1/customer/order/place", formData);
     TagManager.dataLayer({
       dataLayer: {
         event: 'place_order',
-        orderDetails: formData
+        orderDetails: data,
       },
     });
-    return MainApi.post("/api/v1/customer/order/place", formData);
+    return data;
   },
   prescriptionPlaceOrder: (orderData) => {
 
