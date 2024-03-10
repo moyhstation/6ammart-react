@@ -2,12 +2,15 @@ import MainApi from "../MainApi";
 import TagManager from 'react-gtm-module';
 
 export const OrderApi = {
-  placeOrder: (formData) => {
-    const data = MainApi.post("/api/v1/customer/order/place", formData);
+  placeOrder: async (formData) => {
+    const data = await MainApi.post("/api/v1/customer/order/place", formData);
     TagManager.dataLayer({
       dataLayer: {
         event: 'place_order',
-        orderDetails: data,
+        orderDetails: {
+          res: data.data,
+          config: JSON.parse(data.config.data),
+        }
       },
     });
     return data;
