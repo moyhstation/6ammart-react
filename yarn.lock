@@ -3537,6 +3537,11 @@ react-geolocated@^4.0.3:
   resolved "https://registry.npmjs.org/react-geolocated/-/react-geolocated-4.1.2.tgz"
   integrity sha512-/Ec26Wb1h06bB/axHYclBxrG0Yqob0T0W9awRi87cyedC3rMnpOR+Aqb7Q26FAEF+dNWXIpVDGNw1YZtlPUAEw==
 
+react-gtm-module@^2.0.11:
+  version "2.0.11"
+  resolved "https://registry.npmjs.org/react-gtm-module/-/react-gtm-module-2.0.11.tgz"
+  integrity sha512-8gyj4TTxeP7eEyc2QKawEuQoAZdjKvMY4pgWfycGmqGByhs17fR+zEBs0JUDq4US/l+vbTl+6zvUIx27iDo/Vw==
+
 react-hot-toast@^2.4.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/react-hot-toast/-/react-hot-toast-2.4.0.tgz"
