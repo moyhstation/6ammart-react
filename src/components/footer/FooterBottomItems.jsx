@@ -3,15 +3,26 @@ import { t } from 'i18next';
 import React from 'react'
 import { CustomStackFullWidth } from '../../styled-components/CustomStyles.style';
 
-const FooterBottomItems = ({ configData,handleClickToRoute }) => {
+const FooterBottomItems = ({ configData, handleClickToRoute }) => {
     const theme = useTheme();
     return (
         <CustomStackFullWidth
             direction={{ xs: "column", sm: "row" }}
             spacing={{ xs: 2, md: 3 }}
-            alignItems={{ xs: "start", sm:"center"}}
-            justifyContent={{xs:"flex-start", sm:"flex-end"}}
+            alignItems={{ xs: "start", sm: "center" }}
+            justifyContent={{ xs: "flex-start", sm: "flex-end" }}
         >
+            <Typography
+                onClick={() => window.location.href = "https://maroof.sa/businesses/details/234821"}
+                sx={{
+                    cursor: "pointer",
+                    "&:hover": {
+                        color: theme.palette.primary.main,
+                    },
+                }}
+            >
+                {"شهادة معروف"}
+            </Typography>
             <Typography
                 onClick={() => handleClickToRoute("/terms-and-conditions")}
                 sx={{
