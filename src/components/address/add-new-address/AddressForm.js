@@ -131,7 +131,7 @@ const AddressForm = ({
 
   const formSubmitOnSuccess = (values) => {
     if (token) {
-      if (editAddress && editAddress?.address_type) {
+      if (editAddress && editAddress?.address_type && editAddress?.id) {
         const newValue = { ...values, id: editAddress?.id };
         updateMutate(newValue, {
           onSuccess: (response) => {
